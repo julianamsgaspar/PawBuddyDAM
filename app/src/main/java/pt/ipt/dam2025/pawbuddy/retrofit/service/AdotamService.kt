@@ -10,18 +10,12 @@ interface AdotamService {
     /// Lista todas as adoções definitivas
     /// </summary>
     @GET("api/adotam")
-    suspend fun listarAdocoes(): List<Adotam>
-
-    /// <summary>
-    /// Obter adoção por ID
-    /// </summary>
-    @GET("api/adotam/{id}")
-    suspend fun obterAdocaoPorId(@Path("id") id: Int): Adotam
+    suspend fun GetAdocoes(): List<Adotam>
 
     /// <summary>
     /// Deletar uma adoção pelo ID
     /// </summary>
     @DELETE("api/adotam/{id}")
-    suspend fun deletarAdocao(@Path("id") id: Int)
+    suspend fun deleteAdocao(@Path("id") id: Int)
 
 }

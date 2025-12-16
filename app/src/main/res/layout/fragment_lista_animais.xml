@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.activity.activity.ListaAnimaisFragment"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/txtErro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#FF0000" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvAnimais"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="8dp"
+
+        />
+    <!-- BOTÃO FIXO NO FUNDO -->
+    <Button
+        android:id="@+id/btnVoltarHome"
+        android:text="Voltar para Home"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"/>
+
+
+
+</FrameLayout>

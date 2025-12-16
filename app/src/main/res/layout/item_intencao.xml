@@ -1,0 +1,74 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <TextView
+        android:id="@+id/txtUtilizador"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Utilizador:"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/txtAnimal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Animal:"
+        android:textStyle="bold"/>
+    <TextView
+        android:id="@+id/txtProfissao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Profissão" />
+
+    <TextView
+        android:id="@+id/txtResidencia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Residência" />
+
+    <TextView
+        android:id="@+id/txtMotivo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Motivo" />
+
+    <TextView
+        android:id="@+id/txtTemAnimais"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tem animais" />
+
+    <TextView
+        android:id="@+id/txtQuaisAnimais"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Quais animais" />
+
+    <TextView
+        android:id="@+id/txtDataIA"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Data" />
+
+    <TextView
+        android:id="@+id/txtEstado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Estado" />
+
+    <Button
+        android:id="@+id/btnEliminar"
+        android:text="Eliminar"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content" />
+    <Button
+        android:id="@+id/btnEditar"
+        android:text="Editar Estado"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content" />
+
+</LinearLayout>

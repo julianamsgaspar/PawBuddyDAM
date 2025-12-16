@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activity.activity.AdotarFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <EditText
+            android:id="@+id/etProfissao"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Profissão" />
+
+        <EditText
+            android:id="@+id/etResidencia"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Tipo de residência" />
+
+        <EditText
+            android:id="@+id/etMotivo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Motivo da adoção"
+            android:minLines="3" />
+
+        <Spinner
+            android:id="@+id/spTemAnimais"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/opcoes_tem_animais"
+            android:layout_marginBottom="12dp"/>
+
+
+        <EditText
+            android:id="@+id/etQuaisAnimais"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Quais animais?"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btnSubmeter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Submeter Intenção" />
+
+        <Button
+            android:id="@+id/btnVoltar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Voltar" />
+
+
+    </LinearLayout>
+
+</FrameLayout>

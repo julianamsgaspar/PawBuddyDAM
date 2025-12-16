@@ -1,35 +1,60 @@
 package pt.ipt.dam2025.pawbuddy.retrofit.service
 
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.Response
+import okhttp3.ResponseBody
 import pt.ipt.dam2025.pawbuddy.model.Animal
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.PUT
+import retrofit2.http.Part
 import retrofit2.http.Path
 
 interface AnimalService {
     // Listar todos os animais
-    @GET("api/animais")
+    @GET("api/Animal")
     suspend fun listarAnimais(): List<Animal>
 
     // Detalhes de um animal
-    @GET("api/animais/{id}")
+    @GET("api/Animal/{id}")
     suspend fun getAnimal(@Path("id") id: Int): Animal
 
-    // Criar um novo animal
-    @POST("api/animais")
-    suspend fun criarAnimal(@Body animal: Animal): Animal
+    @Multipart
+    @POST("api/Animal")
+    suspend fun criarAnimal(
+        @Part("nome") nome: RequestBody,
+        @Part("raca") raca: RequestBody,
+        @Part("especie") especie: RequestBody,
+        @Part("idade") idade: RequestBody,
+        @Part("genero") genero: RequestBody,
+        @Part("cor") cor: RequestBody,
+        @Part imagem: MultipartBody.Part
+    ): Animal
 
-    // Atualizar um animal existente
-    @PUT("api/animais/{id}")
-    suspend fun atualizarAnimal(@Path("id") id: Int, @Body animal: Animal): Animal
+    // PUT: atualizar animal com imagem opcional
+    @Multipart
+    @PUT("api/Animal/{id}")
+    suspend fun atualizarAnimal(
+        @Path("id") id: Int,
+        @Part("id") idPart: RequestBody,
+        @Part("nome") nome: RequestBody,
+        @Part("raca") raca: RequestBody,
+        @Part("idade") idade: RequestBody,
+        @Part("genero") genero: RequestBody,
+        @Part("especie") especie: RequestBody,
+        @Part("cor") cor: RequestBody,
+        @Part imagem: MultipartBody.Part? = null // opcional
+    )
 
     // Deletar um animal
-    @DELETE("api/animais/{id}")
-    suspend fun deletarAnimal(@Path("id") id: Int)
+    @DELETE("api/Animal/{id}")
+    suspend fun eliminarAnimal(@Path("id") id: Int)
 
     // animais de um utilizador específico
-    @GET("utilizadores/{id}/animais")
+    @GET("utilizadores/{id}/Animal")
     suspend fun listarAnimaisPorUtilizador(@Path("id") utilizadorId: Int): List<Animal>
 }

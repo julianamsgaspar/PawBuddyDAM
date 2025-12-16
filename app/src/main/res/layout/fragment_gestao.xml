@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activity.activity.GestaoFragment"
+    android:padding="24dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:spacing="16dp">
+
+        <Button
+            android:id="@+id/btnAdicionarAnimal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Adicionar Animal" />
+
+        <Button
+            android:id="@+id/btnListarAnimais"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Listar Animais" />
+
+        <Button
+            android:id="@+id/btnListarUtilizadores"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Listar Utilizadores" />
+
+        <Button
+            android:id="@+id/btnListarIntencoes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Listar Intenções de Adoção" />
+
+        <Button
+            android:id="@+id/btnListarAdocoes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Adoções Finais" />
+
+        <Button
+            android:id="@+id/btnVoltarHome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Voltar a Home"
+            android:background="@android:color/holo_red_light" />
+
+    </LinearLayout>
+
+</FrameLayout>

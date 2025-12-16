@@ -2,32 +2,23 @@ package pt.ipt.dam2025.pawbuddy.retrofit.service
 
 
 import pt.ipt.dam2025.pawbuddy.model.Utilizador
-import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.PUT
 import retrofit2.http.Path
 
+
 interface UtilizadorService {
+    // GET: api/Utilizador
+    @GET("api/Utilizador")
+    suspend fun ListaDeUtilizadores(): List<Utilizador>
 
-    // Listar todos os utilizadores
-    @GET("api/utilizadores")
-    fun listarUtilizadores(): List<Utilizador>
-
-    // Detalhes de um utilizador
-    @GET("api/utilizadores/{id}")
+    // GET: api/Utilizador/{id}
+    @GET("api/Utilizador/{id}")
     suspend fun getUtilizador(@Path("id") id: Int): Utilizador
 
-    // Criar um novo utilizador
-    @POST("api/utilizadores")
-    suspend fun criarUtilizador(@Body utilizador: Utilizador): Utilizador
+    // DELETE: api/Utilizador/{id}
+    @DELETE("api/Utilizador/{id}")
+    suspend fun EliminarUtilizador(@Path("id") id: Int)
 
-    // Atualizar um utilizador existente
-    @PUT("api/utilizadores/{id}")
-    suspend fun atualizarUtilizador(@Path("id") id: Int, @Body utilizador: Utilizador): Utilizador
 
-    // Deletar um utilizador
-    @DELETE("api/utilizadores/{id}")
-    suspend fun deletarUtilizador(@Path("id") id: Int)
 }

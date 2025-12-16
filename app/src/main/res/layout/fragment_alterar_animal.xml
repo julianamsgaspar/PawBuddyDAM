@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activity.activity.AlterarAnimalFragment"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <!-- Preview da imagem -->
+        <ImageView
+            android:id="@+id/ivPreviewImagem"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+            android:visibility="gone"
+            android:background="@android:color/darker_gray" />
+
+
+
+    <!-- Botões para tirar foto ou escolher da galeria -->
+         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="8dp">
+
+            <Button
+                android:id="@+id/btnTirarFoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tirar Foto" />
+
+            <Button
+                android:id="@+id/btnGaleria"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Galeria"
+                android:layout_marginStart="8dp" />
+         </LinearLayout>
+
+            <!-- Campos de texto do animal -->
+        <EditText
+            android:id="@+id/etNome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nome"
+            android:layout_marginTop="16dp" />
+
+        <EditText
+            android:id="@+id/etRaca"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Raça"
+            android:layout_marginTop="8dp" />
+
+        <EditText
+            android:id="@+id/etIdade"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Idade"
+            android:layout_marginTop="8dp" />
+
+        <EditText
+            android:id="@+id/etGenero"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Género"
+            android:layout_marginTop="8dp" />
+
+        <EditText
+             android:id="@+id/etEspecie"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Espécie"
+            android:layout_marginTop="8dp" />
+
+        <EditText
+             android:id="@+id/etCor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Cor"
+            android:layout_marginTop="8dp" />
+
+        <!-- Botões para salvar ou cancelar -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="16dp">
+
+            <Button
+                 android:id="@+id/btnSalvarAlteracoes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Salvar Alterações" />
+
+            <Button
+                android:id="@+id/btnVoltarLista"
+                android:text="Cancelar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>

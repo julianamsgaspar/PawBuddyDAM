@@ -8,7 +8,7 @@ class Animal(
     /// identificação do animal
     /// </summary>
     @SerializedName("id")
-    val id: Int,
+   val id: Int = 0,
 
     /// <summary>
     /// nome do animal
@@ -50,7 +50,7 @@ class Animal(
     /// imagem associada ao animal
     /// </summary>
     @SerializedName("imagem")
-    val imagem: String? = null, // pode ser nulo
+    val imagem: String? = null , // pode ser nulo
 
     /// <summary>
     /// Lista de animais que o utilizador tem intenção de adotar
@@ -58,5 +58,7 @@ class Animal(
     @SerializedName("intencaoDeAdocao")
     val intencaoDeAdocao: List<IntencaoDeAdocao>? = null, // pode ser nulo
 
+    @SerializedName("doa")
+    val doa: Any? = null
 
 )

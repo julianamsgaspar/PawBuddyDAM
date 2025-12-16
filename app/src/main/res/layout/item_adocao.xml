@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <!-- Nome do animal -->
+        <TextView
+            android:id="@+id/tvNomeAnimal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bella"
+            android:textStyle="bold"
+            android:textSize="16sp" />
+
+        <!-- Espécie / raça -->
+        <TextView
+            android:id="@+id/tvAnimalInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cão • SRD" />
+
+        <!-- Utilizador -->
+        <TextView
+            android:id="@+id/tvUtilizador"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Adotado por: André Silva" />
+
+        <!-- Data -->
+        <TextView
+            android:id="@+id/tvData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Data: 25/10/2025" />
+
+        <Button
+            android:id="@+id/btnEliminar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Eliminar" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

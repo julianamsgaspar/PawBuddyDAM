@@ -25,5 +25,13 @@
             </intent-filter>
         </activity>
     </application>
+    <!-- define the resources that our app will need -->
+    <uses-feature android:name="android.hardware.camera.any" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
+
 
 </manifest>

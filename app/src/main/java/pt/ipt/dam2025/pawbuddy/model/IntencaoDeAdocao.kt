@@ -3,84 +3,54 @@ package pt.ipt.dam2025.pawbuddy.model
 import com.google.gson.annotations.SerializedName
 import java.util.Date
 
-class IntencaoDeAdocao {
-    /// <summary>
-    /// identificação da intenção de adoção
-    /// </summary>
+class IntencaoDeAdocao(
+
     @SerializedName("id")
-    val id: Int = 0
+    val id: Int = 0,
 
-    /// <summary>
-    /// Estado da adoção
-    /// </summary>
     @SerializedName("estado")
-    val estado: EstadoAdocao = TODO()
+    val estado: Int,
 
-    /// <summary>
-    /// profissão do utilizador
-    /// </summary>
     @SerializedName("profissao")
-    val profissao: String = ""
+    val profissao: String,
 
-    /// <summary>
-    /// que tipo de residência onde o utilizador vive
-    /// </summary>
     @SerializedName("residencia")
-    val residencia: String = ""
+    val residencia: String,
 
-    /// <summary>
-    /// motivo da adoção
-    /// </summary>
     @SerializedName("motivo")
-    val motivo: String = ""
+    val motivo: String,
 
-    /// <summary>
-    /// Pergunta se tem outros animais
-    /// </summary>
     @SerializedName("temAnimais")
-    val temAnimais: String = ""
+    val temAnimais: String,
 
-    /// <summary>
-    /// se tiver animais, quais?
-    /// </summary>
     @SerializedName("quaisAnimais")
-    val quaisAnimais: String? = null
+    val quaisAnimais: String? = null,
 
-    /// <summary>
-    /// data da submissão do formulário
-    /// </summary>
     @SerializedName("dataIA")
-    val dataIA: Date =TODO()
+    val dataIA: String, // 👈 STRING (mais simples)
 
-    /// <summary>
-    /// FK para referenciar o utilizador que tem a intenção de adotar um animal
-    /// </summary>
     @SerializedName("utilizadorFK")
-    val utilizadorFK: Int = 0
+    val utilizadorFK: Int,
 
-    /// <summary>
-    /// Referência para o utilizador (objeto)
-    /// </summary>
     @SerializedName("utilizador")
-    val utilizador: Utilizador? = null// pode ser nulo se não estiver carregado
+    val utilizador: Utilizador? = null,
 
-    /// <summary>
-    /// FK para referenciar o animal que o utilizador tem a intenção de adotar
-    /// </summary>
     @SerializedName("animalFK")
-    val animalFK: Int = 0
+    val animalFK: Int,
 
-    /// <summary>
-    /// Referência para o animal (objeto)
-    /// </summary>
     @SerializedName("animal")
-    val animal: Animal? = null // pode ser nulo se não estiver carregado
+    val animal: Animal? = null
 
-    enum class EstadoAdocao {
-        Reservado,
-        EmProcesso,
-        EmValidacao,
-        Concluido,
-        Rejeitado
+){
+
+
+    fun getEstadoNome(): String = when (estado) {
+        0 -> "Reservado"
+        1 -> "Em Processo"
+        2 -> "Em Validação"
+        3 -> "Concluído"
+        4 -> "Rejeitado"
+        else -> "Desconhecido"
     }
 }
+
