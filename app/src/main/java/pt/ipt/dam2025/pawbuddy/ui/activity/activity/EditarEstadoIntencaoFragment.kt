@@ -92,7 +92,7 @@ class EditarEstadoIntencaoFragment : Fragment() {
                 // Criar nova intenção só com estado alterado
                 val intencaoAtualizada = IntencaoDeAdocao(
                     id = intencaoAtual.id,
-                    estado = novoEstado, // 👈 ÚNICA ALTERAÇÃO
+                    estado = novoEstado,
                     profissao = intencaoAtual.profissao,
                     residencia = intencaoAtual.residencia,
                     motivo = intencaoAtual.motivo,
