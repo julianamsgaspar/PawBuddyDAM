@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.launch
 import pt.ipt.dam2025.pawbuddy.R
@@ -14,12 +15,6 @@ import pt.ipt.dam2025.pawbuddy.databinding.FragmentListaUtilizadoresBinding
 import pt.ipt.dam2025.pawbuddy.retrofit.RetrofitInitializer
 import pt.ipt.dam2025.pawbuddy.ui.activity.adapter.UtilizadorAdapter
 
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ListaUtilizadoresFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ListaUtilizadoresFragment : Fragment() {
 
     private var _binding: FragmentListaUtilizadoresBinding? = null
@@ -39,17 +34,12 @@ class ListaUtilizadoresFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         adapter = UtilizadorAdapter(onClick = { utilizador ->
-            parentFragmentManager.beginTransaction()
-                .replace(
-                    requireActivity().findViewById<View>(
-                        pt.ipt.dam2025.pawbuddy.R.id.fragmentContainer
-                    ).id,
-                    DetalhesUtilizadorFragment.newInstanceFromList(utilizador.id)
-                )
-                .addToBackStack(null)
-                .commit()
+            val bundle = Bundle().apply {
+                putInt("userId", utilizador.id)
+                putBoolean("fromList", true)
+            }
+            findNavController().navigate(R.id.detalhesUtilizadorFragment, bundle)
         })
 
         binding.recyclerViewUtilizadores.layoutManager = LinearLayoutManager(requireContext())
@@ -57,25 +47,27 @@ class ListaUtilizadoresFragment : Fragment() {
 
         carregarUtilizadores()
 
-        binding.btnVoltarGestaoo.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .replace(
-                    requireActivity().findViewById<View>(R.id.fragmentContainer).id,
-                    GestaoFragment() // envia o id do animal
-                )
-                //.addToBackStack(null) // para conseguir voltar
-                .commit()
+        binding.btnVoltarGestao.setOnClickListener {
+            // Se foi aberto a partir do painel, "voltar" também faz sentido:
+            // findNavController().navigateUp()
+            findNavController().navigate(R.id.gestaoFragment)
         }
-
     }
 
     private fun carregarUtilizadores() {
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             try {
                 val lista = api.ListaDeUtilizadores()
                 adapter.submitList(lista)
             } catch (e: Exception) {
-                e.printStackTrace()
+                Toast.makeText(
+                    requireContext(),
+                    getString(
+                        R.string.error_load_users,
+                        e.message ?: getString(R.string.error_generic)
+                    ),
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
     }

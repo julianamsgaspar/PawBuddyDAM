@@ -7,14 +7,12 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Base64
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.camera.core.ImageCapture
 import androidx.core.content.ContextCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -30,6 +28,7 @@ import java.io.FileOutputStream
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import okhttp3.RequestBody.Companion.asRequestBody
+import androidx.navigation.fragment.findNavController
 
 
 
@@ -92,34 +91,17 @@ class AdicionarAnimalFragment  : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-        _binding = FragmentAdicionarAnimalBinding.bind(view)
-
         cameraExecutor = Executors.newSingleThreadExecutor()
 
-        // BOTÕES
-        binding.btnAdicionar.setOnClickListener { enviarAnimal()  }
-
+        binding.btnAdicionar.setOnClickListener { enviarAnimal() }
         binding.btnGaleria.setOnClickListener { pickImage.launch("image/*") }
 
         binding.btnTirarFoto.setOnClickListener {
-            if (allPermissionsGranted()) {
-                cameraPreview.launch(null)
-            } else {
-                requestPermissions()
-            }
-        }
-
-        binding.btnVoltarHome.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .replace(
-                    requireActivity().findViewById<View>(R.id.fragmentContainer).id,
-                    GestaoFragment()
-                )
-                .commit()
+            if (allPermissionsGranted()) cameraPreview.launch(null) else requestPermissions()
         }
 
     }
+
 
     // -----------------------------
     //   SALVAR BITMAP
@@ -141,11 +123,11 @@ class AdicionarAnimalFragment  : Fragment() {
     private fun enviarAnimal() {
 
         if (imagemUri == null) {
-            Toast.makeText(requireContext(), "Selecione ou tire uma foto", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.error_select_or_take_photo), Toast.LENGTH_SHORT).show()
             return
         }
 
-        val file = File(imagemUri!!.path!!)
+        val file = uriToTempFile(imagemUri!!)
         val requestFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
         val imagePart = MultipartBody.Part.createFormData("imagem", file.name, requestFile)
 
@@ -164,18 +146,37 @@ class AdicionarAnimalFragment  : Fragment() {
                 )
 
                 requireActivity().runOnUiThread {
-                    Toast.makeText(requireContext(), "Animal criado com sucesso!", Toast.LENGTH_LONG).show()
-                    parentFragmentManager.popBackStack()
+                    Toast.makeText(requireContext(), getString(R.string.success_animal_created), Toast.LENGTH_LONG).show()
+                    findNavController().navigate(R.id.gestaoFragment)
+
                 }
 
             } catch (e: Exception) {
                 requireActivity().runOnUiThread {
-                    Toast.makeText(requireContext(), "Erro: ${e.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.error_generic_with_message, e.message ?: getString(R.string.error_generic)),
+                        Toast.LENGTH_LONG
+                    ).show()
+
                 }
             }
         }
     }
 
+    private fun uriToTempFile(uri: Uri): File {
+        val input = requireContext().contentResolver.openInputStream(uri)
+            ?: throw IllegalArgumentException("Não foi possível abrir a imagem")
+
+        val file = File(requireContext().cacheDir, "upload_${System.currentTimeMillis()}.jpg")
+
+        input.use { ins ->
+            FileOutputStream(file).use { outs ->
+                ins.copyTo(outs)
+            }
+        }
+        return file
+    }
 
     private fun String.toRequest(): RequestBody =
         RequestBody.create("text/plain".toMediaTypeOrNull(), this)
@@ -218,7 +219,7 @@ class AdicionarAnimalFragment  : Fragment() {
                 }
 
                 if (!permissionGranted) {
-                    Toast.makeText(requireContext(), "Permissão negada", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.error_permission_denied), Toast.LENGTH_SHORT).show()
                 }
             }
 

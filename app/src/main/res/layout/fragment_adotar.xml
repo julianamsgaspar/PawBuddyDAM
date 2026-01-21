@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     tools:context=".ui.activity.activity.AdotarFragment">
 
     <LinearLayout
@@ -11,53 +13,92 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <EditText
-            android:id="@+id/etProfissao"
+        <!-- Profissão -->
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Profissão" />
+            android:hint="@string/field_profession"
+            app:boxBackgroundMode="outline">
 
-        <EditText
-            android:id="@+id/etResidencia"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etProfissao"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Residência -->
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Tipo de residência" />
+            android:hint="@string/field_residence_type"
+            android:layout_marginTop="12dp"
+            app:boxBackgroundMode="outline">
 
-        <EditText
-            android:id="@+id/etMotivo"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etResidencia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Motivo -->
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Motivo da adoção"
-            android:minLines="3" />
+            android:hint="@string/field_adoption_reason"
+            android:layout_marginTop="12dp"
+            app:boxBackgroundMode="outline">
 
-        <Spinner
-            android:id="@+id/spTemAnimais"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etMotivo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minLines="3"
+                android:gravity="top"
+                android:inputType="textMultiLine" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Tenho animais? (Dropdown bonito) -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilTemAnimais"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:entries="@array/opcoes_tem_animais"
-            android:layout_marginBottom="12dp"/>
+            android:layout_marginTop="12dp"
+            android:hint="@string/label_tem_animais"
+            app:boxBackgroundMode="outline"
+            app:endIconMode="dropdown_menu">
 
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/ddTemAnimais"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:id="@+id/etQuaisAnimais"
+        <!-- Quais animais -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilQuaisAnimais"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Quais animais?"
-            android:visibility="gone" />
+            android:layout_marginTop="12dp"
+            android:hint="@string/field_which_animals"
+            android:visibility="gone"
+            app:boxBackgroundMode="outline">
 
-        <Button
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etQuaisAnimais"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Submeter -->
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSubmeter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Submeter Intenção" />
-
-        <Button
-            android:id="@+id/btnVoltar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Voltar" />
+            android:layout_marginTop="18dp"
+            android:text="@string/action_submit_intent" />
 
 
     </LinearLayout>
 
-</FrameLayout>
+</androidx.core.widget.NestedScrollView>

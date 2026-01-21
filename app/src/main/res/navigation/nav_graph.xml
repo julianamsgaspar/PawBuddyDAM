@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <!-- USER -->
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="pt.ipt.dam2025.pawbuddy.ui.activity.activity.HomeFragment"
+        android:label="@string/nav_home" />
+
+    <fragment
+        android:id="@+id/listaAnimaisFragment"
+        android:name="pt.ipt.dam2025.pawbuddy.ui.activity.activity.ListaAnimaisFragment"
+        android:label="@string/nav_animais" />
+
+    <fragment
+        android:id="@+id/animalDetailFragment"
+        android:name="pt.ipt.dam2025.pawbuddy.ui.activity.activity.AnimalDetailFragment"
+        android:label="@string/title_animal_detail">
+        <argument
+            android:name="animalId"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/adotarFragment"
+        android:name="pt.ipt.dam2025.pawbuddy.ui.activity.activity.AdotarFragment"
+        android:label="@string/title_adotar">
+        <argument android:name="animalId" app:argType="integer" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/detalhesUtilizadorFragment"
+        android:name="pt.ipt.dam2025.pawbuddy.ui.activity.activity.DetalhesUtilizadorFragment"
+        android:label="@string/nav_perfil">
+        <!-- ✅ argumentos usados no teu código -->
+        <argument
+            android:name="userId"
+            app:argType="integer"
+            android:defaultValue="-1" />
+        <argument
+            android:name="fromList"
+            app:argType="boolean"
+            android:defaultValue="false" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="pt.ipt.dam2025.pawbuddy.ui.activity.activity.LoginFragment"
+        android:label="@string/title_login">
+        <!-- ✅ argumentos de redirect (adotar -> login -> adotar) -->
+        <argument
+            android:name="redirectToAdotar"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <argument
+            android:name="redirectAnimalId"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="pt.ipt.dam2025.pawbuddy.ui.activity.activity.RegisterFragment"
+        android:label="@string/title_register" />
+
+    <!-- "Minhas Intenções" (para user) e "Intenções" (admin) por agora partilham o mesmo destino -->
+    <fragment
+        android:id="@+id/listaIntencoesFragment"
+        android:name="pt.ipt.dam2025.pawbuddy.ui.activity.activity.ListaIntencoesFragment"
+        android:label="@string/admin_intencoes" />
+
+    <!-- ADMIN (deixamos, mas depois refinamos) -->
+    <fragment
+        android:id="@+id/gestaoFragment"
+        android:name="pt.ipt.dam2025.pawbuddy.ui.activity.activity.GestaoFragment"
+        android:label="@string/admin_dashboard" />
+
+    <fragment
+        android:id="@+id/listaUtilizadoresFragment"
+        android:name="pt.ipt.dam2025.pawbuddy.ui.activity.activity.ListaUtilizadoresFragment"
+        android:label="@string/admin_utilizadores" />
+
+    <fragment
+        android:id="@+id/adicionarAnimalFragment"
+        android:name="pt.ipt.dam2025.pawbuddy.ui.activity.activity.AdicionarAnimalFragment"
+        android:label="@string/admin_add_animal" />
+
+    <fragment
+        android:id="@+id/alterarAnimalFragment"
+        android:name="pt.ipt.dam2025.pawbuddy.ui.activity.activity.AlterarAnimalFragment"
+        android:label="@string/title_alterar_animal">
+        <argument
+            android:name="animalId"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/editarEstadoIntencaoFragment"
+        android:name="pt.ipt.dam2025.pawbuddy.ui.activity.activity.EditarEstadoIntencaoFragment"
+        android:label="@string/title_edit_intent_status">
+        <argument android:name="id" app:argType="integer" />
+        <argument android:name="estado" app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/listarAdocoesFinaisFragment"
+        android:name="pt.ipt.dam2025.pawbuddy.ui.activity.activity.ListarAdocoesFinaisFragment"
+        android:label="@string/admin_final_adoptions" />
+
+</navigation>

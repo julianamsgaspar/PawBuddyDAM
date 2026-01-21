@@ -20,11 +20,11 @@
             android:layout_gravity="center"
             android:scaleType="centerCrop"
             android:visibility="gone"
-            android:background="@android:color/darker_gray" />
+            android:background="@android:color/darker_gray"
+            android:contentDescription="@string/image_preview" />
 
 
-
-    <!-- Botões para tirar foto ou escolher da galeria -->
+        <!-- Botões para tirar foto ou escolher da galeria -->
          <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -32,18 +32,19 @@
             android:gravity="center"
             android:layout_marginTop="8dp">
 
-            <Button
-                android:id="@+id/btnTirarFoto"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Tirar Foto" />
+             <Button
+                 android:id="@+id/btnTirarFoto"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:text="@string/take_photo" />
 
-            <Button
-                android:id="@+id/btnGaleria"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Galeria"
-                android:layout_marginStart="8dp" />
+             <Button
+                 android:id="@+id/btnGaleria"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:text="@string/choose_gallery"
+                 android:layout_marginStart="8dp" />
+
          </LinearLayout>
 
             <!-- Campos de texto do animal -->
@@ -51,43 +52,44 @@
             android:id="@+id/etNome"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Nome"
+            android:hint="@string/field_name"
             android:layout_marginTop="16dp" />
 
         <EditText
             android:id="@+id/etRaca"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Raça"
+            android:hint="@string/field_breed"
             android:layout_marginTop="8dp" />
 
         <EditText
             android:id="@+id/etIdade"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Idade"
+            android:hint="@string/field_age"
             android:layout_marginTop="8dp" />
 
         <EditText
             android:id="@+id/etGenero"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Género"
+            android:hint="@string/field_gender"
             android:layout_marginTop="8dp" />
 
         <EditText
-             android:id="@+id/etEspecie"
+            android:id="@+id/etEspecie"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Espécie"
+            android:hint="@string/field_species"
             android:layout_marginTop="8dp" />
 
         <EditText
-             android:id="@+id/etCor"
+            android:id="@+id/etCor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Cor"
+            android:hint="@string/field_color"
             android:layout_marginTop="8dp" />
+
 
         <!-- Botões para salvar ou cancelar -->
         <LinearLayout
@@ -98,18 +100,21 @@
             android:layout_marginTop="16dp">
 
             <Button
-                 android:id="@+id/btnSalvarAlteracoes"
-                android:layout_width="wrap_content"
+                android:id="@+id/btnSalvarAlteracoes"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Salvar Alterações" />
+                android:layout_weight="1"
+                android:text="@string/action_save_changes" />
 
             <Button
                 android:id="@+id/btnVoltarLista"
-                android:text="Cancelar"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"/>
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:text="@string/action_cancel" />
         </LinearLayout>
+
     </LinearLayout>
 
 </FrameLayout>

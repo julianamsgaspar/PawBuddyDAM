@@ -6,8 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -16,11 +17,6 @@ import pt.ipt.dam2025.pawbuddy.databinding.FragmentListaAnimaisBinding
 import pt.ipt.dam2025.pawbuddy.retrofit.RetrofitInitializer
 import pt.ipt.dam2025.pawbuddy.ui.activity.adapter.AnimalAdapter
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ListaAnimaisFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ListaAnimaisFragment : Fragment() {
 
     private var _binding: FragmentListaAnimaisBinding? = null
@@ -37,63 +33,50 @@ class ListaAnimaisFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-
-        binding.rvAnimais.layoutManager =
-            LinearLayoutManager(requireContext())
-
+        binding.rvAnimais.layoutManager = LinearLayoutManager(requireContext())
 
         val prefs = requireContext().getSharedPreferences("PawBuddyPrefs", Context.MODE_PRIVATE)
         val isAdmin = prefs.getBoolean("isAdmin", false)
 
-
-        CoroutineScope(Dispatchers.IO).launch {
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             try {
                 val animais = retrofit.animalService().listarAnimais()
 
                 withContext(Dispatchers.Main) {
+                    binding.txtErro.visibility = View.GONE
+
                     binding.rvAnimais.adapter = AnimalAdapter(animais) { animal ->
                         abrirDetalhes(animal.id)
                     }
-
                 }
-
-
-
-
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    binding.txtErro.text = "Erro: ${e.message}"
+                    binding.txtErro.visibility = View.VISIBLE
+                    binding.txtErro.text = getString(
+                        R.string.error_load_animals,
+                        e.message ?: getString(R.string.error_generic)
+                    )
                 }
             }
         }
 
         binding.btnVoltarHome.setOnClickListener {
-            val destinoFragment = if (isAdmin) {
-                GestaoFragment()
+            if (isAdmin) {
+                findNavController().navigate(R.id.gestaoFragment)
             } else {
-                HomeFragment()
+                findNavController().navigate(R.id.homeFragment)
             }
-
-            parentFragmentManager.beginTransaction()
-                .replace(
-                    requireActivity().findViewById<View>(R.id.fragmentContainer).id,
-                    destinoFragment
-                )
-                .commit()
+            // Alternativa mais "natural" se o botão for mesmo "voltar":
+            // findNavController().navigateUp()
         }
     }
 
     private fun abrirDetalhes(id: Int) {
-        parentFragmentManager.beginTransaction()
-            .replace(
-                requireActivity().findViewById<View>(pt.ipt.dam2025.pawbuddy.R.id.fragmentContainer).id,
-                AnimalDetailFragment.newInstance(id)
-            )
-            .addToBackStack(null)
-            .commit()
+        val bundle = Bundle().apply { putInt("animalId", id) }
+        findNavController().navigate(R.id.animalDetailFragment, bundle)
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

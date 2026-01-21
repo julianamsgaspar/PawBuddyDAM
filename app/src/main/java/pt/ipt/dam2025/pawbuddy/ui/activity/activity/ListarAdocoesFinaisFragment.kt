@@ -8,21 +8,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import pt.ipt.dam2025.pawbuddy.R
 import pt.ipt.dam2025.pawbuddy.databinding.FragmentListarAdocoesFinaisBinding
 import pt.ipt.dam2025.pawbuddy.model.Adotam
 import pt.ipt.dam2025.pawbuddy.retrofit.RetrofitInitializer
 import pt.ipt.dam2025.pawbuddy.ui.activity.adapter.AdocaoAdapter
 
-
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ListarAdocoesFinaisFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ListarAdocoesFinaisFragment : Fragment() {
 
     private var _binding: FragmentListarAdocoesFinaisBinding? = null
@@ -42,75 +38,80 @@ class ListarAdocoesFinaisFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupRecyclerView()
-        carregarAdocoes()
-        binding.btnVoltar.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainer, GestaoFragment())
-                .addToBackStack(null)
-                .commit()
-        }
-
-    }
-
-    private fun setupRecyclerView() {
         binding.rvAdocoes.layoutManager = LinearLayoutManager(requireContext())
-    }
+
+        carregarAdocoes()
+
+           }
 
     private fun carregarAdocoes() {
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             try {
                 val lista = api.GetAdocoes()
-                binding.rvAdocoes.adapter = AdocaoAdapter(lista) { adocao ->
-                    confirmarEliminar(adocao)
+
+                withContext(Dispatchers.Main) {
+                    binding.rvAdocoes.adapter = AdocaoAdapter(lista) { adocao ->
+                        confirmarEliminar(adocao)
+                    }
                 }
             } catch (e: Exception) {
-                Toast.makeText(
-                    requireContext(),
-                    "Erro ao carregar adoções: ${e.message}",
-                    Toast.LENGTH_LONG
-                ).show()
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(
+                        requireContext(),
+                        getString(
+                            R.string.error_load_adoptions,
+                            e.message ?: getString(R.string.error_generic)
+                        ),
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
             }
         }
     }
 
     private fun confirmarEliminar(adocao: Adotam) {
+        val nomeAnimal = adocao.animal?.nome ?: "?"
+
         AlertDialog.Builder(requireContext())
-            .setTitle("Confirmar")
-            .setMessage("Eliminar adoção do animal ${adocao.animal?.nome}?")
-            .setPositiveButton("Eliminar") { _, _ ->
+            .setTitle(getString(R.string.dialog_confirm_title))
+            .setMessage(getString(R.string.dialog_delete_adoption_message, nomeAnimal))
+            .setPositiveButton(getString(R.string.dialog_delete)) { _, _ ->
                 eliminarAdocao(adocao.id)
             }
-            .setNegativeButton("Cancelar", null)
+            .setNegativeButton(getString(R.string.dialog_cancel), null)
             .show()
     }
 
     private fun eliminarAdocao(id: Int) {
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             try {
                 api.deleteAdocao(id)
-                Toast.makeText(requireContext(), "Adoção eliminada", Toast.LENGTH_SHORT).show()
-                carregarAdocoes()
+
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.success_adoption_deleted),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    carregarAdocoes()
+                }
             } catch (e: Exception) {
-                Toast.makeText(
-                    requireContext(),
-                    "Erro ao eliminar: ${e.message}",
-                    Toast.LENGTH_LONG
-                ).show()
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(
+                        requireContext(),
+                        getString(
+                            R.string.error_delete_adoption,
+                            e.message ?: getString(R.string.error_generic)
+                        ),
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
             }
         }
     }
 
-    /*private fun isAdmin(): Boolean {
-        val prefs = requireContext().getSharedPreferences(
-            SessionManager.PREFS_NAME,
-            android.content.Context.MODE_PRIVATE
-        )
-        return prefs.getBoolean(SessionManager.KEY_IS_ADMIN, false)
-    }*/
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-
-    }}
+    }
+}

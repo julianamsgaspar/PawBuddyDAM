@@ -7,8 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -18,17 +19,7 @@ import pt.ipt.dam2025.pawbuddy.model.IntencaoDeAdocao
 import pt.ipt.dam2025.pawbuddy.retrofit.RetrofitInitializer
 import pt.ipt.dam2025.pawbuddy.ui.activity.adapter.IntencaoAdapter
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ListaIntencoesFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class ListaIntencoesFragment  : Fragment() {
+class ListaIntencoesFragment : Fragment() {
 
     private var _binding: FragmentListaIntencoesBinding? = null
     private val binding get() = _binding!!
@@ -49,33 +40,52 @@ class ListaIntencoesFragment  : Fragment() {
         binding.rvIntencoes.layoutManager = LinearLayoutManager(requireContext())
 
         val prefs = requireContext().getSharedPreferences("PawBuddyPrefs", Context.MODE_PRIVATE)
+        val isLogged = prefs.getBoolean("isLogged", false)
         val isAdmin = prefs.getBoolean("isAdmin", false)
         val utilizadorId = prefs.getInt("utilizadorId", -1)
 
+        /*
+         * ✅ Regra do projeto:
+         * "Minhas Intenções" só faz sentido para utilizador autenticado.
+         * Se não estiver logado, enviamos para Login.
+         */
+        if (!isLogged) {
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.error_login_required),
+                Toast.LENGTH_SHORT
+            ).show()
+            findNavController().navigate(R.id.loginFragment)
+            return
+        }
+
+        // Carregar intenções (user: só as suas / admin: todas — admin refinamos depois)
         carregarIntencoes(isAdmin, utilizadorId)
 
         binding.btnVoltarHome.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .replace(
-                    requireActivity().findViewById<View>(R.id.fragmentContainer).id,
-                    if (isAdmin) GestaoFragment() else HomeFragment()
-                )
-                .commit()
+            // Para já: admin volta para gestão, user volta para home
+            if (isAdmin) {
+                findNavController().navigate(R.id.gestaoFragment)
+            } else {
+                findNavController().navigate(R.id.homeFragment)
+            }
+            // Alternativa se quiseres comportamento "back":
+            // findNavController().navigateUp()
         }
     }
 
     private fun carregarIntencoes(isAdmin: Boolean, utilizadorId: Int) {
-        CoroutineScope(Dispatchers.IO).launch {
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             try {
-                val lista: List<IntencaoDeAdocao> = if (isAdmin) {
-                    api.getAll() // admin vê todas
-                } else {
-                    try {
-                        listOf(api.getByIntencaoId(utilizadorId))
-                    } catch (e: Exception) {
-                        emptyList() // se não houver intenções para o user
+
+                // ✅ Admin vê todas; user vê apenas as suas (lista)
+                val lista: List<IntencaoDeAdocao> =
+                    if (isAdmin) {
+                        api.getAll()
+                    } else {
+                        if (utilizadorId <= 0) emptyList()
+                        else api.getByUtilizadorId(utilizadorId)
                     }
-                }
 
                 withContext(Dispatchers.Main) {
                     if (lista.isEmpty()) {
@@ -84,42 +94,47 @@ class ListaIntencoesFragment  : Fragment() {
                     } else {
                         binding.txtSemIntencoes.visibility = View.GONE
                         binding.rvIntencoes.visibility = View.VISIBLE
+
                         binding.rvIntencoes.adapter = IntencaoAdapter(
                             lista = lista,
                             isAdmin = isAdmin,
-                            onClick = { },
-                            onEliminar = { intencao ->
-                                eliminarIntencao(intencao.id)
-                            },
-                            onEditarEstado = { intencao ->
-                                abrirEditarEstado(intencao.id, intencao.estado)
-                            }
+                            onClick = { /* opcional */ },
+                            onEliminar = { intencao -> eliminarIntencao(intencao.id) },
+                            onEditarEstado = { intencao -> abrirEditarEstado(intencao.id, intencao.estado) }
                         )
-
                     }
                 }
 
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(requireContext(), "Erro ao carregar intenções: ${e.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        requireContext(),
+                        getString(
+                            R.string.error_load_intents,
+                            e.message ?: getString(R.string.error_generic)
+                        ),
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
-
         }
     }
 
+
     private fun eliminarIntencao(id: Int) {
-        CoroutineScope(Dispatchers.IO).launch {
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             try {
                 api.deleteIntencao(id)
 
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(requireContext(), "Intenção eliminada", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.success_intent_deleted),
+                        Toast.LENGTH_SHORT
+                    ).show()
 
-                    // recarrega a lista
-                    val prefs = requireContext()
-                        .getSharedPreferences("PawBuddyPrefs", Context.MODE_PRIVATE)
-
+                    // Recarregar lista após eliminar
+                    val prefs = requireContext().getSharedPreferences("PawBuddyPrefs", Context.MODE_PRIVATE)
                     carregarIntencoes(
                         prefs.getBoolean("isAdmin", false),
                         prefs.getInt("utilizadorId", -1)
@@ -128,28 +143,26 @@ class ListaIntencoesFragment  : Fragment() {
 
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(requireContext(), "Erro ao eliminar", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        requireContext(),
+                        getString(
+                            R.string.error_delete_intent,
+                            e.message ?: getString(R.string.error_generic)
+                        ),
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
         }
     }
-    private fun abrirEditarEstado(id: Int, estadoAtual: Int) {
-        parentFragmentManager.beginTransaction()
-            .replace(
-                R.id.fragmentContainer,
-                EditarEstadoIntencaoFragment().apply {
-                    arguments = Bundle().apply {
-                        putInt("id", id)
-                        putInt("estado", estadoAtual)
-                    }
-                }
-            )
-            .addToBackStack(null)
-            .commit()
+
+    private fun abrirEditarEstado(id: Int, estadoAtual: String) {
+        val bundle = Bundle().apply {
+            putInt("id", id)
+            putString("estado", estadoAtual)
+        }
+        findNavController().navigate(R.id.editarEstadoIntencaoFragment, bundle)
     }
-
-
-
 
     override fun onDestroyView() {
         super.onDestroyView()

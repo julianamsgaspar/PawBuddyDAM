@@ -20,7 +20,8 @@
             android:scaleType="centerCrop"
             android:background="#DDDDDD"
             android:visibility="gone"
-            android:contentDescription="Preview da imagem" />
+            android:contentDescription="@string/image_preview" />
+
 
         <!-- BOTÕES DE IMAGEM -->
         <LinearLayout
@@ -32,69 +33,65 @@
 
             <Button
                 android:id="@+id/btnGaleria"
-                android:text="Escolher da Galeria"
+                android:text="@string/choose_gallery"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/btnTirarFoto"
-                android:text="Tirar Foto"
+                android:text="@string/take_photo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp" />
+
         </LinearLayout>
 
         <!-- CAMPOS DO FORMULÁRIO -->
         <EditText
             android:id="@+id/etNome"
-            android:hint="Nome"
+            android:hint="@string/field_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp" />
 
         <EditText
             android:id="@+id/etRaca"
-            android:hint="Raça"
+            android:hint="@string/field_breed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <EditText
             android:id="@+id/etIdade"
-            android:hint="Idade"
+            android:hint="@string/field_age"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <EditText
             android:id="@+id/etGenero"
-            android:hint="Gênero"
+            android:hint="@string/field_gender"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <EditText
             android:id="@+id/etEspecie"
-            android:hint="Espécie"
+            android:hint="@string/field_species"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <EditText
             android:id="@+id/etCor"
-            android:hint="Cor"
+            android:hint="@string/field_color"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
 
         <!-- BOTÃO DE ADICIONAR -->
         <Button
             android:id="@+id/btnAdicionar"
-            android:text="Adicionar Animal"
+            android:text="@string/action_add_animal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="22dp" />
-        <Button
-            android:id="@+id/btnVoltarHome"
-            android:text="Voltar para Home"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"/>
 
 
     </LinearLayout>

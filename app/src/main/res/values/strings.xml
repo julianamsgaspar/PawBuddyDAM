@@ -1,9 +1,178 @@
 <resources>
     <string name="app_name">PawBuddy</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string-array name="opcoes_tem_animais">
-        <item>Não</item>
-        <item>Sim</item>
-    </string-array>
+
+    <!-- Fragments -->
+    <string name="add_animal_title">Adicionar Animal</string>
+    <string name="image_preview">Preview da imagem</string>
+    <string name="choose_gallery">Escolher da Galeria</string>
+    <string name="take_photo">Tirar Foto</string>
+    <string name="field_name">Nome</string>
+    <string name="field_breed">Raça</string>
+    <string name="field_age">Idade</string>
+    <string name="field_gender">Género</string>
+    <string name="field_species">Espécie</string>
+    <string name="field_color">Cor</string>
+    <string name="action_add_animal">Adicionar Animal</string>
+    <string name="action_back_home">Voltar para Home</string>
+    <string name="field_profession">Profissão</string>
+    <string name="field_residence_type">Tipo de residência</string>
+    <string name="field_adoption_reason">Motivo da adoção</string>
+    <string name="field_which_animals">Quais animais?</string>
+    <string name="action_submit_intent">Submeter Intenção</string>
+    <string name="action_back">Voltar</string>
+    <string name="action_save_changes">Guardar alterações</string>
+    <string name="edit_animal_title">Editar Animal</string>
+    <string name="action_cancel">Cancelar</string>
+    <string name="action_adopt">Adotar</string>
+    <string name="action_edit_animal">Alterar Animal</string>
+    <string name="action_delete_animal">Eliminar Animal</string>
+    <string name="action_back_to_animals">Voltar para a Lista de Animais</string>
+    <string name="content_desc_animal_image">Imagem do animal</string>
+    <string name="animal_image_placeholder">Imagem de animal (placeholder)</string>
+
+    <string name="label_species">Espécie: %1$s</string>
+    <string name="label_age">Idade: %1$s</string>
+    <string name="label_gender">Género: %1$s</string>
+    <string name="label_breed">Raça: %1$s</string>
+    <string name="label_color">Cor: %1$s</string>
+
+    <string name="success_animal_deleted">Animal eliminado com sucesso.</string>
+
+    <string name="error_fetch_animal_details">Erro ao buscar detalhes: %1$s</string>
+    <string name="error_delete_animal">Erro ao eliminar animal: %1$s</string>
+    <string name="error_generic">Ocorreu um erro inesperado.</string>
+    <string name="error_network">Erro de ligação ao servidor.</string>
+    <string name="error_load_animals">Erro ao carregar animais: %1$s</string>
+
+    <string name="error_select_or_take_photo">Selecione ou tire uma foto.</string>
+    <string name="success_animal_created">Animal criado com sucesso.</string>
+    <string name="error_generic_with_message">Erro: %1$s</string>
+    <string name="error_permission_denied">Permissão negada.</string>
+
+    <!-- Labels de Utilizador -->
+    <string name="label_name">Nome</string>
+    <string name="label_email">Email</string>
+    <string name="label_address">Morada</string>
+    <string name="label_postal_code">Código Postal</string>
+    <string name="label_country">País</string>
+    <string name="label_phone">Telemóvel</string>
+    <string name="label_nif">NIF</string>
+
+    <!-- Ações -->
+    <string name="action_delete_user">Eliminar Utilizador</string>
+
+    <!-- Utilizador -->
+    <string name="error_invalid_user_id">Erro: ID inválido.</string>
+    <string name="error_load_user">Erro ao carregar utilizador: %1$s</string>
+    <string name="success_user_deleted">Utilizador eliminado com sucesso.</string>
+    <string name="error_delete_user">Erro ao eliminar utilizador: %1$s</string>
+
+    <string name="success_intent_status_updated">Estado atualizado com sucesso.</string>
+    <string name="error_update_intent_status">Erro ao atualizar estado: %1$s</string>
+
+
+    <string name="dialog_confirm_title">Confirmação</string>
+    <string name="dialog_confirm_delete_user">Deseja realmente eliminar este utilizador?</string>
+    <string name="dialog_yes">Sim</string>
+    <string name="dialog_no">Não</string>
+
+    <!-- Intenção de adoção: editar estado -->
+    <string name="title_edit_intent_status">Editar Estado da Intenção</string>
+    <string name="label_status">Estado</string>
+
+    <!-- Gestão (Admin) -->
+    <string name="admin_add_animal">Adicionar Animal</string>
+    <string name="admin_list_animals">Listar Animais</string>
+    <string name="admin_list_users">Listar Utilizadores</string>
+    <string name="admin_list_intents">Listar Intenções de Adoção</string>
+    <string name="admin_final_adoptions">Adoções Finais</string>
+    <string name="admin_back_home">Voltar a Home</string>
+
+    <!-- Home -->
+    <string name="action_login">Login</string>
+    <string name="action_logout">Logout</string>
+    <string name="action_register">Registar</string>
+    <string name="action_view_animals">Ver Animais</string>
+    <string name="action_admin">Gestão</string>
+    <string name="action_view_profile">Ver Perfil</string>
+    <string name="action_view_adoptions">Ver Adoções</string>
+    <string name="success_logout">Logout realizado!</string>
+
+    <!-- Intenções -->
+    <string name="title_adoption_intents_list">Lista de Intenções de Adoção</string>
+    <string name="empty_adoption_intents">Não existem intenções de adoção.</string>
+
+    <!-- Intenções -->
+    <string name="error_load_intents">Erro ao carregar intenções: %1$s</string>
+    <string name="success_intent_deleted">Intenção eliminada.</string>
+    <string name="error_delete_intent">Erro ao eliminar intenção: %1$s</string>
+
+    <string name="action_admin_menu">Menu de Gestão</string>
+    <string name="error_load_users">Erro ao carregar utilizadores: %1$s</string>
+    <string name="title_final_adoptions">Adoções Finais</string>
+
+    <!-- Adoções finais -->
+    <string name="error_load_adoptions">Erro ao carregar adoções: %1$s</string>
+    <string name="error_delete_adoption">Erro ao eliminar adoção: %1$s</string>
+    <string name="success_adoption_deleted">Adoção eliminada.</string>
+
+    <!-- Diálogo de confirmação -->
+    <string name="dialog_delete_adoption_message">Eliminar adoção do animal %1$s?</string>
+    <string name="dialog_delete">Eliminar</string>
+    <string name="dialog_cancel">Cancelar</string>
+
+    <!-- Adoções (Recycler item) -->
+    <string name="placeholder_dash">—</string>
+    <string name="label_adopted_by">Adotado por: %1$s</string>
+    <string name="label_date">Data: %1$s</string>
+    <string name="separator_dot"> • </string>
+
+    <!-- Login -->
+    <string name="title_login">Login</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+
+    <string name="action_sign_in">Entrar</string>
+    <string name="error_fill_email_password">Preencha email e password.</string>
+    <string name="success_login">Login efetuado: %1$s</string>
+    <string name="error_login_failed">Erro ao fazer login: %1$s</string>
+
+        <!-- Register -->
+    <string name="error_fill_all_fields">Preencha todos os campos</string>
+    <string name="register_success">Registo efetuado: %1$s</string>
+    <string name="register_error">Erro ao registar: %1$s</string>
+
+
+    <string name="nav_home">Home</string>
+    <string name="nav_animais">Animais</string>
+    <string name="nav_perfil">Perfil</string>
+
+    <string name="admin_panel">Painel de Administração</string>
+    <string name="admin_dashboard">Dashboard</string>
+    <string name="admin_utilizadores">Utilizadores</string>
+    <string name="admin_intencoes">Intenções</string>
+
+    <string name="title_register">Registo</string>
+    <string name="title_animal_detail">Detalhes do Animal</string>
+    <string name="title_adotar">Formulário de Adoção</string>
+    <string name="title_alterar_animal">Alterar Animal</string>
+
+    <string name="error_login_required">Precisa de iniciar sessão para continuar.</string>
+    <string name="cta_login_to_adopt">Inicie sessão para adotar</string>
+    <string name="success_intent_created">Intenção submetida com sucesso.</string>
+    <string name="error_fill_required_fields">Preencha todos os campos obrigatórios.</string>
+    <string name="option_no">Não</string>
+    <string name="option_yes">Sim</string>
+    <string name="error_submit_intent">Erro ao enviar: %1$s</string>
+
+    <string name="label_tem_animais">Tenho animais em casa?</string>
+
+    <string name="home_subtitle">Encontra um animal para adotar e acompanha o processo.</string>
+
+    <string name="home_cta_animals_title">Explorar animais</string>
+    <string name="home_cta_animals_desc">Vê a lista de animais disponíveis para adoção.</string>
+
+    <string name="home_cta_account_title">Conta e perfil</string>
+    <string name="home_cta_account_desc">Entra para gerir o teu perfil e intenções de adoção.</string>
+
 </resources>

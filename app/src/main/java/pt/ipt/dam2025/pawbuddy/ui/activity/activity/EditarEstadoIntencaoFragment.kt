@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import kotlinx.coroutines.CoroutineScope
+import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -16,16 +16,6 @@ import pt.ipt.dam2025.pawbuddy.databinding.FragmentEditarEstadoIntencaoBinding
 import pt.ipt.dam2025.pawbuddy.model.IntencaoDeAdocao
 import pt.ipt.dam2025.pawbuddy.retrofit.RetrofitInitializer
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [EditarEstadoIntencaoFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class EditarEstadoIntencaoFragment : Fragment() {
 
     private var _binding: FragmentEditarEstadoIntencaoBinding? = null
@@ -34,14 +24,14 @@ class EditarEstadoIntencaoFragment : Fragment() {
     private val api = RetrofitInitializer().intencaoService()
 
     private var intencaoId: Int = -1
-    private var estadoAtual: Int = 0
+    private var estadoAtual: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         arguments?.let {
-            intencaoId = it.getInt("id")
-            estadoAtual = it.getInt("estado")
+            intencaoId = it.getInt("id", -1)
+            estadoAtual = it.getString("estado") // ex: "Emprocesso"
         }
     }
 
@@ -54,27 +44,30 @@ class EditarEstadoIntencaoFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        val estados = listOf(
-            "Reservado",
-            "Em Processo",
-            "Em Validação",
-            "Concluído",
-            "Rejeitado"
-        )
+        val labels = resources.getStringArray(R.array.intent_status_labels)
+        val values = resources.getStringArray(R.array.intent_status_values)
 
         val adapter = ArrayAdapter(
             requireContext(),
             android.R.layout.simple_spinner_item,
-            estados
-        )
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            labels
+        ).apply {
+            setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        }
 
         binding.spinnerEstado.adapter = adapter
-        binding.spinnerEstado.setSelection(estadoAtual)
+
+        // Selecionar o estado atual (string do backend)
+        estadoAtual?.let { estado ->
+            val index = values.indexOf(estado)
+            if (index >= 0) binding.spinnerEstado.setSelection(index)
+        }
 
         binding.btnGuardar.setOnClickListener {
-            val novoEstado = binding.spinnerEstado.selectedItemPosition
+            val pos = binding.spinnerEstado.selectedItemPosition
+            val novoEstado = values[pos] // ex: "Emvalidacao"
             atualizarEstado(novoEstado)
         }
 
@@ -83,13 +76,11 @@ class EditarEstadoIntencaoFragment : Fragment() {
         }
     }
 
-    private fun atualizarEstado(novoEstado: Int) {
-        CoroutineScope(Dispatchers.IO).launch {
+    private fun atualizarEstado(novoEstado: String) {
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             try {
-                // vai buscar intenção completa atual
                 val intencaoAtual = api.getByIntencaoId(intencaoId)
 
-                // Criar nova intenção só com estado alterado
                 val intencaoAtualizada = IntencaoDeAdocao(
                     id = intencaoAtual.id,
                     estado = novoEstado,
@@ -103,16 +94,14 @@ class EditarEstadoIntencaoFragment : Fragment() {
                     animalFK = intencaoAtual.animalFK
                 )
 
-                // Enviar objeto completo
                 api.atualizarIntencao(intencaoId, intencaoAtualizada)
 
                 withContext(Dispatchers.Main) {
                     Toast.makeText(
                         requireContext(),
-                        "Estado atualizado com sucesso",
+                        getString(R.string.success_intent_status_updated),
                         Toast.LENGTH_SHORT
                     ).show()
-
                     parentFragmentManager.popBackStack()
                 }
 
@@ -120,7 +109,10 @@ class EditarEstadoIntencaoFragment : Fragment() {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(
                         requireContext(),
-                        "Erro ao atualizar estado",
+                        getString(
+                            R.string.error_update_intent_status,
+                            e.message ?: getString(R.string.error_generic)
+                        ),
                         Toast.LENGTH_LONG
                     ).show()
                 }

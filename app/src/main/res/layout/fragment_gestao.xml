@@ -10,46 +10,42 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="center_horizontal"
-        android:spacing="16dp">
+        android:gravity="center_horizontal">
 
         <Button
             android:id="@+id/btnAdicionarAnimal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Adicionar Animal" />
+            android:text="@string/admin_add_animal" />
 
         <Button
             android:id="@+id/btnListarAnimais"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Listar Animais" />
+            android:layout_marginTop="16dp"
+            android:text="@string/admin_list_animals" />
 
         <Button
             android:id="@+id/btnListarUtilizadores"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Listar Utilizadores" />
+            android:layout_marginTop="16dp"
+            android:text="@string/admin_list_users" />
 
         <Button
             android:id="@+id/btnListarIntencoes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Listar Intenções de Adoção" />
+            android:layout_marginTop="16dp"
+            android:text="@string/admin_list_intents" />
 
         <Button
             android:id="@+id/btnListarAdocoes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Adoções Finais" />
+            android:layout_marginTop="16dp"
+            android:text="@string/admin_final_adoptions" />
 
-        <Button
-            android:id="@+id/btnVoltarHome"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Voltar a Home"
-            android:background="@android:color/holo_red_light" />
-
-    </LinearLayout>
+           </LinearLayout>
 
 </FrameLayout>

@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import pt.ipt.dam2025.pawbuddy.databinding.ItemAdocaoBinding
 import pt.ipt.dam2025.pawbuddy.model.Adotam
+import pt.ipt.dam2025.pawbuddy.R
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -27,35 +28,51 @@ class AdocaoAdapter(
 
     override fun onBindViewHolder(holder: AdocaoViewHolder, position: Int) {
         val adocao = lista[position]
+        val ctx = holder.itemView.context
 
-        holder.binding.tvNomeAnimal.text = adocao.animal?.nome ?: "—"
+        val dash = ctx.getString(R.string.placeholder_dash)
+
+        holder.binding.tvNomeAnimal.text = adocao.animal?.nome ?: dash
+
+        // Evita " • " quando campos estão vazios
+        val especie = adocao.animal?.especie?.trim().orEmpty()
+        val raca = adocao.animal?.raca?.trim().orEmpty()
+        val info = listOf(especie, raca).filter { it.isNotBlank() }
         holder.binding.tvAnimalInfo.text =
-            "${adocao.animal?.especie ?: ""} • ${adocao.animal?.raca ?: ""}"
+            if (info.isEmpty()) dash else info.joinToString(ctx.getString(R.string.separator_dot))
 
-        holder.binding.tvUtilizador.text =
-            "Adotado por: ${adocao.utilizador?.nome ?: "—"}"
+        val nomeUser = adocao.utilizador?.nome ?: dash
+        holder.binding.tvUtilizador.text = ctx.getString(R.string.label_adopted_by, nomeUser)
 
-        holder.binding.tvData.text =
-            "Data: ${formatarData(adocao.dateA)}"
+        val dataFmt = formatarData(adocao.dateA)
+        holder.binding.tvData.text = ctx.getString(R.string.label_date, dataFmt)
 
-        // Botão eliminar
         holder.binding.btnEliminar.setOnClickListener {
             onEliminarClick(adocao)
         }
     }
 
+
     override fun getItemCount(): Int = lista.size
 
     private fun formatarData(data: String): String {
-        return try {
-            val input = SimpleDateFormat(
-                "yyyy-MM-dd'T'HH:mm:ss",
-                Locale.getDefault()
-            )
-            val output = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-            output.format(input.parse(data)!!)
-        } catch (e: Exception) {
-            data
+        val formats = listOf(
+            "yyyy-MM-dd'T'HH:mm:ss",
+            "yyyy-MM-dd'T'HH:mm:ss.SSS",
+            "yyyy-MM-dd'T'HH:mm:ssXXX",
+            "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"
+        )
+
+        for (pattern in formats) {
+            try {
+                val input = SimpleDateFormat(pattern, Locale.getDefault())
+                val output = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                return output.format(input.parse(data)!!)
+            } catch (_: Exception) {
+                // tenta o próximo
+            }
         }
+        return data
     }
+
 }

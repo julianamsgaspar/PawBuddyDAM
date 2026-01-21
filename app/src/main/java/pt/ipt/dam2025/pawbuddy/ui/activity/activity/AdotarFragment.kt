@@ -1,16 +1,15 @@
 package pt.ipt.dam2025.pawbuddy.ui.activity.activity
 
-import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.CoroutineScope
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -18,20 +17,10 @@ import pt.ipt.dam2025.pawbuddy.R
 import pt.ipt.dam2025.pawbuddy.databinding.FragmentAdotarBinding
 import pt.ipt.dam2025.pawbuddy.model.IntencaoDeAdocao
 import pt.ipt.dam2025.pawbuddy.retrofit.RetrofitInitializer
+import pt.ipt.dam2025.pawbuddy.session.SessionManager
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [AdotarFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 
 class AdotarFragment : Fragment() {
 
@@ -41,15 +30,13 @@ class AdotarFragment : Fragment() {
     private val api = RetrofitInitializer().intencaoService()
 
     private var animalId: Int = -1
-    private var utilizadorId: Int = -1
 
-    companion object {
-        fun newInstance(animalId: Int, utilizadorId: Int): AdotarFragment {
-            val fragment = AdotarFragment()
-            fragment.animalId = animalId
-            fragment.utilizadorId = utilizadorId
-            return fragment
-        }
+    // ✅ SessionManager só quando o Fragment já tem context
+    private val session by lazy { SessionManager(requireContext()) }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        animalId = arguments?.getInt("animalId", -1) ?: -1
     }
 
     override fun onCreateView(
@@ -63,43 +50,94 @@ class AdotarFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Spinner "Tem Animais"
-        val opcoes = listOf("Não", "Sim")
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, opcoes)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.spTemAnimais.adapter = adapter
+        // ✅ proteção: se não há login ou animalId inválido, vai ao login
+        if (!session.isLogged() || animalId <= 0) {
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.error_login_required),
+                Toast.LENGTH_SHORT
+            ).show()
 
-        // Mostrar campo "Quais Animais" se selecionou "Sim"
-        binding.spTemAnimais.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                binding.etQuaisAnimais.visibility = if (position == 1) View.VISIBLE else View.GONE
+            val bundle = Bundle().apply {
+                putBoolean("redirectToAdotar", true)
+                putInt("redirectAnimalId", animalId)
             }
 
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                binding.etQuaisAnimais.visibility = View.GONE
-            }
+            // ✅ remove este Adotar "inválido" da pilha antes de abrir o Login
+            findNavController().navigate(
+                R.id.loginFragment,
+                bundle,
+                navOptions {
+                    popUpTo(R.id.adotarFragment) { inclusive = true }
+                    launchSingleTop = true
+                }
+            )
+            return
+        }
+
+        val opcoes = listOf(getString(R.string.option_no), getString(R.string.option_yes))
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, opcoes)
+        binding.ddTemAnimais.setAdapter(adapter)
+        binding.ddTemAnimais.setText(opcoes[0], false)
+
+        binding.ddTemAnimais.setOnItemClickListener { _, _, position, _ ->
+            val escolheuSim = (position == 1)
+            binding.tilQuaisAnimais.visibility = if (escolheuSim) View.VISIBLE else View.GONE
         }
 
         binding.btnSubmeter.setOnClickListener { enviarIntencao() }
-        binding.btnVoltar.setOnClickListener { parentFragmentManager.popBackStack() }
-    }
+           }
 
     private fun enviarIntencao() {
-        val profissao = binding.etProfissao.text.toString()
-        val residencia = binding.etResidencia.text.toString()
-        val motivo = binding.etMotivo.text.toString()
-        val temAnimais = binding.spTemAnimais.selectedItem.toString()
-        val quaisAnimais = if (temAnimais == "Sim") binding.etQuaisAnimais.text.toString() else null
+        // ✅ validação de sessão antes de submeter
+        val utilizadorId = session.userId()
+        if (!session.isLogged() || utilizadorId <= 0) {
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.error_login_required),
+                Toast.LENGTH_SHORT
+            ).show()
 
-        if (profissao.isBlank() || residencia.isBlank() || motivo.isBlank() || (temAnimais == "Sim" && quaisAnimais.isNullOrBlank())) {
-            Toast.makeText(requireContext(), "Preencha todos os campos obrigatórios", Toast.LENGTH_SHORT).show()
+            val bundle = Bundle().apply {
+                putBoolean("redirectToAdotar", true)
+                putInt("redirectAnimalId", animalId)
+            }
+
+            findNavController().navigate(
+                R.id.loginFragment,
+                bundle,
+                navOptions {
+                    popUpTo(R.id.adotarFragment) { inclusive = true }
+                    launchSingleTop = true
+                }
+            )
+            return
+        }
+
+        val profissao = binding.etProfissao.text.toString().trim()
+        val residencia = binding.etResidencia.text.toString().trim()
+        val motivo = binding.etMotivo.text.toString().trim()
+
+        val temAnimais = binding.ddTemAnimais.text.toString().trim()
+        val sim = getString(R.string.option_yes)
+        val quaisAnimais =
+            if (temAnimais == sim) binding.etQuaisAnimais.text.toString().trim() else null
+
+        if (profissao.isBlank() || residencia.isBlank() || motivo.isBlank() || temAnimais.isBlank() ||
+            (temAnimais == sim && quaisAnimais.isNullOrBlank())
+        ) {
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.error_fill_required_fields),
+                Toast.LENGTH_SHORT
+            ).show()
             return
         }
 
         val dataIA = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault()).format(Date())
 
         val intencao = IntencaoDeAdocao(
-            estado = 2, // ou outro estado inicial
+            estado = "Emvalidacao",
             profissao = profissao,
             residencia = residencia,
             motivo = motivo,
@@ -109,16 +147,29 @@ class AdotarFragment : Fragment() {
             utilizadorFK = utilizadorId,
             animalFK = animalId
         )
-        CoroutineScope(Dispatchers.IO).launch {
+
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             try {
                 api.criar(intencao)
+
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(requireContext(), "Intenção de adoção enviada!", Toast.LENGTH_LONG).show()
-                    parentFragmentManager.popBackStack()
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.success_intent_created),
+                        Toast.LENGTH_LONG
+                    ).show()
+                    findNavController().navigate(R.id.listaIntencoesFragment)
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(requireContext(), "Erro ao enviar: ${e.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        requireContext(),
+                        getString(
+                            R.string.error_submit_intent,
+                            e.message ?: getString(R.string.error_generic)
+                        ),
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
         }

@@ -10,29 +10,32 @@ import retrofit2.http.Path
 
 interface IntencaoDeAdocaoService {
 
-
+    // ADMIN – todas as intenções
     @GET("api/Intencao")
     suspend fun getAll(): List<IntencaoDeAdocao>
 
-
+    // ADMIN / DETALHE – uma intenção por ID
     @GET("api/Intencao/{id}")
     suspend fun getByIntencaoId(
         @Path("id") id: Int
     ): IntencaoDeAdocao
 
+    // USER – intenções do utilizador
+    @GET("api/Intencao/utilizador/{utilizadorId}")
+    suspend fun getByUtilizadorId(
+        @Path("utilizadorId") utilizadorId: Int
+    ): List<IntencaoDeAdocao>
 
     @POST("api/Intencao")
     suspend fun criar(
         @Body intencao: IntencaoDeAdocao
     ): IntencaoDeAdocao
 
-
     @PUT("api/Intencao/{id}")
     suspend fun atualizarIntencao(
         @Path("id") id: Int,
         @Body intencao: IntencaoDeAdocao
     ): IntencaoDeAdocao
-
 
     @DELETE("api/Intencao/{id}")
     suspend fun deleteIntencao(

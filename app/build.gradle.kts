@@ -79,7 +79,7 @@ dependencies {
     implementation (libs.androidx.camera.mlkit.vision)
     // If you want to additionally use the CameraX Extensions library
     implementation(libs.androidx.camera.extensions)
-
+    implementation("com.google.android.material:material:1.13.0")
 
 
 

@@ -16,7 +16,8 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_pet_placeholder" />
+            android:src="@drawable/ic_pet_placeholder"
+            android:contentDescription="@string/content_desc_animal_image" />
 
         <TextView
             android:id="@+id/txtNome"
@@ -45,9 +46,10 @@
         <TextView android:id="@+id/txtCor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+
         <Button
             android:id="@+id/btnAdotar"
-            android:text="Adotar"
+            android:text="@string/action_adopt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"/>
@@ -56,22 +58,15 @@
             android:id="@+id/btnAlterar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Alterar Animal"
+            android:text="@string/action_edit_animal"
             android:visibility="gone" />
 
         <Button
             android:id="@+id/btnEliminar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Eliminar Animal"
+            android:text="@string/action_delete_animal"
             android:visibility="gone" />
-
-        <Button
-            android:id="@+id/btnVoltarHome"
-            android:text="Voltar para a Lista de Animais"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"/>
 
 
     </LinearLayout>

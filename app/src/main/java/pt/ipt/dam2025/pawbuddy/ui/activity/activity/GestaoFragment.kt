@@ -5,61 +5,55 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import pt.ipt.dam2025.pawbuddy.R
 import pt.ipt.dam2025.pawbuddy.databinding.FragmentGestaoBinding
 
-/**
- * A simple [Fragment] subclass.
- * Use the [GestaoFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class GestaoFragment : Fragment() {
 
-    private lateinit var binding: FragmentGestaoBinding
+    private var _binding: FragmentGestaoBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentGestaoBinding.inflate(inflater, container, false)
+        _binding = FragmentGestaoBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        // BOTÃO ADICIONAR ANIMAL
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // ADICIONAR ANIMAL
         binding.btnAdicionarAnimal.setOnClickListener {
-            abrirFragment(AdicionarAnimalFragment())
+            findNavController().navigate(R.id.adicionarAnimalFragment)
         }
 
         // LISTAR ANIMAIS
         binding.btnListarAnimais.setOnClickListener {
-            abrirFragment(ListaAnimaisFragment())
+            findNavController().navigate(R.id.listaAnimaisFragment)
         }
 
         // LISTAR UTILIZADORES
         binding.btnListarUtilizadores.setOnClickListener {
-            abrirFragment(ListaUtilizadoresFragment())
+            findNavController().navigate(R.id.listaUtilizadoresFragment)
         }
 
         // LISTAR INTENÇÕES
         binding.btnListarIntencoes.setOnClickListener {
-           abrirFragment(ListaIntencoesFragment())
+            findNavController().navigate(R.id.listaIntencoesFragment)
         }
 
         // LISTAR ADOÇÕES FINAIS
         binding.btnListarAdocoes.setOnClickListener {
-            abrirFragment(ListarAdocoesFinaisFragment())
+            findNavController().navigate(R.id.listarAdocoesFinaisFragment)
         }
 
-        // LOGOUT
-        binding.btnVoltarHome.setOnClickListener {
-            abrirFragment(HomeFragment())
-        }
+           }
 
-        return binding.root
-    }
-
-    private fun abrirFragment(fragment: Fragment) {
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainer, fragment)
-            .addToBackStack(null)
-            .commit()
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

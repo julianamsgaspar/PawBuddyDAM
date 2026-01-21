@@ -9,7 +9,7 @@ class IntencaoDeAdocao(
     val id: Int = 0,
 
     @SerializedName("estado")
-    val estado: Int,
+    val estado: String,
 
     @SerializedName("profissao")
     val profissao: String,
@@ -41,16 +41,5 @@ class IntencaoDeAdocao(
     @SerializedName("animal")
     val animal: Animal? = null
 
-){
-
-
-    fun getEstadoNome(): String = when (estado) {
-        0 -> "Reservado"
-        1 -> "Em Processo"
-        2 -> "Em Validação"
-        3 -> "Concluído"
-        4 -> "Rejeitado"
-        else -> "Desconhecido"
-    }
-}
+)
 

@@ -2,11 +2,10 @@ package pt.ipt.dam2025.pawbuddy.model
 
 import com.google.gson.annotations.SerializedName
 
-class LoginResponse (
-    @SerializedName("message")
+data class LoginResponse(
     val message: String,
-    @SerializedName("user")
+    val id: Int,
     val user: String,
-    @SerializedName("id")
-    val id: Int
-    )
+    val email: String,
+    val isAdmin: Boolean
+)

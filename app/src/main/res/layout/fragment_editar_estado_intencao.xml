@@ -12,7 +12,7 @@
         android:id="@+id/txtTitulo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Editar Estado da Intenção"
+        android:text="@string/title_edit_intent_status"
         android:textSize="20sp"
         android:textStyle="bold"
         android:gravity="center"
@@ -22,10 +22,9 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Estado"
+        android:text="@string/label_status"
         android:textStyle="bold"
         android:layout_marginBottom="8dp" />
-
 
     <Spinner
         android:id="@+id/spinnerEstado"
@@ -33,18 +32,18 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp" />
 
+
     <Button
         android:id="@+id/btnGuardar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Guardar Alterações"
+        android:text="@string/action_save_changes"
         android:layout_marginBottom="12dp" />
 
-    <!-- Botão Cancelar -->
     <Button
         android:id="@+id/btnCancelar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Cancelar" />
+        android:text="@string/action_cancel" />
 
 </LinearLayout>

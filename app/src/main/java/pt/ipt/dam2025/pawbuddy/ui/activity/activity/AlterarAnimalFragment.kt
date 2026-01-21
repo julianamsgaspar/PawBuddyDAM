@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import pt.ipt.dam2025.pawbuddy.databinding.FragmentAlterarAnimalBinding
 import android.Manifest
+import androidx.navigation.fragment.findNavController
 
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -98,12 +99,10 @@ class AlterarAnimalFragment : Fragment() {
 
         binding.btnGaleria.setOnClickListener { pickImage.launch("image/*") }
 
-        binding.btnVoltarLista.setOnClickListener { parentFragmentManager.beginTransaction()
-            .replace(
-                requireActivity().findViewById<View>(R.id.fragmentContainer).id,
-                ListaAnimaisFragment()
-            )
-            .commit()}
+        binding.btnVoltarLista.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
         binding.btnSalvarAlteracoes.setOnClickListener { enviarAlteracoes() }
 
     }

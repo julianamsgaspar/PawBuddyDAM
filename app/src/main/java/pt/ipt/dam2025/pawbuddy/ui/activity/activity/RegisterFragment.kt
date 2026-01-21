@@ -7,7 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import kotlinx.coroutines.CoroutineScope
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -18,16 +19,11 @@ import pt.ipt.dam2025.pawbuddy.model.LoginResponse
 import pt.ipt.dam2025.pawbuddy.model.RegisterRequest
 import pt.ipt.dam2025.pawbuddy.retrofit.RetrofitInitializer
 
-/**
- * A simple [Fragment] subclass.
- * Use the [RegisterFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class RegisterFragment : Fragment() {
+
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
 
-    private val authService = RetrofitInitializer().authService()
     private val api = RetrofitInitializer().authService()
 
     override fun onCreateView(
@@ -39,89 +35,88 @@ class RegisterFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-
-
-
-
+        super.onViewCreated(view, savedInstanceState)
 
         binding.btnRegister.setOnClickListener {
-            val Nome = binding.etNome.text.toString();
-            val Password = binding.etPassword.text.toString();
-            val DataNascimento = binding.etDataNascimento.text.toString();
-            val Nif = binding.etNif.text.toString();
-            val Telemovel = binding.etTelemovel.text.toString();
-            val Morada = binding.etMorada.text.toString();
-            val CodPostal = binding.etCodPostal.text.toString();
-            val Email = binding.etEmail.text.toString();
-            val Pais = binding.etPais.text.toString();
 
-            // Validar campos obrigatórios
-            if (Nome.isEmpty() || Email.isEmpty() || Password.isEmpty() || DataNascimento.isEmpty() ||
-                Nif.isEmpty() || Telemovel.isEmpty() || Morada.isEmpty() || CodPostal.isEmpty() || Pais.isEmpty()
+            val nome = binding.etNome.text.toString()
+            val password = binding.etPassword.text.toString()
+            val dataNascimento = binding.etDataNascimento.text.toString()
+            val nif = binding.etNif.text.toString()
+            val telemovel = binding.etTelemovel.text.toString()
+            val morada = binding.etMorada.text.toString()
+            val codPostal = binding.etCodPostal.text.toString()
+            val email = binding.etEmail.text.toString()
+            val pais = binding.etPais.text.toString()
+
+            if (nome.isEmpty() || email.isEmpty() || password.isEmpty() || dataNascimento.isEmpty() ||
+                nif.isEmpty() || telemovel.isEmpty() || morada.isEmpty() || codPostal.isEmpty() || pais.isEmpty()
             ) {
-                Toast.makeText(requireContext(), "Preencha todos os campos", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.error_fill_all_fields),
+                    Toast.LENGTH_SHORT
+                ).show()
                 return@setOnClickListener
             }
+
             val request = RegisterRequest(
-                nome = Nome,
-                email = Email,
-                password = Password,
-                dataNascimento = DataNascimento,
-                nif = Nif,
-                telemovel = Telemovel,
-                morada = Morada,
-                codPostal = CodPostal,
-                pais = Pais
+                nome = nome,
+                email = email,
+                password = password,
+                dataNascimento = dataNascimento,
+                nif = nif,
+                telemovel = telemovel,
+                morada = morada,
+                codPostal = codPostal,
+                pais = pais
             )
 
-            CoroutineScope(Dispatchers.IO).launch {
+            viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
                 try {
+                    val response: LoginResponse = api.register(request)
 
-                    val response : LoginResponse = api.register(request)
+                    // Se queres login automático após registo:
                     val log = LoginRequest(
-                        Email = Nome,
-                        Password = Password
+                        Email = email,      // CORRIGIDO (antes estava Nome)
+                        Password = password
                     )
-                    api.login(log )
+                    api.login(log)
+
                     withContext(Dispatchers.Main) {
-                        Toast.makeText(requireContext(), "Registo efetuado: ${log.Email}", Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.register_success, email),
+                            Toast.LENGTH_LONG
+                        ).show()
+
+                        val shared = requireContext().getSharedPreferences("PawBuddyPrefs", Context.MODE_PRIVATE)
+                        shared.edit().apply {
+                            putBoolean("isLogged", true)
+                            putInt("utilizadorId", response.id)
+                            putBoolean("isAdmin", email.equals("admin@pawbuddy.com", true))
+                            apply()
+                        }
+
+                        // Navega para Home
+                        findNavController().navigate(R.id.homeFragment)
                     }
-                    val shared = requireContext().getSharedPreferences("PawBuddyPrefs", Context.MODE_PRIVATE)
-                    shared.edit().apply {
-                        putBoolean("isLogged", true)
-                        putInt("utilizadorId", response.id) // ID do utilizador
-                        putBoolean("isAdmin", log.Email == "admin@pawbuddy.com") // se tiveres flag admin
-                        apply() // grava persistentemente
-                    }
-
-                    // Redireciona para a home
-                        parentFragmentManager.beginTransaction()
-                            .replace(
-                                requireActivity().findViewById<View>(R.id.fragmentContainer).id,
-                                HomeFragment()
-
-                            )
-                            .addToBackStack(null)
-                            .commit()
-
-
                 } catch (e: Exception) {
                     withContext(Dispatchers.Main) {
-                        Toast.makeText(requireContext(), "Erro: ${e.message}", Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            requireContext(),
+                            getString(
+                                R.string.register_error,
+                                e.message ?: getString(R.string.error_generic)
+                            ),
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
                 }
             }
         }
-        binding.btnVoltarHome.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .replace(
-                    requireActivity().findViewById<View>(R.id.fragmentContainer).id,
-                    HomeFragment()
-                )
-                .commit()
-        }
-    }
+
+           }
 
     override fun onDestroyView() {
         super.onDestroyView()

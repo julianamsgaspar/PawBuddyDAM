@@ -26,7 +26,7 @@ class IntencaoAdapter(
             binding.txtTemAnimais.text = "Tem animais: ${item.temAnimais}"
             binding.txtQuaisAnimais.text = "Quais: ${item.quaisAnimais ?: "-"}"
             binding.txtDataIA.text = "Data: ${item.dataIA}"
-            binding.txtEstado.text = "Estado: ${item.getEstadoNome()}" // usa método do modelo
+            binding.txtEstado.text = "Estado: ${item.estado}" // usa método do modelo
 
             binding.txtUtilizador.text =
                 "Utilizador: ${item.utilizador?.nome ?: "Desconhecido"}"
