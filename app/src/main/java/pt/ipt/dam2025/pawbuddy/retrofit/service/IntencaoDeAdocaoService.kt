@@ -20,6 +20,12 @@ interface IntencaoDeAdocaoService {
         @Path("id") id: Int
     ): IntencaoDeAdocao
 
+    data class EstadoRequest(val estado: Int)
+    @PUT("api/Intencao/{id}/estado")
+    suspend fun atualizarEstado(@Path("id") id: Int, @Body body: EstadoRequest): Unit
+
+
+
     // USER – intenções do utilizador
     @GET("api/Intencao/utilizador/{utilizadorId}")
     suspend fun getByUtilizadorId(

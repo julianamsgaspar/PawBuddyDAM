@@ -1,48 +1,67 @@
 package pt.ipt.dam2025.pawbuddy.ui.activity.adapter
 
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import pt.ipt.dam2025.pawbuddy.databinding.ItemAnimalBinding
-import pt.ipt.dam2025.pawbuddy.model.Animal
-import android.view.LayoutInflater
-import android.net.Uri
-import android.view.View
-import android.widget.TextView
 import com.bumptech.glide.Glide
 import pt.ipt.dam2025.pawbuddy.R
+import pt.ipt.dam2025.pawbuddy.databinding.ItemAnimalBinding
+import pt.ipt.dam2025.pawbuddy.model.Animal
 import pt.ipt.dam2025.pawbuddy.retrofit.RetrofitInitializer
 
 class AnimalAdapter(
-    private val lista: List<Animal>,
     private val onClick: (Animal) -> Unit
 ) : RecyclerView.Adapter<AnimalAdapter.ViewHolder>() {
 
-    inner class ViewHolder(val binding: ItemAnimalBinding) :
+    private var lista: List<Animal> = emptyList()
+
+    fun submitList(novaLista: List<Animal>) {
+        lista = novaLista
+        notifyDataSetChanged()
+    }
+
+    inner class ViewHolder(private val binding: ItemAnimalBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
         fun bind(animal: Animal) {
-            binding.tvNome.text = animal.nome
-            binding.tvRaca.text = "Raça: ${animal.raca}"
-            binding.tvIdade.text = "Idade: ${animal.idade}"
-            binding.tvCor.text = "Cor: ${animal.cor}"
-            binding.tvGenero.text = "Gênero: ${animal.genero}"
-            binding.tvEspecie.text = "Espécie: ${animal.especie}"
+            // Nome (linha 1)
+            binding.tvNome.text = animal.nome ?: ""
 
-            /*val baseUrl = "http://10.0.2.2:5053/"  // substitua pelo seu domínio real
-            val imageUrl = baseUrl + animal.imagem    // animal.imagem = "images/animal14.jpg"*/
+            // Linha 2: Espécie · Raça (compacto)
+            val especie = animal.especie ?: ""
+            val raca = animal.raca ?: ""
+            binding.tvEspecie.text = when {
+                especie.isNotBlank() && raca.isNotBlank() -> "$especie · $raca"
+                especie.isNotBlank() -> especie
+                raca.isNotBlank() -> raca
+                else -> ""
+            }
 
-            // -----------------------------
-            // Carregar imagem da API com Glide
-            // -----------------------------
+            // Linha 3: Idade · Género (compacto)
+            val idade = animal.idade?.toString() ?: ""
+            val genero = animal.genero ?: ""
+            binding.tvIdade.text = when {
+                idade.isNotBlank() && genero.isNotBlank() -> "$idade anos · $genero"
+                idade.isNotBlank() -> "$idade anos"
+                genero.isNotBlank() -> genero
+                else -> ""
+            }
+
+            // Campos “longos” (no grid ficam feios) — só se existirem no layout
+            // Se no teu novo XML estes TextViews estiverem GONE, não faz mal setar ou não.
+            binding.tvRaca.text = ""    // ou remove completamente se no XML estiver gone
+            binding.tvCor.text = ""
+            binding.tvGenero.text = ""
+
+            // Imagem
             Glide.with(binding.ivAnimal.context)
-                .load(RetrofitInitializer.fullImageUrl(animal.imagem.toString())) // URL da API
+                .load(RetrofitInitializer.fullImageUrl(animal.imagem.toString()))
                 .placeholder(R.drawable.animal0)
-                .error(R.drawable.ic_pet_placeholder) // se falhar
+                .error(R.drawable.ic_pet_placeholder)
                 .centerCrop()
                 .into(binding.ivAnimal)
 
-            binding.root.setOnClickListener {
-                onClick(animal)
-            }
+            binding.root.setOnClickListener { onClick(animal) }
         }
     }
 

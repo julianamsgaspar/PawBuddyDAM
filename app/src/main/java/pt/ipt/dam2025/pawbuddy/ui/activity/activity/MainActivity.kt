@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
-        navController = navHostFragment.navController // <- IMPORTANT: atribuir à propriedade
+        navController = navHostFragment.navController
 
         // Top-level destinations (ajusta se necessário)
         val topLevelDestinations = setOf(
@@ -40,43 +40,52 @@ class MainActivity : AppCompatActivity() {
             R.id.detalhesUtilizadorFragment
         )
 
-        // Config inicial de AppBarConfiguration (vai ser recalculada em refreshSessionUi)
+        // Config inicial AppBarConfiguration
         appBarConfiguration = AppBarConfiguration(topLevelDestinations)
 
-        // Toolbar (título e up/hamburger)
+        // Toolbar
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
 
         // BottomNav
         NavigationUI.setupWithNavController(binding.bottomNav, navController)
 
-        // Listener: esconder barras em ecrãs específicos
+        // Listener: controlar UI por destino + perfil
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            val hideBars = destination.id in setOf(
+
+            val shared = getSharedPreferences("PawBuddyPrefs", Context.MODE_PRIVATE)
+            val isLogged = shared.getBoolean("isLogged", false)
+            val isAdmin = shared.getBoolean("isAdmin", false)
+
+            val hideAuth = destination.id in setOf(
                 R.id.loginFragment,
                 R.id.registerFragment
             )
 
-            // “App-like”: em auth escondemos toolbar + bottom nav e bloqueamos drawer
-            binding.toolbar.visibility = if (hideBars) View.GONE else View.VISIBLE
-            binding.bottomNav.visibility = if (hideBars) View.GONE else View.VISIBLE
+            // ✅ BottomNav nunca aparece para admin
+            val hideBottomNav = hideAuth || (isLogged && isAdmin)
 
-            if (hideBars) {
+            // Auth screens: esconder toolbar
+            binding.toolbar.visibility = if (hideAuth) View.GONE else View.VISIBLE
+            binding.bottomNav.visibility = if (hideBottomNav) View.GONE else View.VISIBLE
+
+            // Em auth: bloqueia drawer
+            if (hideAuth) {
                 binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
             } else {
+                // Atualiza drawer + appbar conforme sessão
                 refreshSessionUi(topLevelDestinations)
             }
 
-            // Força redesenho do menu (para mostrar/esconder Logout)
+            // Força redesenho do menu (Logout)
             invalidateOptionsMenu()
         }
 
-        // Aplicar estado inicial
+        // Estado inicial
         refreshSessionUi(topLevelDestinations)
     }
 
     override fun onResume() {
         super.onResume()
-        // Se prefs mudaram após login, UI acompanha sem reiniciar a app
         refreshSessionUi(
             setOf(R.id.homeFragment, R.id.listaAnimaisFragment, R.id.detalhesUtilizadorFragment)
         )
@@ -88,7 +97,7 @@ class MainActivity : AppCompatActivity() {
         val isLogged = shared.getBoolean("isLogged", false)
         val isAdmin = shared.getBoolean("isAdmin", false)
 
-        // Drawer só para admin e logado
+        // Drawer só para admin logado
         val enableAdminDrawer = isLogged && isAdmin
 
         binding.adminDrawer.visibility = if (enableAdminDrawer) View.VISIBLE else View.GONE
@@ -96,6 +105,9 @@ class MainActivity : AppCompatActivity() {
             if (enableAdminDrawer) DrawerLayout.LOCK_MODE_UNLOCKED
             else DrawerLayout.LOCK_MODE_LOCKED_CLOSED
         )
+
+        // ✅ BottomNav nunca mostrar ao Admin
+        binding.bottomNav.visibility = if (enableAdminDrawer) View.GONE else View.VISIBLE
 
         // AppBarConfiguration: com drawer se admin
         appBarConfiguration = if (enableAdminDrawer) {
@@ -142,7 +154,7 @@ class MainActivity : AppCompatActivity() {
             .clear()
             .apply()
 
-        // Limpar cookie em memória (se usas cookie-based auth)
+        // Limpar cookie em memória (cookie-based auth)
         CookieStorage.sessionCookie = null
 
         // Navegar para login e limpar backstack

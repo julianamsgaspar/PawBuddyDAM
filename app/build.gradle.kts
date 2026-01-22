@@ -74,12 +74,14 @@ dependencies {
      implementation (libs.androidx.camera.video)
     // If you want to additionally use the CameraX View class
      implementation(libs.androidx.camera.view)
-
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     // If you want to additionally add CameraX ML Kit Vision Integration
     implementation (libs.androidx.camera.mlkit.vision)
     // If you want to additionally use the CameraX Extensions library
     implementation(libs.androidx.camera.extensions)
     implementation("com.google.android.material:material:1.13.0")
+    implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+
 
 
 

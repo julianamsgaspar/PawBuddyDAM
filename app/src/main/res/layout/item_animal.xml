@@ -1,61 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="12dp"
-    card_view:cardElevation="6dp"
-    card_view:cardCornerRadius="8dp"
-    card_view:cardUseCompatPadding="true">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_margin="6dp"
+    app:cardCornerRadius="14dp"
+    app:cardUseCompatPadding="true"
+    app:cardElevation="2dp"
+    app:strokeWidth="1dp">
 
     <LinearLayout
-        android:orientation="vertical"
-        android:padding="12dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
+        <!-- Imagem quadrada (ideal para grid) -->
         <ImageView
             android:id="@+id/ivAnimal"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            android:contentDescription="Foto do animal"
-            android:src="@drawable/ic_pet_placeholder"/>
+            android:contentDescription="@string/animal_photo_desc"
+            android:src="@drawable/ic_pet_placeholder" />
 
-        <TextView
-            android:id="@+id/tvNome"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:layout_marginTop="8dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
 
-        <TextView
-            android:id="@+id/tvEspecie"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/tvNome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                tools:text="Bobby" />
 
-        <TextView
-            android:id="@+id/tvIdade"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/tvEspecie"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:alpha="0.85"
+                android:maxLines="1"
+                android:ellipsize="end"
+                tools:text="Cão · Labrador" />
 
-        <TextView
-            android:id="@+id/tvGenero"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/tvIdade"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:alpha="0.75"
+                android:maxLines="1"
+                android:ellipsize="end"
+                tools:text="2 anos · Fêmea" />
 
-        <TextView
-            android:id="@+id/tvRaca"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <!-- Campos antigos: mantidos para não rebentar o adapter,
+                 mas escondidos porque num grid estragam o layout -->
+            <TextView
+                android:id="@+id/tvGenero"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/tvCor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/tvRaca"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tvCor"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:visibility="gone" />
+        </LinearLayout>
 
     </LinearLayout>
 
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

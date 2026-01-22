@@ -28,15 +28,15 @@
         android:id="@+id/adotarFragment"
         android:name="pt.ipt.dam2025.pawbuddy.ui.activity.activity.AdotarFragment"
         android:label="@string/title_adotar">
-        <argument android:name="animalId" app:argType="integer" />
-
+        <argument
+            android:name="animalId"
+            app:argType="integer" />
     </fragment>
 
     <fragment
         android:id="@+id/detalhesUtilizadorFragment"
         android:name="pt.ipt.dam2025.pawbuddy.ui.activity.activity.DetalhesUtilizadorFragment"
         android:label="@string/nav_perfil">
-        <!-- ✅ argumentos usados no teu código -->
         <argument
             android:name="userId"
             app:argType="integer"
@@ -51,29 +51,36 @@
         android:id="@+id/loginFragment"
         android:name="pt.ipt.dam2025.pawbuddy.ui.activity.activity.LoginFragment"
         android:label="@string/title_login">
-        <!-- ✅ argumentos de redirect (adotar -> login -> adotar) -->
+
         <argument
-            android:name="redirectToAdotar"
+            android:name="returnToPrevious"
             app:argType="boolean"
             android:defaultValue="false" />
+
         <argument
-            android:name="redirectAnimalId"
+            android:name="origin"
+            app:argType="string"
+            android:defaultValue="" />
+
+        <argument
+            android:name="originId"
             app:argType="integer"
             android:defaultValue="-1" />
     </fragment>
+
 
     <fragment
         android:id="@+id/registerFragment"
         android:name="pt.ipt.dam2025.pawbuddy.ui.activity.activity.RegisterFragment"
         android:label="@string/title_register" />
 
-    <!-- "Minhas Intenções" (para user) e "Intenções" (admin) por agora partilham o mesmo destino -->
+    <!-- "Minhas Intenções" / "Intenções" -->
     <fragment
         android:id="@+id/listaIntencoesFragment"
         android:name="pt.ipt.dam2025.pawbuddy.ui.activity.activity.ListaIntencoesFragment"
         android:label="@string/admin_intencoes" />
 
-    <!-- ADMIN (deixamos, mas depois refinamos) -->
+    <!-- ADMIN -->
     <fragment
         android:id="@+id/gestaoFragment"
         android:name="pt.ipt.dam2025.pawbuddy.ui.activity.activity.GestaoFragment"

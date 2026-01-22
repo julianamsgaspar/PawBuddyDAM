@@ -3,45 +3,40 @@ package pt.ipt.dam2025.pawbuddy.ui.activity.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import pt.ipt.dam2025.pawbuddy.databinding.FragmentDetalhesUtilizadorBinding
 import pt.ipt.dam2025.pawbuddy.databinding.ItemUtilizadorBinding
-import pt.ipt.dam2025.pawbuddy.model.Animal
-import pt.ipt.dam2025.pawbuddy.model.RegisterRequest
 import pt.ipt.dam2025.pawbuddy.model.Utilizador
-import pt.ipt.dam2025.pawbuddy.ui.activity.activity.DetalhesUtilizadorFragment
 
 class UtilizadorAdapter(
-    private val lista: MutableList<Utilizador> = mutableListOf(),
-    private val onClick: (Utilizador) -> Unit
-) : RecyclerView.Adapter<UtilizadorAdapter.ViewHolder>() {
+    private val onClick: (Utilizador) -> Unit,
+    private val onDeleteClick: (Utilizador) -> Unit
+) : RecyclerView.Adapter<UtilizadorAdapter.VH>() {
 
-    inner class ViewHolder(val binding: ItemUtilizadorBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    private var items: List<Utilizador> = emptyList()
 
+    fun submitList(list: List<Utilizador>) {
+        items = list
+        notifyDataSetChanged()
+    }
+
+    inner class VH(private val b: ItemUtilizadorBinding) : RecyclerView.ViewHolder(b.root) {
         fun bind(u: Utilizador) {
-            binding.tvNome.text = u.nome
-            binding.tvEmail.text = u.email
+            b.tvUserName.text = u.nome ?: ""
+            b.tvUserEmail.text = u.email ?: ""
+            b.tvUserMeta.text = "ID: ${u.id} · NIF: ${u.nif ?: "—"}"
 
-            binding.root.setOnClickListener { onClick(u) }
+            b.root.setOnClickListener { onClick(u) }
+            b.btnDeleteUser.setOnClickListener { onDeleteClick(u) }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ItemUtilizadorBinding.inflate(
-            LayoutInflater.from(
-            parent.context), parent, false)
-        return ViewHolder(binding)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
+        val b = ItemUtilizadorBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return VH(b)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(lista[position])
-    }
+    override fun getItemCount(): Int = items.size
 
-    override fun getItemCount(): Int = lista.size
-
-    fun submitList(novaLista: List<Utilizador>) {
-        lista.clear()
-        lista.addAll(novaLista)
-        notifyDataSetChanged()
+    override fun onBindViewHolder(holder: VH, position: Int) {
+        holder.bind(items[position])
     }
 }

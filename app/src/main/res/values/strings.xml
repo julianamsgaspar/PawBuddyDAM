@@ -143,7 +143,7 @@
     <string name="register_error">Erro ao registar: %1$s</string>
 
 
-    <string name="nav_home">Home</string>
+    <string name="nav_home">PawBuddy</string>
     <string name="nav_animais">Animais</string>
     <string name="nav_perfil">Perfil</string>
 
@@ -155,7 +155,7 @@
     <string name="title_register">Registo</string>
     <string name="title_animal_detail">Detalhes do Animal</string>
     <string name="title_adotar">Formulário de Adoção</string>
-    <string name="title_alterar_animal">Alterar Animal</string>
+    <string name="title_alterar_animal">Editar</string>
 
     <string name="error_login_required">Precisa de iniciar sessão para continuar.</string>
     <string name="cta_login_to_adopt">Inicie sessão para adotar</string>
@@ -174,5 +174,21 @@
 
     <string name="home_cta_account_title">Conta e perfil</string>
     <string name="home_cta_account_desc">Entra para gerir o teu perfil e intenções de adoção.</string>
+    <string name="admin_dashboard_subtitle">Ações rápidas para gerir a plataforma</string>
+
+    <string name="admin_add_animal_desc">Registar um novo animal para adoção</string>
+    <string name="admin_list_animals_desc">Ver e gerir animais registados</string>
+    <string name="admin_list_users_desc">Consultar utilizadores e detalhes</string>
+    <string name="admin_list_intents_desc">Rever pedidos e atualizar estados</string>
+    <string name="admin_final_adoptions_desc">Histórico e registos concluídos</string>
+
+    <string name="action_open">Abrir</string>
+    <string name="search_animals_hint">Pesquisar por nome, raça ou espécie</string>
+    <string name="empty_animals">Sem animais disponíveis</string>
+    <string name="empty_animals_desc">Atualiza a lista ou tenta novamente mais tarde.</string>
+    <string name="animal_photo_desc">Foto do animal\n\n</string>
+    <string name="action_delete">Apagar\n</string>
+    <string name="search_users_hint">Pesquisar por nome, email, NIF</string>
+    <string name="empty_users">Sem utilizadores para mostrar</string>
 
 </resources>

@@ -18,11 +18,14 @@ import pt.ipt.dam2025.pawbuddy.databinding.FragmentListaIntencoesBinding
 import pt.ipt.dam2025.pawbuddy.model.IntencaoDeAdocao
 import pt.ipt.dam2025.pawbuddy.retrofit.RetrofitInitializer
 import pt.ipt.dam2025.pawbuddy.ui.activity.adapter.IntencaoAdapter
+import retrofit2.HttpException
+import pt.ipt.dam2025.pawbuddy.session.SessionManager
 
 class ListaIntencoesFragment : Fragment() {
 
     private var _binding: FragmentListaIntencoesBinding? = null
     private val binding get() = _binding!!
+    private val session by lazy { SessionManager(requireContext()) }
 
     private val api = RetrofitInitializer().intencaoService()
 
@@ -77,8 +80,6 @@ class ListaIntencoesFragment : Fragment() {
     private fun carregarIntencoes(isAdmin: Boolean, utilizadorId: Int) {
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             try {
-
-                // ✅ Admin vê todas; user vê apenas as suas (lista)
                 val lista: List<IntencaoDeAdocao> =
                     if (isAdmin) {
                         api.getAll()
@@ -105,6 +106,34 @@ class ListaIntencoesFragment : Fragment() {
                     }
                 }
 
+            } catch (e: HttpException) {
+                withContext(Dispatchers.Main) {
+                    if (e.code() == 401 || e.code() == 403) {
+                        session.logout()
+                        Toast.makeText(
+                            requireContext(),
+                            "Sessão expirada. Faz login novamente.",
+                            Toast.LENGTH_LONG
+                        ).show()
+
+                        val b = Bundle().apply {
+                            putBoolean("returnToPrevious", true)
+                            putString("origin", "intencoes")
+                            putInt("originId", -1)
+                        }
+                        findNavController().navigate(R.id.loginFragment, b)
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            getString(
+                                R.string.error_load_intents,
+                                e.message ?: getString(R.string.error_generic)
+                            ),
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(
@@ -119,6 +148,7 @@ class ListaIntencoesFragment : Fragment() {
             }
         }
     }
+
 
 
     private fun eliminarIntencao(id: Int) {

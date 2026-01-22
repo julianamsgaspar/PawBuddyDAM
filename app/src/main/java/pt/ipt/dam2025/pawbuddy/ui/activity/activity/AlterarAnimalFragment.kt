@@ -72,7 +72,8 @@ class AlterarAnimalFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        animalId = arguments?.getInt("id") ?: 0
+        animalId = arguments?.getInt("animalId") ?: 0
+
     }
 
     override fun onCreateView(

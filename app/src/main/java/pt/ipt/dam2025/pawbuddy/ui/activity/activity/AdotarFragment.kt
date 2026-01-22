@@ -99,19 +99,14 @@ class AdotarFragment : Fragment() {
             ).show()
 
             val bundle = Bundle().apply {
-                putBoolean("redirectToAdotar", true)
-                putInt("redirectAnimalId", animalId)
+                putBoolean("returnToPrevious", true)
+                putString("origin", "adotar")
+                putInt("originId", animalId)
             }
 
-            findNavController().navigate(
-                R.id.loginFragment,
-                bundle,
-                navOptions {
-                    popUpTo(R.id.adotarFragment) { inclusive = true }
-                    launchSingleTop = true
-                }
-            )
+            findNavController().navigate(R.id.loginFragment, bundle)
             return
+
         }
 
         val profissao = binding.etProfissao.text.toString().trim()

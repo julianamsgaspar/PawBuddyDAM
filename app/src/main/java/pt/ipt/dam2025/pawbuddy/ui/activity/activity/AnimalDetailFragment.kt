@@ -51,9 +51,11 @@ class AnimalDetailFragment : Fragment() {
         when {
             isAdmin -> {
                 // para já: esconder ações admin no detalhe (como tinhas)
-                binding.btnEliminar.visibility = View.GONE
-                binding.btnAlterar.visibility = View.GONE
-                binding.btnAdotar.visibility = View.GONE
+                    binding.btnEliminar.visibility = View.VISIBLE
+                    binding.btnAlterar.visibility = View.VISIBLE
+                    binding.btnAdotar.visibility = View.GONE
+
+
             }
 
             isLogged -> {

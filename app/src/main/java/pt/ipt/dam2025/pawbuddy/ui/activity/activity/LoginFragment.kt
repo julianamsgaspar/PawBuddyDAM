@@ -16,7 +16,6 @@ import pt.ipt.dam2025.pawbuddy.R
 import pt.ipt.dam2025.pawbuddy.databinding.FragmentLoginBinding
 import pt.ipt.dam2025.pawbuddy.model.LoginRequest
 import pt.ipt.dam2025.pawbuddy.model.LoginResponse
-import pt.ipt.dam2025.pawbuddy.retrofit.RetrofitInitializer
 import pt.ipt.dam2025.pawbuddy.session.SessionManager
 
 class LoginFragment : Fragment() {
@@ -24,9 +23,7 @@ class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
-    private val retrofit = RetrofitInitializer()
-
-    // ✅ SessionManager só quando o Fragment já tem context
+    private val authApi = RetrofitProvider.authService
     private val session by lazy { SessionManager(requireContext()) }
 
     override fun onCreateView(
@@ -40,17 +37,21 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // ✅ Se já está logado, não faz sentido mostrar Login
+        // Args unificados
+        val returnToPrevious = arguments?.getBoolean("returnToPrevious", false) ?: false
+        val origin = arguments?.getString("origin", "") ?: ""
+        val originId = arguments?.getInt("originId", -1) ?: -1
+
+        // Se já está logado, aplica já a regra unificada
         if (session.isLogged()) {
-            if (!findNavController().navigateUp()) {
-                findNavController().navigate(R.id.homeFragment)
-            }
+            handlePostLoginNavigation(
+                isAdmin = session.isAdmin(),
+                returnToPrevious = returnToPrevious,
+                origin = origin,
+                originId = originId
+            )
             return
         }
-
-        // Redirect args
-        val redirectToAdotar = arguments?.getBoolean("redirectToAdotar", false) ?: false
-        val redirectAnimalId = arguments?.getInt("redirectAnimalId", -1) ?: -1
 
         binding.btnLogin.setOnClickListener {
             val email = binding.etEmail.text.toString().trim()
@@ -68,10 +69,9 @@ class LoginFragment : Fragment() {
             viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
                 try {
                     val req = LoginRequest(Email = email, Password = password)
-                    val resposta: LoginResponse = retrofit.authService().login(req)
+                    val resposta: LoginResponse = authApi.login(req)
 
                     withContext(Dispatchers.Main) {
-                        // ✅ Guardar sessão centralizada
                         session.saveLogin(resposta.id, resposta.isAdmin)
 
                         Toast.makeText(
@@ -80,29 +80,13 @@ class LoginFragment : Fragment() {
                             Toast.LENGTH_LONG
                         ).show()
 
-                        if (redirectToAdotar && redirectAnimalId > 0) {
-                            val bundle = Bundle().apply { putInt("animalId", redirectAnimalId) }
-
-                            findNavController().navigate(
-                                R.id.adotarFragment,
-                                bundle,
-                                navOptions {
-                                    popUpTo(R.id.loginFragment) { inclusive = true }
-                                    launchSingleTop = true
-                                }
-                            )
-                        } else {
-                            findNavController().navigate(
-                                R.id.homeFragment,
-                                null,
-                                navOptions {
-                                    popUpTo(R.id.loginFragment) { inclusive = true }
-                                    launchSingleTop = true
-                                }
-                            )
-                        }
+                        handlePostLoginNavigation(
+                            isAdmin = resposta.isAdmin,
+                            returnToPrevious = returnToPrevious,
+                            origin = origin,
+                            originId = originId
+                        )
                     }
-
                 } catch (e: Exception) {
                     withContext(Dispatchers.Main) {
                         Toast.makeText(
@@ -121,6 +105,63 @@ class LoginFragment : Fragment() {
         binding.btnRegister.setOnClickListener {
             findNavController().navigate(R.id.registerFragment)
         }
+    }
+
+    private fun handlePostLoginNavigation(
+        isAdmin: Boolean,
+        returnToPrevious: Boolean,
+        origin: String,
+        originId: Int
+    ) {
+        // Caso 1: queremos voltar ao contexto anterior
+        if (returnToPrevious) {
+
+            // Origem: fluxo de adoção (regra especial por perfil)
+            if (origin == "adotar" && originId > 0) {
+                if (isAdmin) {
+                    // Admin nunca volta ao formulário de intenção
+                    findNavController().navigate(
+                        R.id.gestaoFragment,
+                        null,
+                        navOptions {
+                            popUpTo(R.id.loginFragment) { inclusive = true }
+                            launchSingleTop = true
+                        }
+                    )
+                } else {
+                    // Utilizador normal retoma a adoção
+                    val b = Bundle().apply { putInt("animalId", originId) }
+                    findNavController().navigate(
+                        R.id.adotarFragment,
+                        b,
+                        navOptions {
+                            popUpTo(R.id.loginFragment) { inclusive = true }
+                            launchSingleTop = true
+                        }
+                    )
+                }
+                return
+            }
+
+            // Outras origens: volta ao ecrã anterior
+            if (!findNavController().navigateUp()) {
+                // fallback se não houver back stack
+                val target = if (isAdmin) R.id.gestaoFragment else R.id.homeFragment
+                findNavController().navigate(target)
+            }
+            return
+        }
+
+        // Caso 2: login “normal”
+        val target = if (isAdmin) R.id.gestaoFragment else R.id.homeFragment
+        findNavController().navigate(
+            target,
+            null,
+            navOptions {
+                popUpTo(R.id.loginFragment) { inclusive = true }
+                launchSingleTop = true
+            }
+        )
     }
 
     override fun onDestroyView() {

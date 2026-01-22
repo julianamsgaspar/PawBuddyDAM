@@ -13,8 +13,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import pt.ipt.dam2025.pawbuddy.R
 import pt.ipt.dam2025.pawbuddy.databinding.FragmentEditarEstadoIntencaoBinding
-import pt.ipt.dam2025.pawbuddy.model.IntencaoDeAdocao
 import pt.ipt.dam2025.pawbuddy.retrofit.RetrofitInitializer
+import pt.ipt.dam2025.pawbuddy.retrofit.service.IntencaoDeAdocaoService
 
 class EditarEstadoIntencaoFragment : Fragment() {
 
@@ -28,10 +28,9 @@ class EditarEstadoIntencaoFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         arguments?.let {
             intencaoId = it.getInt("id", -1)
-            estadoAtual = it.getString("estado") // ex: "Emprocesso"
+            estadoAtual = it.getString("estado") // se agora usares ints, depois ajustamos isto
         }
     }
 
@@ -47,7 +46,7 @@ class EditarEstadoIntencaoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val labels = resources.getStringArray(R.array.intent_status_labels)
-        val values = resources.getStringArray(R.array.intent_status_values)
+        val values = resources.getStringArray(R.array.intent_status_values) // agora deve ser "0","1","2"...
 
         val adapter = ArrayAdapter(
             requireContext(),
@@ -59,16 +58,17 @@ class EditarEstadoIntencaoFragment : Fragment() {
 
         binding.spinnerEstado.adapter = adapter
 
-        // Selecionar o estado atual (string do backend)
-        estadoAtual?.let { estado ->
-            val index = values.indexOf(estado)
+        // Se o backend ainda te dá estado como string, este match já não serve com ints.
+        // O ideal é passares também o "estadoIndex" (int) no Bundle. Por agora, podes ignorar ou adaptar.
+        estadoAtual?.let { estadoStr ->
+            val index = values.indexOf(estadoStr)
             if (index >= 0) binding.spinnerEstado.setSelection(index)
         }
 
         binding.btnGuardar.setOnClickListener {
             val pos = binding.spinnerEstado.selectedItemPosition
-            val novoEstado = values[pos] // ex: "Emvalidacao"
-            atualizarEstado(novoEstado)
+            val novoEstadoInt = values[pos].toInt()
+            atualizarEstado(novoEstadoInt)
         }
 
         binding.btnCancelar.setOnClickListener {
@@ -76,25 +76,10 @@ class EditarEstadoIntencaoFragment : Fragment() {
         }
     }
 
-    private fun atualizarEstado(novoEstado: String) {
+    private fun atualizarEstado(novoEstado: Int) {
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             try {
-                val intencaoAtual = api.getByIntencaoId(intencaoId)
-
-                val intencaoAtualizada = IntencaoDeAdocao(
-                    id = intencaoAtual.id,
-                    estado = novoEstado,
-                    profissao = intencaoAtual.profissao,
-                    residencia = intencaoAtual.residencia,
-                    motivo = intencaoAtual.motivo,
-                    temAnimais = intencaoAtual.temAnimais,
-                    quaisAnimais = intencaoAtual.quaisAnimais,
-                    dataIA = intencaoAtual.dataIA,
-                    utilizadorFK = intencaoAtual.utilizadorFK,
-                    animalFK = intencaoAtual.animalFK
-                )
-
-                api.atualizarIntencao(intencaoId, intencaoAtualizada)
+                api.atualizarEstado(intencaoId, IntencaoDeAdocaoService.EstadoRequest(novoEstado))
 
                 withContext(Dispatchers.Main) {
                     Toast.makeText(
