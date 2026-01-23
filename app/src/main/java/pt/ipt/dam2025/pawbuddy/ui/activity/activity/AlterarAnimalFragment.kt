@@ -26,6 +26,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import pt.ipt.dam2025.pawbuddy.R
 import pt.ipt.dam2025.pawbuddy.retrofit.RetrofitInitializer
 import java.io.File
@@ -129,18 +130,6 @@ class AlterarAnimalFragment : Fragment() {
                             .into(binding.ivPreviewImagem)
                         binding.ivPreviewImagem.visibility = View.VISIBLE
 
-                        /* imagemExistenteUri = null  // NÃO há ficheiro local!
-                         Glide.with(requireContext())
-                             .load(RetrofitInitializer.fullImageUrl(it))
-                             .placeholder(R.drawable.placeholder)
-                             .error(R.drawable.placeholder)
-                             .into(binding.ivPreviewImagem)
-
-                         imagemExistenteUri = Uri.parse(it)
-                         binding.ivPreviewImagem.visibility = View.VISIBLE
-                         binding.ivPreviewImagem.setImageURI(imagemExistenteUri)
-                        binding.ivPreviewImagem.visibility = View.VISIBLE
-                         binding.ivPreviewImagem.setImageURI(Uri.parse(it))*/
                     }
                 }
             } catch (e: Exception) {
@@ -162,8 +151,6 @@ class AlterarAnimalFragment : Fragment() {
             return null
         }
     }
-
-
 
     private fun enviarAlteracoes() {
 
@@ -197,46 +184,18 @@ class AlterarAnimalFragment : Fragment() {
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
-               /* val imagePart: MultipartBody.Part? = when {
-                    imagemUri != null -> {
-                        val file = File(imagemUri!!.path!!)
-                        val requestFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
-                        MultipartBody.Part.createFormData("imagem", file.name, requestFile)
-                    }
-                    imagemExistenteUri != null -> {
-                        val file = File(imagemExistenteUri!!.path!!)
-                        val requestFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
-                        MultipartBody.Part.createFormData("imagem", file.name, requestFile)
-                    }
-                    else -> null
-                }*/
-                // Só envia imagem se houver uma nova selecionada
-
-
-                /*val imagePart: MultipartBody.Part? = imagemUri?.let {
-                    val file = File(it.path!!)
-                    val requestFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
-                    MultipartBody.Part.createFormData("imagem", file.name, requestFile)
-                }*/
-                /*val imagePart: MultipartBody.Part? = imagemUri?.let { uri ->
-                    uriToFile(uri)?.let { file ->
-                        val requestFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
-                        MultipartBody.Part.createFormData("imagem", file.name, requestFile)
-                    }
-                }*/
 
                 val response = retrofit.animalService().atualizarAnimal(
                     id = animalId,
-                    idPart = RequestBody.create("text/plain".toMediaTypeOrNull(), animalId.toString()), // enviar id também no form para satisfazer o backend
-                    nome = RequestBody.create("text/plain".toMediaTypeOrNull(), nome),
-                    raca = RequestBody.create("text/plain".toMediaTypeOrNull(), raca),
-                    idade = RequestBody.create("text/plain".toMediaTypeOrNull(), idade),
-                    genero = RequestBody.create("text/plain".toMediaTypeOrNull(), genero),
-                    especie = RequestBody.create("text/plain".toMediaTypeOrNull(), especie),
-                    cor = RequestBody.create("text/plain".toMediaTypeOrNull(), cor),
+                    idPart = animalId.toString().toRequestBody("text/plain".toMediaTypeOrNull()),
+                    nome = nome.toRequestBody("text/plain".toMediaTypeOrNull()),
+                    raca = raca.toRequestBody("text/plain".toMediaTypeOrNull()),
+                    idade = idade.toRequestBody("text/plain".toMediaTypeOrNull()),
+                    genero = genero.toRequestBody("text/plain".toMediaTypeOrNull()),
+                    especie = especie.toRequestBody("text/plain".toMediaTypeOrNull()),
+                    cor = cor.toRequestBody("text/plain".toMediaTypeOrNull()),
                     imagem = imagePart
                 )
-
 
 
                 withContext(Dispatchers.Main) {

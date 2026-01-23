@@ -22,6 +22,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import pt.ipt.dam2025.pawbuddy.R
 import pt.ipt.dam2025.pawbuddy.databinding.FragmentAdicionarAnimalBinding
 import pt.ipt.dam2025.pawbuddy.retrofit.RetrofitInitializer
@@ -121,11 +122,14 @@ class AdicionarAnimalFragment : Fragment() {
         val cleaned = input.trim().replace("\\s+".toRegex(), " ")
         if (cleaned.isBlank()) return ""
 
-        val lower = cleaned.lowercase(Locale("pt", "PT"))
+        val pt = Locale.forLanguageTag("pt-PT")
+
+        val lower = cleaned.lowercase(pt)
         return lower.replaceFirstChar { ch ->
-            if (ch.isLowerCase()) ch.titlecase(Locale("pt", "PT")) else ch.toString()
+            if (ch.isLowerCase()) ch.titlecase(pt) else ch.toString()
         }
     }
+
 
 
     private fun enviarAnimal() {
@@ -232,7 +236,8 @@ class AdicionarAnimalFragment : Fragment() {
     }
 
     private fun String.toRequestBody(): RequestBody =
-        RequestBody.create("text/plain".toMediaTypeOrNull(), this)
+        this.toRequestBody("text/plain".toMediaTypeOrNull())
+
 
     // -----------------------------
     //   PERMISSÕES
