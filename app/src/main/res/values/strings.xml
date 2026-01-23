@@ -191,4 +191,23 @@
     <string name="search_users_hint">Pesquisar por nome, email, NIF</string>
     <string name="empty_users">Sem utilizadores para mostrar</string>
 
+    <string-array name="species_values">
+        <item>Cão</item>
+        <item>Gato</item>
+        <item>Pássaro</item>
+        <item>Coelho</item>
+    </string-array>
+
+    <string-array name="gender_values">
+        <item>Fêmea</item>
+        <item>Macho</item>
+    </string-array>
+
+    <string-array name="age_values">
+        <item>Bebé</item>
+        <item>Junior</item>
+        <item>Adulto</item>
+        <item>Idoso</item>
+    </string-array>
+
 </resources>

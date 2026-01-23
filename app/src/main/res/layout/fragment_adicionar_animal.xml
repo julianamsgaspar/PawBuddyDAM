@@ -1,98 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     tools:context=".ui.activity.activity.AdicionarAnimalFragment">
 
     <LinearLayout
-        android:orientation="vertical"
-        android:padding="20dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
 
         <!-- PREVIEW DA IMAGEM -->
-        <ImageView
-            android:id="@+id/ivPreviewImagem"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_gravity="center"
-            android:scaleType="centerCrop"
-            android:background="#DDDDDD"
-            android:visibility="gone"
-            android:contentDescription="@string/image_preview" />
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardUseCompatPadding="true"
+            app:cardCornerRadius="14dp"
+            app:cardElevation="2dp">
 
+            <ImageView
+                android:id="@+id/ivPreviewImagem"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:scaleType="centerCrop"
+                android:background="#DDDDDD"
+                android:visibility="gone"
+                android:contentDescription="@string/image_preview" />
+        </com.google.android.material.card.MaterialCardView>
 
         <!-- BOTÕES DE IMAGEM -->
         <LinearLayout
-            android:orientation="horizontal"
-            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
             android:layout_marginTop="12dp">
 
             <Button
                 android:id="@+id/btnGaleria"
-                android:text="@string/choose_gallery"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="@string/choose_gallery" />
 
             <Button
                 android:id="@+id/btnTirarFoto"
-                android:text="@string/take_photo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp" />
-
+                android:layout_marginStart="12dp"
+                android:text="@string/take_photo" />
         </LinearLayout>
 
-        <!-- CAMPOS DO FORMULÁRIO -->
-        <EditText
-            android:id="@+id/etNome"
-            android:hint="@string/field_name"
+        <!-- NOME -->
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp" />
+            android:layout_marginTop="16dp"
+            android:hint="@string/field_name">
 
-        <EditText
-            android:id="@+id/etRaca"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etNome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- RAÇA -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:hint="@string/field_breed"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_marginTop="10dp">
 
-        <EditText
-            android:id="@+id/etIdade"
-            android:hint="@string/field_age"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etRaca"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:id="@+id/etGenero"
-            android:hint="@string/field_gender"
+        <!-- COR -->
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <EditText
-            android:id="@+id/etEspecie"
-            android:hint="@string/field_species"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <EditText
-            android:id="@+id/etCor"
+            android:layout_height="wrap_content"
             android:hint="@string/field_color"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_marginTop="10dp">
 
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etCor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- IDADE (Spinner) -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="@string/field_age">
+
+            <Spinner
+                android:id="@+id/spIdade"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- GÉNERO (Spinner) -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="@string/field_gender">
+
+            <Spinner
+                android:id="@+id/spGenero"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- ESPÉCIE (Spinner) -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="@string/field_species">
+
+            <Spinner
+                android:id="@+id/spEspecie"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!-- BOTÃO DE ADICIONAR -->
         <Button
             android:id="@+id/btnAdicionar"
-            android:text="@string/action_add_animal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="22dp" />
-
+            android:layout_marginTop="22dp"
+            android:text="@string/action_add_animal" />
 
     </LinearLayout>
-</FrameLayout>
+</ScrollView>

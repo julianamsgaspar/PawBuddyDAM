@@ -14,8 +14,18 @@ class AdocaoAdapter(
     private val onEliminarClick: (Adotam) -> Unit
 ) : RecyclerView.Adapter<AdocaoAdapter.AdocaoViewHolder>() {
 
+    init {
+        // ✅ IDs estáveis: vamos usar animalFK como identificador único da adoção
+        setHasStableIds(true)
+    }
+
     inner class AdocaoViewHolder(val binding: ItemAdocaoBinding) :
         RecyclerView.ViewHolder(binding.root)
+
+    override fun getItemId(position: Int): Long {
+        // ✅ chave única (enquanto o backend devolve id=0)
+        return lista[position].animalFK.toLong()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdocaoViewHolder {
         val binding = ItemAdocaoBinding.inflate(
@@ -38,6 +48,7 @@ class AdocaoAdapter(
         val especie = adocao.animal?.especie?.trim().orEmpty()
         val raca = adocao.animal?.raca?.trim().orEmpty()
         val info = listOf(especie, raca).filter { it.isNotBlank() }
+
         holder.binding.tvAnimalInfo.text =
             if (info.isEmpty()) dash else info.joinToString(ctx.getString(R.string.separator_dot))
 
@@ -48,14 +59,16 @@ class AdocaoAdapter(
         holder.binding.tvData.text = ctx.getString(R.string.label_date, dataFmt)
 
         holder.binding.btnEliminar.setOnClickListener {
+            // ✅ o fragment é que deve eliminar pelo animalFK
             onEliminarClick(adocao)
         }
     }
 
-
     override fun getItemCount(): Int = lista.size
 
-    private fun formatarData(data: String): String {
+    private fun formatarData(data: String?): String {
+        if (data.isNullOrBlank()) return ""
+
         val formats = listOf(
             "yyyy-MM-dd'T'HH:mm:ss",
             "yyyy-MM-dd'T'HH:mm:ss.SSS",
@@ -74,5 +87,4 @@ class AdocaoAdapter(
         }
         return data
     }
-
 }

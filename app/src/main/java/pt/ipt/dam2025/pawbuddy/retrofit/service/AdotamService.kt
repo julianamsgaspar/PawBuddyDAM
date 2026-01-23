@@ -6,16 +6,11 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface AdotamService {
-    /// <summary>
-    /// Lista todas as adoções definitivas
-    /// </summary>
-    @GET("api/adotam")
-    suspend fun GetAdocoes(): List<Adotam>
 
-    /// <summary>
-    /// Deletar uma adoção pelo ID
-    /// </summary>
-    @DELETE("api/adotam/{id}")
-    suspend fun deleteAdocao(@Path("id") id: Int)
+    @GET("api/Adotam")
+    suspend fun getAdocoes(): List<Adotam>
 
+    @DELETE("api/Adotam/{animalId}")
+    suspend fun deleteAdocao(@Path("animalId") animalId: Int)
 }
+

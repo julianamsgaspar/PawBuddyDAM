@@ -21,9 +21,7 @@ class DetalhesUtilizadorFragment : Fragment() {
 
     private var _binding: FragmentDetalhesUtilizadorBinding? = null
     private val binding get() = _binding!!
-
     private val api = RetrofitInitializer().utilizadorService()
-
     private var userId: Int = -1
     private var fromList: Boolean = false
 
@@ -61,7 +59,6 @@ class DetalhesUtilizadorFragment : Fragment() {
         if (fromList) {
             binding.btnEliminar.visibility = View.VISIBLE
 
-
             binding.btnEliminar.setOnClickListener {
                 AlertDialog.Builder(requireContext())
                     .setTitle(getString(R.string.dialog_confirm_title))
@@ -74,9 +71,7 @@ class DetalhesUtilizadorFragment : Fragment() {
             }
         } else {
             binding.btnEliminar.visibility = View.GONE
-
                     }
-
         // Carregar dados do utilizador
         lifecycleScope.launch(Dispatchers.IO) {
             try {

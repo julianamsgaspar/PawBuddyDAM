@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -26,6 +25,12 @@ class ListarAdocoesFinaisFragment : Fragment() {
 
     private val api = RetrofitInitializer().adotamService()
 
+    // ✅ Mantém a lista em memória
+    private var listaAtual: List<Adotam> = emptyList()
+
+    // ✅ Mantém o adapter 1 vez
+    private lateinit var adapter: AdocaoAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -40,19 +45,28 @@ class ListarAdocoesFinaisFragment : Fragment() {
 
         binding.rvAdocoes.layoutManager = LinearLayoutManager(requireContext())
 
-        carregarAdocoes()
+        // ✅ Adapter criado uma vez
+        adapter = AdocaoAdapter(listaAtual) { adocao ->
+            confirmarEliminar(adocao)
+        }
+        binding.rvAdocoes.adapter = adapter
 
-           }
+        carregarAdocoes()
+    }
 
     private fun carregarAdocoes() {
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             try {
-                val lista = api.GetAdocoes()
+                val lista = api.getAdocoes()
+                    // opcional: garante que não tens duplicados pelo animalFK
+                    .distinctBy { it.animalFK }
 
                 withContext(Dispatchers.Main) {
-                    binding.rvAdocoes.adapter = AdocaoAdapter(lista) { adocao ->
-                        confirmarEliminar(adocao)
-                    }
+                    listaAtual = lista
+
+                    // ✅ como o adapter recebe lista no construtor, recriamos o adapter de forma controlada
+                    adapter = AdocaoAdapter(listaAtual) { adocao -> confirmarEliminar(adocao) }
+                    binding.rvAdocoes.adapter = adapter
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
@@ -71,21 +85,22 @@ class ListarAdocoesFinaisFragment : Fragment() {
 
     private fun confirmarEliminar(adocao: Adotam) {
         val nomeAnimal = adocao.animal?.nome ?: "?"
+        val animalId = adocao.animalFK // ✅ identificador real
 
         AlertDialog.Builder(requireContext())
             .setTitle(getString(R.string.dialog_confirm_title))
             .setMessage(getString(R.string.dialog_delete_adoption_message, nomeAnimal))
             .setPositiveButton(getString(R.string.dialog_delete)) { _, _ ->
-                eliminarAdocao(adocao.id)
+                eliminarAdocao(animalId)
             }
             .setNegativeButton(getString(R.string.dialog_cancel), null)
             .show()
     }
 
-    private fun eliminarAdocao(id: Int) {
+    private fun eliminarAdocao(animalId: Int) {
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             try {
-                api.deleteAdocao(id)
+                api.deleteAdocao(animalId)
 
                 withContext(Dispatchers.Main) {
                     Toast.makeText(
@@ -93,6 +108,8 @@ class ListarAdocoesFinaisFragment : Fragment() {
                         getString(R.string.success_adoption_deleted),
                         Toast.LENGTH_SHORT
                     ).show()
+
+                    // ✅ refresh
                     carregarAdocoes()
                 }
             } catch (e: Exception) {
