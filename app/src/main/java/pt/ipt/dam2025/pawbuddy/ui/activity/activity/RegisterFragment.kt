@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -37,6 +38,20 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Se já está autenticado, não faz sentido ficar no registo
+        if (session.isLogged()) {
+            val target = if (session.isAdmin()) R.id.gestaoFragment else R.id.homeFragment
+            findNavController().navigate(
+                target,
+                null,
+                navOptions {
+                    popUpTo(R.id.registerFragment) { inclusive = true }
+                    launchSingleTop = true
+                }
+            )
+            return
+        }
 
         binding.btnRegister.setOnClickListener {
             clearErrors()
@@ -79,7 +94,6 @@ class RegisterFragment : Fragment() {
 
             viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
                 try {
-                    // 1) REGISTAR
                     api.register(request)
 
                     withContext(Dispatchers.Main) {
@@ -90,18 +104,28 @@ class RegisterFragment : Fragment() {
                         ).show()
                     }
 
-                    // 2) LOGIN AUTOMÁTICO (sem estragar o sucesso se falhar)
+                    // Login automático
                     try {
-                        val loginResp: LoginResponse = api.login(LoginRequest(Email = email, Password = password))
+                        val loginResp: LoginResponse =
+                            api.login(LoginRequest(Email = email, Password = password))
 
                         withContext(Dispatchers.Main) {
                             session.saveLogin(loginResp.id, loginResp.isAdmin)
                             val target = if (loginResp.isAdmin) R.id.gestaoFragment else R.id.homeFragment
-                            findNavController().navigate(target)
+
+                            // ✅ remove Register da backstack
+                            findNavController().navigate(
+                                target,
+                                null,
+                                navOptions {
+                                    popUpTo(R.id.registerFragment) { inclusive = true }
+                                    launchSingleTop = true
+                                }
+                            )
                         }
+
                     } catch (_: Exception) {
                         withContext(Dispatchers.Main) {
-                            // fallback: manda para login, já com email preenchido
                             Toast.makeText(
                                 requireContext(),
                                 getString(R.string.info_login_after_register),
@@ -109,7 +133,16 @@ class RegisterFragment : Fragment() {
                             ).show()
 
                             val b = Bundle().apply { putString("prefillEmail", email) }
-                            findNavController().navigate(R.id.loginFragment, b)
+
+                            // ✅ remove Register da backstack
+                            findNavController().navigate(
+                                R.id.loginFragment,
+                                b,
+                                navOptions {
+                                    popUpTo(R.id.registerFragment) { inclusive = true }
+                                    launchSingleTop = true
+                                }
+                            )
                         }
                     }
 
@@ -118,19 +151,12 @@ class RegisterFragment : Fragment() {
                         when (e.code()) {
                             409 -> {
                                 binding.tilEmail.error = getString(R.string.error_email_already_exists)
-                                Toast.makeText(
-                                    requireContext(),
-                                    getString(R.string.error_email_already_exists),
-                                    Toast.LENGTH_LONG
-                                ).show()
+                                Toast.makeText(requireContext(), getString(R.string.error_email_already_exists), Toast.LENGTH_LONG).show()
                             }
                             else -> {
                                 Toast.makeText(
                                     requireContext(),
-                                    getString(
-                                        R.string.register_error,
-                                        e.message ?: getString(R.string.error_generic)
-                                    ),
+                                    getString(R.string.register_error, e.message ?: getString(R.string.error_generic)),
                                     Toast.LENGTH_LONG
                                 ).show()
                             }
@@ -140,10 +166,7 @@ class RegisterFragment : Fragment() {
                     withContext(Dispatchers.Main) {
                         Toast.makeText(
                             requireContext(),
-                            getString(
-                                R.string.register_error,
-                                e.message ?: getString(R.string.error_generic)
-                            ),
+                            getString(R.string.register_error, e.message ?: getString(R.string.error_generic)),
                             Toast.LENGTH_LONG
                         ).show()
                     }

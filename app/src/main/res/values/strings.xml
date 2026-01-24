@@ -70,6 +70,8 @@
     <string name="success_intent_status_updated">Estado atualizado com sucesso.</string>
     <string name="error_update_intent_status">Erro ao atualizar estado: %1$s</string>
 
+    <string name="intents_filter_active">Em curso</string>
+    <string name="intents_filter_finished">Finalizadas</string>
 
     <string name="dialog_confirm_title">Confirmação</string>
     <string name="dialog_confirm_delete_user">Deseja realmente eliminar este utilizador?</string>
@@ -89,8 +91,9 @@
     <string name="admin_back_home">Voltar a Home</string>
 
     <!-- Home -->
-    <string name="action_login">Login</string>
-    <string name="action_logout">Logout</string>
+    <string name="action_login">Entrar</string>
+    <string name="action_logout">Sair</string>
+
     <string name="action_register">Registar</string>
     <string name="action_view_animals">Ver Animais</string>
     <string name="action_admin">Gestão</string>
@@ -188,7 +191,7 @@
     <string name="empty_animals_desc">Atualiza a lista ou tenta novamente mais tarde.</string>
     <string name="animal_photo_desc">Foto do animal\n\n</string>
     <string name="action_delete">Apagar\n</string>
-    <string name="search_users_hint">Pesquisar por nome, email, NIF</string>
+    <string name="search_users_hint">Pesquisar por ID, NIF, nome e email </string>
     <string name="empty_users">Sem utilizadores para mostrar</string>
 
     <string-array name="species_values">
@@ -238,13 +241,10 @@
     <string name="home_chip_fast">Rápido</string>
     <string name="home_chip_safe">Seguro</string>
     <string name="home_chip_simple">Simples</string>
-
     <string name="home_cta_register_title">Criar conta</string>
     <string name="home_cta_register_desc">Regista-te para gerir as tuas intenções e acompanhar o processo.</string>
-
     <string name="home_cta_login_title">Iniciar sessão</string>
     <string name="home_cta_login_desc">Entra para veres o teu perfil e acompanhar as tuas intenções.</string>
-
     <string name="home_cta_profile_title">O meu perfil</string>
     <string name="home_cta_profile_desc">Consulta os teus dados e acompanha as tuas intenções de adoção.</string>
 
@@ -254,7 +254,6 @@
     <string name="home_how_step3">3) O processo é validado e acompanhado até à conclusão.</string>
 
     <string name="accessibility_go">Abrir</string>
-
     <string name="register_subtitle">Preenche os teus dados para começar o processo de adoção.</string>
     <string name="hint_full_name">Nome completo</string>
     <string name="hint_birthdate">Data de Nascimento (YYYY-MM-DD)</string>
@@ -263,12 +262,10 @@
     <string name="hint_address">Morada</string>
     <string name="hint_postal_code">Código Postal (0000-000)</string>
     <string name="hint_country">País</string>
-
     <string name="loading">Aguarda…</string>
     <string name="error_email_required">Email é obrigatório.</string>
     <string name="error_password_required">Password é obrigatória.</string>
     <string name="error_login_invalid">Credenciais inválidas.</string>
-
     <string name="error_required_field">Campo obrigatório.</string>
     <string name="error_email_already_exists">Já existe uma conta com este email.</string>
     <string name="info_login_after_register">Conta criada. Faz login para continuar.</string>
@@ -288,16 +285,21 @@
     <string name="intencao_detail_subtitle">Aqui vês o estado e os dados submetidos.</string>
     <string name="intencao_detail_section_form">Dados submetidos</string>
     <string name="field_status">Estado</string>
-
     <string name="title_intencao_detail">Detalhe da Intenção</string>
-
-
     <string name="banner_intent_submitted">Intenção submetida com sucesso. Podes ver o resumo e o estado em “Minhas Intenções”.</string>
-
-
     <string name="error_intent_not_found">Não foi possível carregar a intenção.</string>
-
     <string name="banner_intencao_success">Intenção submetida com sucesso. Vê o estado em "Minhas Intenções".</string>
+    <string name="ver_mais">Ver mais</string>
+    <string name="label_estado">Estado</string>
+    <string name="label_data">Data</string>
+    <string name="label_utilizador">Utilizador</string>
+    <string name="label_animal">Animal</string>
+    <string name="label_profissao">Profissão</string>
+    <string name="label_residencia">Residência</string>
+    <string name="label_quais">Quais</string>
+    <string name="label_motivo">Motivo</string>
+    <string name="label_utilizador_id">ID do utilizador</string>
+    <string name="error_intent_already_exists">Já tens uma intenção submetida para este animal.</string>
 
 
 </resources>

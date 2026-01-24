@@ -28,10 +28,11 @@ class HomeFragment : Fragment() {
 
         val prefs = requireContext().getSharedPreferences("PawBuddyPrefs", Context.MODE_PRIVATE)
         val isLogged = prefs.getBoolean("isLogged", false)
+        val isAdmin = prefs.getBoolean("isAdmin", false)
 
         // Explorar (sempre)
-        binding.cardExplore.setOnClickListener {
-            animateCard(it) {
+        binding.cardExplore.setOnClickListener { v ->
+            animateCard(v) {
                 findNavController().navigate(R.id.listaAnimaisFragment)
             }
         }
@@ -56,17 +57,27 @@ class HomeFragment : Fragment() {
             }
         }
 
+        // Minhas Intenções (apenas user logado NÃO-admin)
+        // Nota: garante que existe no XML: cardMyIntents (visibility="gone")
+        binding.cardMyIntents.visibility = if (isLogged && !isAdmin) View.VISIBLE else View.GONE
+        binding.cardMyIntents.setOnClickListener { v ->
+            animateCard(v) {
+                // Ajusta este destino ao ID real do teu nav_graph
+                // Ex.: R.id.minhasIntencoesFragment ou R.id.listaIntencoesFragment (modo user)
+                findNavController().navigate(R.id.listaIntencoesFragment)
+            }
+        }
+
         // Registo (só não logado)
         binding.cardRegister.visibility = if (isLogged) View.GONE else View.VISIBLE
-        binding.cardRegister.setOnClickListener {
-            animateCard(it) {
+        binding.cardRegister.setOnClickListener { v ->
+            animateCard(v) {
                 findNavController().navigate(R.id.registerFragment)
             }
         }
     }
 
     private fun animateCard(view: View, onEnd: () -> Unit) {
-        // Pequena compressão + retorno, depois navega
         view.animate()
             .scaleX(0.98f)
             .scaleY(0.98f)

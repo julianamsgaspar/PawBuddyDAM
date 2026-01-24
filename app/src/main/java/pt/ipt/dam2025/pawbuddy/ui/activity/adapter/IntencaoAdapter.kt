@@ -29,6 +29,16 @@ class IntencaoAdapter(
 
             txtDataIA.text = "Data: ${item.dataIA ?: "-"}"
 
+// Mostrar utilizador só para Admin (e só se existir no payload)
+            val nomeUtilizador =
+                item.utilizador?.nome
+                    ?: item.utilizador?.id
+                    ?: item.utilizador?.email
+                    ?: "Desconhecido"
+
+
+            txtUtilizador.visibility = if (isAdmin) View.VISIBLE else View.GONE
+            txtUtilizador.text = "Utilizador: $nomeUtilizador"
 
             // Ações só Admin
             rowAcoesAdmin.visibility = if (isAdmin) View.VISIBLE else View.GONE

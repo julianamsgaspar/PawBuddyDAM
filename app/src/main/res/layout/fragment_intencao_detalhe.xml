@@ -24,7 +24,8 @@
                 android:orientation="vertical"
                 android:padding="14dp">
 
-                <TextView
+                <!-- Título -->
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/txtTitulo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -32,70 +33,183 @@
                     android:textStyle="bold"
                     android:textSize="18sp" />
 
-                <TextView
-                    android:id="@+id/txtEstado"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="Estado: -"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/txtData"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:text="Data: -" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="12dp" />
-
-                <TextView
-                    android:id="@+id/txtAnimal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Animal: -"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/txtProfissao"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="Profissão: -" />
-
-                <TextView
-                    android:id="@+id/txtResidencia"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:text="Residência: -" />
-
-                <TextView
-                    android:id="@+id/txtTemAnimais"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:text="Tem animais: -" />
-
-                <TextView
-                    android:id="@+id/txtQuaisAnimais"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:text="Quais: -" />
-
-                <TextView
-                    android:id="@+id/txtMotivo"
+                <!-- Estado -->
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/lblEstado"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:text="Motivo: -" />
+                    android:text="@string/label_estado"
+                    android:textStyle="bold"
+                    android:alpha="0.75" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txtEstado"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="-" />
+
+                <!-- Data -->
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/lblData"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/label_data"
+                    android:textStyle="bold"
+                    android:alpha="0.75" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txtData"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="-" />
+
+                <!-- Utilizador (Admin) -->
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/lblUtilizador"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/label_utilizador"
+                    android:textStyle="bold"
+                    android:alpha="0.75" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txtUtilizador"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="-" />
+                <!-- ID do Utilizador (Admin) -->
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/lblUtilizadorId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/label_utilizador_id"
+                    android:textStyle="bold"
+                    android:alpha="0.75" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txtUtilizadorId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="-" />
+
+                <!-- Separador -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="14dp" />
+
+                <!-- Animal -->
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/lblAnimal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_animal"
+                    android:textStyle="bold"
+                    android:alpha="0.75" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txtAnimal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="-" />
+
+                <!-- Profissão -->
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/lblProfissao"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/label_profissao"
+                    android:textStyle="bold"
+                    android:alpha="0.75" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txtProfissao"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="-" />
+
+                <!-- Residência -->
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/lblResidencia"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/label_residencia"
+                    android:textStyle="bold"
+                    android:alpha="0.75" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txtResidencia"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="-" />
+
+                <!-- Tem animais -->
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/lblTemAnimais"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/label_tem_animais"
+                    android:textStyle="bold"
+                    android:alpha="0.75" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txtTemAnimais"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="-" />
+
+                <!-- Quais -->
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/lblQuais"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/label_quais"
+                    android:textStyle="bold"
+                    android:alpha="0.75" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txtQuaisAnimais"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="-" />
+
+                <!-- Motivo -->
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/lblMotivo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/label_motivo"
+                    android:textStyle="bold"
+                    android:alpha="0.75" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/txtMotivo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:lineSpacingExtra="2dp"
+                    android:minLines="2"
+                    android:text="-" />
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
-
 
     </LinearLayout>
 

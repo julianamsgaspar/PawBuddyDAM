@@ -14,10 +14,10 @@
         <ImageView
             android:id="@+id/ivAnimal"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="347dp"
+            android:contentDescription="@string/content_desc_animal_image"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_pet_placeholder"
-            android:contentDescription="@string/content_desc_animal_image" />
+            android:src="@drawable/ic_pet_placeholder" />
 
         <TextView
             android:id="@+id/txtNome"

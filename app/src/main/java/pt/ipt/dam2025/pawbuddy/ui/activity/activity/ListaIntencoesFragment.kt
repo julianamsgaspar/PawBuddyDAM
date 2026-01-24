@@ -26,8 +26,14 @@ class ListaIntencoesFragment : Fragment() {
     private var _binding: FragmentListaIntencoesBinding? = null
     private val binding get() = _binding!!
     private val session by lazy { SessionManager(requireContext()) }
-
     private val api = RetrofitProvider.intencaoService
+
+    // Cache local para permitir alternar filtros sem pedir ao servidor
+    private var allUserIntents: List<IntencaoDeAdocao> = emptyList()
+    private var showFinalizadas: Boolean = false
+
+    // Ajusta se o teu "Concluído" for outro número
+    private val ESTADO_CONCLUIDO = 3
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,25 +53,19 @@ class ListaIntencoesFragment : Fragment() {
         val isAdmin = prefs.getBoolean("isAdmin", false)
         val utilizadorId = prefs.getInt("utilizadorId", -1)
 
-        /*
-         * ✅ Regra do projeto:
-         * "Minhas Intenções" só faz sentido para utilizador autenticado.
-         * Se não estiver logado, enviamos para Login.
-         */
         if (!isLogged) {
-            Toast.makeText(
-                requireContext(),
-                getString(R.string.error_login_required),
-                Toast.LENGTH_SHORT
-            ).show()
+            Toast.makeText(requireContext(), getString(R.string.error_login_required), Toast.LENGTH_SHORT).show()
             findNavController().navigate(R.id.loginFragment)
             return
         }
+
+        // ✅ Filtro só para user normal (não-admin)
+        setupFiltroUserOnly(isAdmin)
+
         val showBanner = arguments?.getBoolean("showBanner", false) ?: false
         val intencaoId = arguments?.getInt("intencaoId", -1) ?: -1
 
         if (showBanner) {
-            // limpar para não repetir quando roda/reentra
             arguments?.putBoolean("showBanner", false)
 
             com.google.android.material.snackbar.Snackbar
@@ -79,22 +79,12 @@ class ListaIntencoesFragment : Fragment() {
                 .show()
         }
 
-        // Carregar intenções (Admin: ativas / User: as suas)
         carregarIntencoes(isAdmin, utilizadorId)
 
-        binding.btnVoltarHome.setOnClickListener {
-            if (isAdmin) {
-                findNavController().navigate(R.id.gestaoFragment)
-            } else {
-                findNavController().navigate(R.id.homeFragment)
-            }
-        }
     }
 
     override fun onResume() {
         super.onResume()
-
-        // ✅ Ao voltar (ex.: depois de editar estado), recarrega a lista
         val prefs = requireContext().getSharedPreferences("PawBuddyPrefs", Context.MODE_PRIVATE)
         carregarIntencoes(
             prefs.getBoolean("isAdmin", false),
@@ -102,12 +92,29 @@ class ListaIntencoesFragment : Fragment() {
         )
     }
 
+    private fun setupFiltroUserOnly(isAdmin: Boolean) {
+        if (isAdmin) {
+            binding.chipGroupFiltro.visibility = View.GONE
+            return
+        }
+
+        binding.chipGroupFiltro.visibility = View.VISIBLE
+
+        // default: "Em curso"
+        binding.chipEmCurso.isChecked = true
+        showFinalizadas = false
+
+        binding.chipGroupFiltro.setOnCheckedStateChangeListener { _, checkedIds ->
+            showFinalizadas = checkedIds.contains(R.id.chipFinalizadas)
+            aplicarFiltroEAtualizarUI(isAdmin = false)
+        }
+    }
+
     private fun carregarIntencoes(isAdmin: Boolean, utilizadorId: Int) {
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             try {
                 val lista: List<IntencaoDeAdocao> =
                     if (isAdmin) {
-                        // ✅ Admin: usar endpoint /ativas (Concluido já não vem)
                         api.getAtivas()
                     } else {
                         if (utilizadorId <= 0) emptyList()
@@ -115,24 +122,13 @@ class ListaIntencoesFragment : Fragment() {
                     }
 
                 withContext(Dispatchers.Main) {
-                    if (lista.isEmpty()) {
-                        binding.rvIntencoes.visibility = View.GONE
-                        binding.txtSemIntencoes.visibility = View.VISIBLE
+                    if (isAdmin) {
+                        // Admin: mostra como vem do endpoint
+                        mostrarLista(lista, isAdmin = true)
                     } else {
-                        binding.txtSemIntencoes.visibility = View.GONE
-                        binding.rvIntencoes.visibility = View.VISIBLE
-                        binding.rvIntencoes.adapter = IntencaoAdapter(
-                            lista = lista,
-                            isAdmin = isAdmin,
-                            onClick = { intencao ->
-                                val b = Bundle().apply { putInt("id", intencao.id) }
-                                findNavController().navigate(R.id.intencaoDetalheFragment, b)
-                            },
-                            onEliminar = { intencao -> eliminarIntencao(intencao.id) },
-                            onEditarEstado = { intencao -> abrirEditarEstado(intencao.id, intencao.estado) }
-                        )
-
-
+                        // User: guardar cache e aplicar filtro atual
+                        allUserIntents = lista
+                        aplicarFiltroEAtualizarUI(isAdmin = false)
                     }
                 }
 
@@ -140,11 +136,7 @@ class ListaIntencoesFragment : Fragment() {
                 withContext(Dispatchers.Main) {
                     if (e.code() == 401 || e.code() == 403) {
                         session.logout()
-                        Toast.makeText(
-                            requireContext(),
-                            "Sessão expirada. Faz login novamente.",
-                            Toast.LENGTH_LONG
-                        ).show()
+                        Toast.makeText(requireContext(), "Sessão expirada. Faz login novamente.", Toast.LENGTH_LONG).show()
 
                         val b = Bundle().apply {
                             putBoolean("returnToPrevious", true)
@@ -155,27 +147,50 @@ class ListaIntencoesFragment : Fragment() {
                     } else {
                         Toast.makeText(
                             requireContext(),
-                            getString(
-                                R.string.error_load_intents,
-                                e.message ?: getString(R.string.error_generic)
-                            ),
+                            getString(R.string.error_load_intents, e.message ?: getString(R.string.error_generic)),
                             Toast.LENGTH_LONG
                         ).show()
                     }
                 }
-
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(
                         requireContext(),
-                        getString(
-                            R.string.error_load_intents,
-                            e.message ?: getString(R.string.error_generic)
-                        ),
+                        getString(R.string.error_load_intents, e.message ?: getString(R.string.error_generic)),
                         Toast.LENGTH_LONG
                     ).show()
                 }
             }
+        }
+    }
+
+    private fun aplicarFiltroEAtualizarUI(isAdmin: Boolean) {
+        val filtrada = if (showFinalizadas) {
+            allUserIntents.filter { it.estado == ESTADO_CONCLUIDO }
+        } else {
+            allUserIntents.filter { it.estado != ESTADO_CONCLUIDO }
+        }
+        mostrarLista(filtrada, isAdmin)
+    }
+
+    private fun mostrarLista(lista: List<IntencaoDeAdocao>, isAdmin: Boolean) {
+        if (lista.isEmpty()) {
+            binding.rvIntencoes.visibility = View.GONE
+            binding.txtSemIntencoes.visibility = View.VISIBLE
+        } else {
+            binding.txtSemIntencoes.visibility = View.GONE
+            binding.rvIntencoes.visibility = View.VISIBLE
+
+            binding.rvIntencoes.adapter = IntencaoAdapter(
+                lista = lista,
+                isAdmin = isAdmin,
+                onClick = { intencao ->
+                    val b = Bundle().apply { putInt("id", intencao.id) }
+                    findNavController().navigate(R.id.intencaoDetalheFragment, b)
+                },
+                onEliminar = { intencao -> eliminarIntencao(intencao.id) },
+                onEditarEstado = { intencao -> abrirEditarEstado(intencao.id, intencao.estado) }
+            )
         }
     }
 
@@ -183,30 +198,20 @@ class ListaIntencoesFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             try {
                 api.deleteIntencao(id)
-
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(
-                        requireContext(),
-                        getString(R.string.success_intent_deleted),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(requireContext(), getString(R.string.success_intent_deleted), Toast.LENGTH_SHORT).show()
 
-                    // ✅ Recarregar lista após eliminar
                     val prefs = requireContext().getSharedPreferences("PawBuddyPrefs", Context.MODE_PRIVATE)
                     carregarIntencoes(
                         prefs.getBoolean("isAdmin", false),
                         prefs.getInt("utilizadorId", -1)
                     )
                 }
-
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(
                         requireContext(),
-                        getString(
-                            R.string.error_delete_intent,
-                            e.message ?: getString(R.string.error_generic)
-                        ),
+                        getString(R.string.error_delete_intent, e.message ?: getString(R.string.error_generic)),
                         Toast.LENGTH_LONG
                     ).show()
                 }
@@ -214,7 +219,6 @@ class ListaIntencoesFragment : Fragment() {
         }
     }
 
-    // ✅ estadoAtual agora é Int (enum vindo do backend normalmente é numérico)
     private fun abrirEditarEstado(id: Int, estadoAtual: Int) {
         val bundle = Bundle().apply {
             putInt("id", id)

@@ -19,7 +19,6 @@ import pt.ipt.dam2025.pawbuddy.databinding.FragmentAdotarBinding
 import pt.ipt.dam2025.pawbuddy.model.CriarIntencaoRequest
 import pt.ipt.dam2025.pawbuddy.session.SessionManager
 import retrofit2.HttpException
-import com.google.android.material.snackbar.Snackbar
 
 class AdotarFragment : Fragment() {
 
@@ -54,7 +53,11 @@ class AdotarFragment : Fragment() {
 
         // Proteção: precisa de login e animal válido
         if (!session.isLogged() || animalId <= 0) {
-            Toast.makeText(requireContext(), getString(R.string.error_login_required), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.error_login_required),
+                Toast.LENGTH_SHORT
+            ).show()
             navegarParaLoginReturnToAdotar()
             return
         }
@@ -71,9 +74,6 @@ class AdotarFragment : Fragment() {
         binding.etResidencia.filters = arrayOf(InputFilter.LengthFilter(MAX_50))
         binding.etQuaisAnimais.filters = arrayOf(InputFilter.LengthFilter(MAX_50))
         binding.etMotivo.filters = arrayOf(InputFilter.LengthFilter(MAX_MOTIVO))
-
-        // Se tiveres counters no XML, ótimo; se não tiveres, isto não faz mal mas não mostra nada.
-        // (counterEnabled/counterMaxLength é no TextInputLayout via XML)
     }
 
     private fun setupDropdownTemAnimais() {
@@ -115,10 +115,13 @@ class AdotarFragment : Fragment() {
     private fun enviarIntencao() {
         clearErrors()
 
-
         val utilizadorId = session.userId()
         if (!session.isLogged() || utilizadorId <= 0) {
-            Toast.makeText(requireContext(), getString(R.string.error_login_required), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.error_login_required),
+                Toast.LENGTH_SHORT
+            ).show()
             navegarParaLoginReturnToAdotar()
             return
         }
@@ -137,7 +140,7 @@ class AdotarFragment : Fragment() {
             ""
         }
 
-        // ---------- Validação (alinhada com DataAnnotations no backend) ----------
+        // ---------- Validação ----------
         var ok = true
 
         if (profissao.isBlank()) {
@@ -181,13 +184,16 @@ class AdotarFragment : Fragment() {
         }
 
         if (!ok) {
-            Toast.makeText(requireContext(), getString(R.string.error_fix_form_fields), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.error_fix_form_fields),
+                Toast.LENGTH_SHORT
+            ).show()
             return
         }
 
         setLoading(true)
 
-        // ✅ Enviar DTO do request (SEM id/estado/dataIA/utilizadorFK)
         val body = CriarIntencaoRequest(
             animalFK = animalId,
             profissao = profissao,
@@ -199,44 +205,73 @@ class AdotarFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             try {
+                // ✅ Criar intenção (backend deve devolver 409 se já existir)
                 api.criar(body)
 
                 withContext(Dispatchers.Main) {
+                    // ✅ Vai para "Minhas Intenções" e remove o formulário da backstack
+                    // para o botão físico "Voltar" não regressar ao formulário.
+                    val b = Bundle().apply {
+                        putBoolean("showBanner", true)
+                        // putInt("intencaoId", idCriado) // opcional, se o endpoint devolver id
+                    }
 
-                    // Banner / Snackbar (estilo "banner" Material)
-                    Snackbar.make(
-                        binding.root,
-                        getString(R.string.success_intent_created_banner),
-                        Snackbar.LENGTH_LONG
-                    ).setAction(getString(R.string.action_view_status)) {
-                        findNavController().navigate(
-                            R.id.listaIntencoesFragment,
-                            null,
-                            navOptions { launchSingleTop = true }
-                        )
-                    }.show()
-
-                    // Navega automaticamente para a lista das intenções
                     findNavController().navigate(
                         R.id.listaIntencoesFragment,
-                        null,
-                        navOptions { launchSingleTop = true }
+                        b,
+                        navOptions {
+                            // ✅ Back deve ir, no máximo, para a lista de animais
+                            popUpTo(R.id.listaAnimaisFragment) { inclusive = false }
+                            launchSingleTop = true
+                        }
                     )
                 }
 
-
             } catch (e: HttpException) {
+                val backendMsg = try { e.response()?.errorBody()?.string() } catch (_: Exception) { null }
+                val msg = backendMsg?.takeIf { it.isNotBlank() }
+
                 withContext(Dispatchers.Main) {
-                    if (e.code() == 401 || e.code() == 403) {
-                        session.logout()
-                        Toast.makeText(requireContext(), getString(R.string.error_login_required), Toast.LENGTH_SHORT).show()
-                        navegarParaLoginReturnToAdotar()
-                    } else {
-                        Toast.makeText(
-                            requireContext(),
-                            getString(R.string.error_submit_intent, e.message ?: getString(R.string.error_generic)),
-                            Toast.LENGTH_LONG
-                        ).show()
+                    when (e.code()) {
+                        401, 403 -> {
+                            session.logout()
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.error_login_required),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            navegarParaLoginReturnToAdotar()
+                        }
+
+                        409 -> {
+                            // ✅ Já existe intenção para este animal (1 intenção por utilizador/animal)
+                            Toast.makeText(
+                                requireContext(),
+                                msg ?: getString(R.string.error_intent_already_exists),
+                                Toast.LENGTH_LONG
+                            ).show()
+
+                            // Opcional: encaminhar o user para ver o estado
+                            findNavController().navigate(
+                                R.id.listaIntencoesFragment,
+                                null,
+                                navOptions {
+                                    popUpTo(R.id.listaAnimaisFragment) { inclusive = false }
+                                    launchSingleTop = true
+                                }
+                            )
+                        }
+
+                        else -> {
+                            Toast.makeText(
+                                requireContext(),
+                                getString(
+                                    R.string.error_submit_intent,
+                                    msg ?: e.message() ?: getString(R.string.error_generic)
+                                ),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
                     }
                 }
 
@@ -244,7 +279,10 @@ class AdotarFragment : Fragment() {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(
                         requireContext(),
-                        getString(R.string.error_submit_intent, e.message ?: getString(R.string.error_generic)),
+                        getString(
+                            R.string.error_submit_intent,
+                            e.message ?: getString(R.string.error_generic)
+                        ),
                         Toast.LENGTH_LONG
                     ).show()
                 }
@@ -290,7 +328,6 @@ class AdotarFragment : Fragment() {
         binding.btnSubmeter.text =
             if (loading) getString(R.string.loading) else getString(R.string.action_submit_intent)
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

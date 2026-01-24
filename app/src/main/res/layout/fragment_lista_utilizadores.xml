@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Layout: Admin - Lista de Utilizadores
+    Objetivo:
+    - Título do ecrã
+    - Campo de pesquisa local (filtro no fragment)
+    - Lista (RecyclerView) com SwipeRefresh
+    - Estados de UI: loading (progress), empty state, erro
+-->
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -6,11 +14,13 @@
     android:fillViewport="true"
     android:padding="16dp">
 
+    <!-- Container principal vertical -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <!-- Título do ecrã -->
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="match_parent"
@@ -20,12 +30,14 @@
             android:textStyle="bold"
             android:paddingBottom="10dp" />
 
+        <!-- Pesquisa: campo para filtrar a lista localmente (nome, email, id, nif, etc.) -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:endIconMode="clear_text"
-            android:layout_marginBottom="12dp">
+            android:layout_marginBottom="12dp"
+            app:endIconMode="clear_text">
 
+            <!-- Input de pesquisa. A lógica do filtro é implementada no Fragment (TextWatcher). -->
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etSearchUsers"
                 android:layout_width="match_parent"
@@ -35,15 +47,18 @@
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!-- Swipe-to-refresh: permite atualizar a lista voltando a chamar o backend -->
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipeRefreshUsers"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <!-- FrameLayout para sobrepor estados: lista + progress + empty + erro -->
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+                <!-- Lista principal de utilizadores -->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvUsers"
                     android:layout_width="match_parent"
@@ -51,45 +66,50 @@
                     android:clipToPadding="false"
                     android:paddingBottom="12dp" />
 
+                <!-- Loading state: indicador centrado (mostrar durante carregamento/reload) -->
                 <com.google.android.material.progressindicator.CircularProgressIndicator
                     android:id="@+id/progressUsers"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:layout_gravity="center" />
+                    android:layout_gravity="center"
+                    android:visibility="gone" />
 
+                <!-- Empty state: mostrado quando não existem utilizadores (ou filtro retorna vazio) -->
                 <LinearLayout
                     android:id="@+id/emptyUsers"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:visibility="gone"
-                    android:padding="24dp">
+                    android:padding="24dp"
+                    android:visibility="gone">
 
+                    <!-- Ícone ilustrativo -->
                     <ImageView
                         android:layout_width="56dp"
                         android:layout_height="56dp"
-                        android:src="@drawable/ic_users"
+                        android:alpha="0.7"
                         android:contentDescription="@null"
-                        android:alpha="0.7" />
+                        android:src="@drawable/ic_users" />
 
+                    <!-- Texto do empty state -->
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
                         android:text="@string/empty_users"
                         android:textAlignment="center"
-                        android:layout_marginTop="10dp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
+                <!-- Erro (ex.: falha de rede). Deve ser mostrado/ocultado pelo Fragment -->
                 <TextView
                     android:id="@+id/txtErroUsers"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
+                    android:padding="16dp"
                     android:textAlignment="center"
-                    android:padding="16dp" />
+                    android:visibility="gone" />
 
             </FrameLayout>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

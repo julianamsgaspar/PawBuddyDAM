@@ -41,8 +41,8 @@ class AnimalAdapter(
             val idade = animal.idade?.toString() ?: ""
             val genero = animal.genero ?: ""
             binding.tvIdade.text = when {
-                idade.isNotBlank() && genero.isNotBlank() -> "$idade anos · $genero"
-                idade.isNotBlank() -> "$idade anos"
+                idade.isNotBlank() && genero.isNotBlank() -> "$idade · $genero"
+                idade.isNotBlank() -> "$idade"
                 genero.isNotBlank() -> genero
                 else -> ""
             }

@@ -7,6 +7,13 @@
     android:layout_marginVertical="8dp"
     app:cardUseCompatPadding="true"
     app:cardCornerRadius="18dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    app:checkedIconVisible="false"
+    app:cardElevation="2dp"
+    app:cardPreventCornerOverlap="true"
+    app:strokeColor="?attr/colorOutline"
     app:strokeWidth="1dp">
 
     <LinearLayout
@@ -48,6 +55,15 @@
             android:text="Data: -"
             android:textSize="12sp" />
 
+        <TextView
+            android:id="@+id/txtUtilizador"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="Utilizador: -"
+            android:textSize="12sp"
+            android:visibility="gone"/>
+
         <!-- Ações (Admin) -->
         <LinearLayout
             android:id="@+id/rowAcoesAdmin"
@@ -75,6 +91,29 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Eliminar" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical|end">
+
+            <TextView
+                android:id="@+id/txtVerMais"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ver_mais"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:textColor="?attr/colorPrimary" />
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginStart="6dp"
+                android:src="@drawable/ic_chevron_right"
+                app:tint="?attr/colorPrimary" />
         </LinearLayout>
 
     </LinearLayout>

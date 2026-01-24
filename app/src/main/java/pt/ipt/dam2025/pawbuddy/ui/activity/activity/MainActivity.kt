@@ -15,12 +15,27 @@ import androidx.navigation.ui.NavigationUI
 import pt.ipt.dam2025.pawbuddy.R
 import pt.ipt.dam2025.pawbuddy.databinding.ActivityMainBinding
 import pt.ipt.dam2025.pawbuddy.network.CookieStorage
+import pt.ipt.dam2025.pawbuddy.session.SessionManager
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
+
+    // Mantido (mesmo que aqui uses prefs, podes usar session noutros pontos)
+    private val session by lazy { SessionManager(this) }
+
+    private val userTopLevelDestinations = setOf(
+        R.id.homeFragment,
+        R.id.listaAnimaisFragment,
+        R.id.detalhesUtilizadorFragment
+    )
+
+    private val adminTopLevelDestinations = setOf(
+        R.id.gestaoFragment
+        // adiciona outros destinos "raiz" do admin se existirem
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,13 +48,8 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
         navController = navHostFragment.navController
 
-        val topLevelDestinations = setOf(
-            R.id.homeFragment,
-            R.id.listaAnimaisFragment,
-            R.id.detalhesUtilizadorFragment
-        )
-
-        // ✅ Start destination dinâmico (só no primeiro arranque)
+        // ✅ Start destination dinâmico (apenas no primeiro arranque)
+        // ALTERAÇÃO: quando NÃO está logado, começa em HOME (não em Login)
         if (savedInstanceState == null) {
             val shared = getSharedPreferences("PawBuddyPrefs", Context.MODE_PRIVATE)
             val isLogged = shared.getBoolean("isLogged", false)
@@ -48,17 +58,16 @@ class MainActivity : AppCompatActivity() {
             val graph = navController.navInflater.inflate(R.navigation.nav_graph)
             graph.setStartDestination(
                 when {
-                    !isLogged -> R.id.loginFragment
-                    isAdmin -> R.id.gestaoFragment
-                    else -> R.id.homeFragment
+                    isLogged && isAdmin -> R.id.gestaoFragment
+                    else -> R.id.homeFragment // inclui: não logado + user normal logado
                 }
             )
             navController.graph = graph
         }
 
-        appBarConfiguration = AppBarConfiguration(topLevelDestinations)
+        // AppBar inicial (vai ser recalculada em refreshSessionUi)
+        appBarConfiguration = AppBarConfiguration(userTopLevelDestinations)
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
-        NavigationUI.setupWithNavController(binding.bottomNav, navController)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             val shared = getSharedPreferences("PawBuddyPrefs", Context.MODE_PRIVATE)
@@ -71,66 +80,58 @@ class MainActivity : AppCompatActivity() {
                     R.id.gestaoFragment,
                     null,
                     navOptions {
-                        popUpTo(R.id.nav_graph) { inclusive = false } // mais robusto
+                        popUpTo(R.id.nav_graph) { inclusive = false }
                         launchSingleTop = true
                     }
                 )
                 return@addOnDestinationChangedListener
             }
 
-            val hideAuth = destination.id in setOf(R.id.loginFragment, R.id.registerFragment)
-            val hideBottomNav = hideAuth || (isLogged && isAdmin)
+            val isAuthScreen =
+                destination.id == R.id.loginFragment || destination.id == R.id.registerFragment
 
-            binding.toolbar.visibility = if (hideAuth) View.GONE else View.VISIBLE
-            binding.bottomNav.visibility = if (hideBottomNav) View.GONE else View.VISIBLE
+            // Toolbar: esconder em auth
+            binding.toolbar.visibility = if (isAuthScreen) View.GONE else View.VISIBLE
 
-            if (hideAuth) {
+            // Drawer: bloquear em auth; caso contrário, atualizar UI conforme sessão
+            if (isAuthScreen) {
                 binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
             } else {
-                refreshSessionUi(topLevelDestinations)
+                refreshSessionUi()
             }
 
+            // Atualiza visibilidade dos itens do menu (login/logout)
             invalidateOptionsMenu()
         }
 
-        refreshSessionUi(topLevelDestinations)
+        refreshSessionUi()
     }
 
     override fun onResume() {
         super.onResume()
-        // ✅ não forces um set "fixo"; usa o mesmo set do onCreate
-        val topLevelDestinations = setOf(
-            R.id.homeFragment,
-            R.id.listaAnimaisFragment,
-            R.id.detalhesUtilizadorFragment
-        )
-        refreshSessionUi(topLevelDestinations)
+        refreshSessionUi()
         invalidateOptionsMenu()
     }
 
-
-    private fun refreshSessionUi(topLevelDestinations: Set<Int>) {
+    /**
+     * Atualiza Drawer + AppBarConfiguration conforme sessão.
+     * - Admin: Drawer ativo (adminDrawer) e top-level = adminTopLevelDestinations
+     * - User/Guest: sem drawer (ou drawer bloqueado) e top-level = userTopLevelDestinations
+     */
+    private fun refreshSessionUi() {
         val shared = getSharedPreferences("PawBuddyPrefs", Context.MODE_PRIVATE)
         val isLogged = shared.getBoolean("isLogged", false)
         val isAdmin = shared.getBoolean("isAdmin", false)
 
         val enableAdminDrawer = isLogged && isAdmin
-
-        val adminTopLevel = setOf(
-            R.id.gestaoFragment
-            // adiciona outros destinos "raiz" do admin se existirem
-        )
-
-        val activeTopLevel = if (enableAdminDrawer) adminTopLevel else topLevelDestinations
+        val activeTopLevel =
+            if (enableAdminDrawer) adminTopLevelDestinations else userTopLevelDestinations
 
         binding.adminDrawer.visibility = if (enableAdminDrawer) View.VISIBLE else View.GONE
         binding.drawerLayout.setDrawerLockMode(
             if (enableAdminDrawer) DrawerLayout.LOCK_MODE_UNLOCKED
             else DrawerLayout.LOCK_MODE_LOCKED_CLOSED
         )
-
-        // ✅ BottomNav nunca mostrar ao Admin
-        binding.bottomNav.visibility = if (enableAdminDrawer) View.GONE else View.VISIBLE
 
         appBarConfiguration = if (enableAdminDrawer) {
             AppBarConfiguration(activeTopLevel, binding.drawerLayout)
@@ -145,25 +146,45 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
-    // MENU (Logout)
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_top_appbar, menu)
+        return true
+    }
+
+    /**
+     * Alterna o item no mesmo lugar:
+     * - não logado => Entrar
+     * - logado => Sair
+     * E esconde ambos em ecrãs de autenticação.
+     */
+    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
+        super.onPrepareOptionsMenu(menu)
 
         val shared = getSharedPreferences("PawBuddyPrefs", Context.MODE_PRIVATE)
         val isLogged = shared.getBoolean("isLogged", false)
 
-        // Mostrar Logout apenas quando logado
-        menu.findItem(R.id.action_logout)?.isVisible = isLogged
+        val destId = navController.currentDestination?.id
+        val isAuthScreen = destId == R.id.loginFragment || destId == R.id.registerFragment
+
+        menu.findItem(R.id.action_login)?.isVisible = !isLogged && !isAuthScreen
+        menu.findItem(R.id.action_logout)?.isVisible = isLogged && !isAuthScreen
+
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+
+            R.id.action_login -> {
+                navController.navigate(R.id.loginFragment)
+                true
+            }
+
             R.id.action_logout -> {
                 performLogout()
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -178,15 +199,19 @@ class MainActivity : AppCompatActivity() {
         // Limpar cookie em memória (cookie-based auth)
         CookieStorage.sessionCookie = null
 
-        // Navegar para login e limpar backstack
+        // Navegar para HOME (porque agora "guest" começa em Home)
         navController.navigate(
-            R.id.loginFragment,
+            R.id.homeFragment,
             null,
             navOptions {
                 popUpTo(R.id.nav_graph) { inclusive = true }
                 launchSingleTop = true
             }
         )
+
+        // Recalcular UI e menu
+        refreshSessionUi()
+        invalidateOptionsMenu()
     }
 
     override fun onSupportNavigateUp(): Boolean {

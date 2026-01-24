@@ -22,7 +22,10 @@
                 app:title="@string/app_name"
                 app:logo="@drawable/ic_pets"
                 app:logoDescription="@string/app_name"
-                app:menu="@menu/menu_top_appbar"/>
+                app:menu="@menu/menu_top_appbar"
+                android:tint="?attr/colorOnSurfaceVariant"
+
+                />
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -38,21 +41,11 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:navGraph="@navigation/nav_graph"/>
 
-        <!-- Bottom nav -->
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottomNav"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginTop="0dp"
-            android:layout_marginBottom="0dp"
-            android:background="?attr/colorSurface"
-            app:menu="@menu/menu_bottom_nav"/>
-
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <!-- Drawer Admin -->
     <com.google.android.material.navigation.NavigationView
+
         android:id="@+id/adminDrawer"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"

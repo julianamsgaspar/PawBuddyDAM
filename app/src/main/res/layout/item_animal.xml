@@ -60,7 +60,7 @@
                 android:alpha="0.75"
                 android:maxLines="1"
                 android:ellipsize="end"
-                tools:text="2 anos · Fêmea" />
+                tools:text="2 · Fêmea" />
 
             <!-- Campos antigos: mantidos para não rebentar o adapter,
                  mas escondidos porque num grid estragam o layout -->

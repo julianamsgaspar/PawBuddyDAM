@@ -57,6 +57,7 @@
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:src="@drawable/ic_add"
+                    app:tint="?attr/colorOnSurfaceVariant"
                     android:contentDescription="@null" />
 
                 <TextView
@@ -64,6 +65,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/admin_add_animal"
                     android:textStyle="bold"
+                    android:textColor="?attr/colorOnSurface"
                     android:layout_marginTop="10dp" />
 
                 <TextView
@@ -72,7 +74,9 @@
                     android:text="@string/admin_add_animal_desc"
                     android:textSize="12sp"
                     android:alpha="0.8"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     android:layout_marginTop="4dp" />
+
 
                 <Button
                     android:id="@+id/btnAdicionarAnimal"
@@ -102,7 +106,8 @@
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:src="@drawable/ic_pets"
-                    android:contentDescription="@null" />
+                    android:contentDescription="@null"
+                    app:tint="?attr/colorOnSurfaceVariant"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -147,7 +152,8 @@
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:src="@drawable/ic_users"
-                    android:contentDescription="@null" />
+                    android:contentDescription="@null"
+                    app:tint="?attr/colorOnSurfaceVariant"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -192,7 +198,8 @@
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:src="@drawable/ic_list"
-                    android:contentDescription="@null" />
+                    android:contentDescription="@null"
+                    app:tint="?attr/colorOnSurfaceVariant"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -257,7 +264,8 @@
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:src="@drawable/ic_admin"
-                    android:contentDescription="@null" />
+                    android:contentDescription="@null"
+                    app:tint="?attr/colorOnSurfaceVariant"/>
 
                 <LinearLayout
                     android:layout_width="0dp"

@@ -62,7 +62,7 @@ class ListaAnimaisFragment : Fragment() {
             )
             binding.rvAnimais.adapter = adminAdapter
         } else {
-            val spanCount = if (resources.configuration.smallestScreenWidthDp >= 600) 4 else 3
+            val spanCount = if (resources.configuration.smallestScreenWidthDp >= 600) 4 else 2
             binding.rvAnimais.layoutManager = GridLayoutManager(requireContext(), spanCount)
 
             userAdapter = AnimalAdapter { animal -> abrirDetalhes(animal.id) }
@@ -82,11 +82,6 @@ class ListaAnimaisFragment : Fragment() {
         // Inicial
         loadAnimais(showSpinner = true)
 
-        // Voltar
-        binding.btnVoltarHome.setOnClickListener {
-            if (isAdmin) findNavController().navigate(R.id.gestaoFragment)
-            else findNavController().navigate(R.id.homeFragment)
-        }
     }
 
     private fun loadAnimais(showSpinner: Boolean) {
