@@ -46,7 +46,7 @@ class AlterarAnimalFragment : Fragment() {
     private var imagemOriginalUrl: String? = null
 
 
-    private val retrofit = RetrofitInitializer()
+    private val animalApi = RetrofitProvider.animalService
 
     // -----------------------------
     // GALERIA
@@ -112,7 +112,7 @@ class AlterarAnimalFragment : Fragment() {
     private fun carregarAnimalExistente() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val animal = retrofit.animalService().getAnimal(animalId)
+                val animal = animalApi.getAnimal(animalId)
                 withContext(Dispatchers.Main) {
                     binding.etNome.setText(animal.nome)
                     binding.etRaca.setText(animal.raca)
@@ -185,7 +185,7 @@ class AlterarAnimalFragment : Fragment() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
 
-                val response = retrofit.animalService().atualizarAnimal(
+                val response = animalApi.atualizarAnimal(
                     id = animalId,
                     idPart = animalId.toString().toRequestBody("text/plain".toMediaTypeOrNull()),
                     nome = nome.toRequestBody("text/plain".toMediaTypeOrNull()),

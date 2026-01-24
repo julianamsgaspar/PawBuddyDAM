@@ -210,4 +210,94 @@
         <item>Idoso</item>
     </string-array>
 
+    <string-array name="intent_status_labels">
+        <item>Reservado</item>
+        <item>Em processo</item>
+        <item>Em validação</item>
+        <item>Concluído</item>
+        <item>Rejeitado</item>
+    </string-array>
+
+    <string-array name="intent_status_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+    <string name="home_hint">Explora animais disponíveis mesmo sem conta.</string>
+    <string name="home_hero_image">Imagem de destaque</string>
+    <string name="home_actions_title">Começar</string>
+    <string name="estado_reservado">Reservado</string>
+    <string name="estado_em_processo">Em processo</string>
+    <string name="estado_em_validacao">Em validação</string>
+    <string name="estado_concluido">Concluído</string>
+    <string name="estado_rejeitado">Rejeitado</string>
+    <string name="estado_desconhecido">Desconhecido</string>
+
+    <string name="home_chip_fast">Rápido</string>
+    <string name="home_chip_safe">Seguro</string>
+    <string name="home_chip_simple">Simples</string>
+
+    <string name="home_cta_register_title">Criar conta</string>
+    <string name="home_cta_register_desc">Regista-te para gerir as tuas intenções e acompanhar o processo.</string>
+
+    <string name="home_cta_login_title">Iniciar sessão</string>
+    <string name="home_cta_login_desc">Entra para veres o teu perfil e acompanhar as tuas intenções.</string>
+
+    <string name="home_cta_profile_title">O meu perfil</string>
+    <string name="home_cta_profile_desc">Consulta os teus dados e acompanha as tuas intenções de adoção.</string>
+
+    <string name="home_how_title">Como funciona</string>
+    <string name="home_how_step1">1) Explora os animais disponíveis e escolhe o teu favorito.</string>
+    <string name="home_how_step2">2) Regista-te ou inicia sessão para submeter a tua intenção de adoção.</string>
+    <string name="home_how_step3">3) O processo é validado e acompanhado até à conclusão.</string>
+
+    <string name="accessibility_go">Abrir</string>
+
+    <string name="register_subtitle">Preenche os teus dados para começar o processo de adoção.</string>
+    <string name="hint_full_name">Nome completo</string>
+    <string name="hint_birthdate">Data de Nascimento (YYYY-MM-DD)</string>
+    <string name="hint_nif">NIF</string>
+    <string name="hint_phone">Telemóvel (+351)</string>
+    <string name="hint_address">Morada</string>
+    <string name="hint_postal_code">Código Postal (0000-000)</string>
+    <string name="hint_country">País</string>
+
+    <string name="loading">Aguarda…</string>
+    <string name="error_email_required">Email é obrigatório.</string>
+    <string name="error_password_required">Password é obrigatória.</string>
+    <string name="error_login_invalid">Credenciais inválidas.</string>
+
+    <string name="error_required_field">Campo obrigatório.</string>
+    <string name="error_email_already_exists">Já existe uma conta com este email.</string>
+    <string name="info_login_after_register">Conta criada. Faz login para continuar.</string>
+
+    <string name="error_unauthorized">Sem autorização. Faz login novamente.</string>
+
+    <string name="title_adoption_intent">Pedido de Adoção</string>
+    <string name="subtitle_adoption_intent">Preenche o formulário para o administrador validar a tua intenção.</string>
+    <string name="title_form">Dados do formulário</string>
+    <string name="accessibility_adoption">Ícone de adoção</string>
+    <string name="error_max_chars">Máximo de %1$d caracteres.</string>
+    <string name="error_select_option">Seleciona uma opção.</string>
+    <string name="error_fix_form_fields">Revê os campos assinalados.</string>
+    <string name="success_intent_created_banner">Intenção submetida com sucesso. Podes acompanhar o estado em “Minhas Intenções”.</string>
+    <string name="action_view_status">Ver estado</string>
+    <string name="intencao_detail_title">Resumo da intenção</string>
+    <string name="intencao_detail_subtitle">Aqui vês o estado e os dados submetidos.</string>
+    <string name="intencao_detail_section_form">Dados submetidos</string>
+    <string name="field_status">Estado</string>
+
+    <string name="title_intencao_detail">Detalhe da Intenção</string>
+
+
+    <string name="banner_intent_submitted">Intenção submetida com sucesso. Podes ver o resumo e o estado em “Minhas Intenções”.</string>
+
+
+    <string name="error_intent_not_found">Não foi possível carregar a intenção.</string>
+
+    <string name="banner_intencao_success">Intenção submetida com sucesso. Vê o estado em "Minhas Intenções".</string>
+
+
 </resources>

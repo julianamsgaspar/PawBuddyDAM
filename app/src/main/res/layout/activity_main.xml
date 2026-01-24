@@ -20,7 +20,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:title="@string/app_name"
-                app:logo="@drawable/ic_pawbuddy_logo"
+                app:logo="@drawable/ic_pets"
                 app:logoDescription="@string/app_name"
                 app:menu="@menu/menu_top_appbar"/>
 

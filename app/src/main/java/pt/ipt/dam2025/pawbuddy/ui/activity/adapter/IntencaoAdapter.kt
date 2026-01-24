@@ -3,12 +3,10 @@ package pt.ipt.dam2025.pawbuddy.ui.activity.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import pt.ipt.dam2025.pawbuddy.R
 import pt.ipt.dam2025.pawbuddy.databinding.ItemIntencaoBinding
 import pt.ipt.dam2025.pawbuddy.model.IntencaoDeAdocao
-
+import pt.ipt.dam2025.pawbuddy.utils.EstadoAdocaoMapper
 
 class IntencaoAdapter(
     private val lista: List<IntencaoDeAdocao>,
@@ -18,44 +16,32 @@ class IntencaoAdapter(
     private val onEditarEstado: (IntencaoDeAdocao) -> Unit
 ) : RecyclerView.Adapter<IntencaoAdapter.IntencaoViewHolder>() {
 
-    inner class IntencaoViewHolder(val binding: ItemIntencaoBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: IntencaoDeAdocao) {
-            binding.txtProfissao.text = "Profissão: ${item.profissao}"
-            binding.txtResidencia.text = "Residência: ${item.residencia}"
-            binding.txtMotivo.text = "Motivo: ${item.motivo}"
-            binding.txtTemAnimais.text = "Tem animais: ${item.temAnimais}"
-            binding.txtQuaisAnimais.text = "Quais: ${item.quaisAnimais ?: "-"}"
-            binding.txtDataIA.text = "Data: ${item.dataIA}"
-            binding.txtEstado.text = "Estado: ${item.estado}" // usa método do modelo
+    inner class IntencaoViewHolder(val binding: ItemIntencaoBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-            binding.txtUtilizador.text =
-                "Utilizador: ${item.utilizador?.nome ?: "Desconhecido"}"
+        fun bind(item: IntencaoDeAdocao) = with(binding) {
+            // Textos
+            txtAnimal.text = "Animal: ${item.animal?.nome ?: "Desconhecido"}"
+            binding.txtEstado.text =
+                "Estado: ${EstadoAdocaoMapper.toText(binding.root.context, item.estado)}"
 
 
-            binding.txtAnimal.text =
-                "Animal: ${item.animal?.nome ?: "Desconhecido"}"
+
+            txtDataIA.text = "Data: ${item.dataIA ?: "-"}"
 
 
-            binding.root.setOnClickListener { onClick(item) }
-            binding.btnEliminar.visibility = if (isAdmin) View.VISIBLE else View.GONE
-            binding.btnEliminar.visibility = if (isAdmin) View.VISIBLE else View.GONE
+            // Ações só Admin
+            rowAcoesAdmin.visibility = if (isAdmin) View.VISIBLE else View.GONE
+            btnEditar.setOnClickListener { onEditarEstado(item) }
+            btnEliminar.setOnClickListener { onEliminar(item) }
 
-            binding.btnEliminar.setOnClickListener {
-                onEliminar(item)
-            }
-
-            binding.btnEditar.setOnClickListener {
-                onEditarEstado(item)
-            }
+            // Clique no card abre detalhe read-only
+            root.setOnClickListener { onClick(item) }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IntencaoViewHolder {
-        val binding = ItemIntencaoBinding.inflate(
-            LayoutInflater.from(parent.context)
-            , parent,
-            false
-        )
+        val binding = ItemIntencaoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return IntencaoViewHolder(binding)
     }
 

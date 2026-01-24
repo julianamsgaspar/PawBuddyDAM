@@ -21,7 +21,7 @@ class DetalhesUtilizadorFragment : Fragment() {
 
     private var _binding: FragmentDetalhesUtilizadorBinding? = null
     private val binding get() = _binding!!
-    private val api = RetrofitInitializer().utilizadorService()
+    private val api = RetrofitProvider.utilizadorService
     private var userId: Int = -1
     private var fromList: Boolean = false
 

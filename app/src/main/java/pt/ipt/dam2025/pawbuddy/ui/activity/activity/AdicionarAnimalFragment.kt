@@ -40,7 +40,7 @@ class AdicionarAnimalFragment : Fragment() {
     private lateinit var cameraExecutor: ExecutorService
     private var imagemUri: Uri? = null
 
-    private val retrofit = RetrofitInitializer()
+    private val animalApi = RetrofitProvider.animalService
 
     // -----------------------------
     //   GALERIA
@@ -176,7 +176,7 @@ class AdicionarAnimalFragment : Fragment() {
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                retrofit.animalService().criarAnimal(
+                animalApi.criarAnimal(
                     nome = nome,
                     raca = raca,
                     especie = especie,

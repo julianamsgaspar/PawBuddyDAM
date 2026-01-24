@@ -23,7 +23,8 @@ class AnimalDetailFragment : Fragment() {
     private var _binding: FragmentAnimalDetailBinding? = null
     private val binding get() = _binding!!
 
-    private val retrofit = RetrofitInitializer()
+    private val animalApi = RetrofitProvider.animalService
+
     private val session by lazy { SessionManager(requireContext()) }
 
     private var animalId: Int = -1
@@ -74,7 +75,7 @@ class AnimalDetailFragment : Fragment() {
         // Carregar detalhes do animal
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             try {
-                val animal = retrofit.animalService().getAnimal(animalId)
+                val animal = animalApi.getAnimal(animalId)
 
                 withContext(Dispatchers.Main) {
                     binding.txtNome.text = animal.nome
@@ -111,15 +112,13 @@ class AnimalDetailFragment : Fragment() {
                 ).show()
 
                 val bundle = Bundle().apply {
-                    putBoolean("redirectToAdotar", true)
-                    putInt("redirectAnimalId", animalId)
+                    putBoolean("returnToPrevious", true)
+                    putString("origin", "adotar")
+                    putInt("originId", animalId)
                 }
+                findNavController().navigate(R.id.loginFragment, bundle, navOptions { launchSingleTop = true })
 
-                findNavController().navigate(
-                    R.id.loginFragment,
-                    bundle,
-                    navOptions { launchSingleTop = true }
-                )
+
                 return@setOnClickListener
             }
 
@@ -150,7 +149,7 @@ class AnimalDetailFragment : Fragment() {
     private fun eliminarAnimal() {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                retrofit.animalService().eliminarAnimal(animalId)
+                animalApi.eliminarAnimal(animalId)
                 withContext(Dispatchers.Main) {
                     Toast.makeText(
                         requireContext(),

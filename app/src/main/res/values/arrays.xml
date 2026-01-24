@@ -6,22 +6,5 @@
         <item>Sim</item>
     </string-array>
 
-    <!-- O que o utilizador vê -->
-    <string-array name="intent_status_labels">
-        <item>Reservado</item>
-        <item>Em processo</item>
-        <item>Em validação</item>
-        <item>Concluído</item>
-        <item>Rejeitado</item>
-    </string-array>
-
-    <!-- O que o backend recebe (tem de bater com o enum) -->
-    <string-array name="intent_status_values">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-    </string-array>
 
 </resources>

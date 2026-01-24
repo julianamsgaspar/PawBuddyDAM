@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 class AdocaoAdapter(
-    private val lista: List<Adotam>,
+    private var lista: List<Adotam>,
     private val onEliminarClick: (Adotam) -> Unit
 ) : RecyclerView.Adapter<AdocaoAdapter.AdocaoViewHolder>() {
 
@@ -65,6 +65,10 @@ class AdocaoAdapter(
     }
 
     override fun getItemCount(): Int = lista.size
+    fun updateData(novaLista: List<Adotam>) {
+        this.lista = novaLista
+        notifyDataSetChanged()
+    }
 
     private fun formatarData(data: String?): String {
         if (data.isNullOrBlank()) return ""

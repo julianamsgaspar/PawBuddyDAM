@@ -1,15 +1,15 @@
 package pt.ipt.dam2025.pawbuddy.model
 
 import com.google.gson.annotations.SerializedName
-import java.util.Date
 
-class IntencaoDeAdocao(
+data class IntencaoDeAdocao(
 
     @SerializedName("id")
     val id: Int = 0,
 
+    // backend envia enum como int (0..)
     @SerializedName("estado")
-    val estado: String,
+    val estado: Int,
 
     @SerializedName("profissao")
     val profissao: String,
@@ -26,12 +26,11 @@ class IntencaoDeAdocao(
     @SerializedName("quaisAnimais")
     val quaisAnimais: String? = null,
 
+    // backend DateTime -> chega como string ISO (ex.: "2026-01-23T18:23:06")
     @SerializedName("dataIA")
-    val dataIA: String, // 👈 STRING (mais simples)
+    val dataIA: String? = null,
 
-    @SerializedName("utilizadorFK")
-    val utilizadorFK: Int,
-
+    // backend pode devolver objeto utilizador (quando faz Include)
     @SerializedName("utilizador")
     val utilizador: Utilizador? = null,
 
@@ -40,6 +39,4 @@ class IntencaoDeAdocao(
 
     @SerializedName("animal")
     val animal: Animal? = null
-
 )
-

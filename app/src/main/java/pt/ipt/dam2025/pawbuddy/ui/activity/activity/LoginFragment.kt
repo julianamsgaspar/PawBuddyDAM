@@ -17,6 +17,7 @@ import pt.ipt.dam2025.pawbuddy.databinding.FragmentLoginBinding
 import pt.ipt.dam2025.pawbuddy.model.LoginRequest
 import pt.ipt.dam2025.pawbuddy.model.LoginResponse
 import pt.ipt.dam2025.pawbuddy.session.SessionManager
+import retrofit2.HttpException
 
 class LoginFragment : Fragment() {
 
@@ -37,12 +38,16 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Args unificados
         val returnToPrevious = arguments?.getBoolean("returnToPrevious", false) ?: false
         val origin = arguments?.getString("origin", "") ?: ""
         val originId = arguments?.getInt("originId", -1) ?: -1
 
-        // Se já está logado, aplica já a regra unificada
+        // (Opcional/polido) Pre-fill do email vindo do Register
+        arguments?.getString("prefillEmail")?.let { pre ->
+            if (pre.isNotBlank()) binding.etEmail.setText(pre)
+        }
+
+        // Se já está logado, aplica regra
         if (session.isLogged()) {
             handlePostLoginNavigation(
                 isAdmin = session.isAdmin(),
@@ -53,18 +58,32 @@ class LoginFragment : Fragment() {
             return
         }
 
-        binding.btnLogin.setOnClickListener {
-            val email = binding.etEmail.text.toString().trim()
-            val password = binding.etPassword.text.toString()
+        // Limpa erros ao focar
+        binding.etEmail.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) binding.tilEmail.error = null
+        }
+        binding.etPassword.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) binding.tilPassword.error = null
+        }
 
-            if (email.isBlank() || password.isBlank()) {
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.error_fill_email_password),
-                    Toast.LENGTH_SHORT
-                ).show()
-                return@setOnClickListener
+        binding.btnLogin.setOnClickListener {
+            clearErrors()
+
+            val email = binding.etEmail.text?.toString()?.trim().orEmpty()
+            val password = binding.etPassword.text?.toString().orEmpty()
+
+            var ok = true
+            if (email.isBlank()) {
+                binding.tilEmail.error = getString(R.string.error_email_required)
+                ok = false
             }
+            if (password.isBlank()) {
+                binding.tilPassword.error = getString(R.string.error_password_required)
+                ok = false
+            }
+            if (!ok) return@setOnClickListener
+
+            setLoading(true)
 
             viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
                 try {
@@ -87,8 +106,51 @@ class LoginFragment : Fragment() {
                             originId = originId
                         )
                     }
+
+                } catch (e: HttpException) {
+                    val backendMsg = try { e.response()?.errorBody()?.string() } catch (_: Exception) { null }
+                    val msg = backendMsg?.takeIf { it.isNotBlank() }
+
+                    withContext(Dispatchers.Main) {
+                        when (e.code()) {
+                            400 -> {
+                                // credenciais inválidas (o teu backend usa muito 400 para falha de login)
+                                binding.tilPassword.error = getString(R.string.error_login_invalid)
+                                Toast.makeText(
+                                    requireContext(),
+                                    msg ?: getString(R.string.error_login_invalid),
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                            401, 403 -> {
+                                // aqui entra “Conta desativada” ou “sem autorização”
+                                binding.tilPassword.error = msg ?: getString(R.string.error_unauthorized)
+                                Toast.makeText(
+                                    requireContext(),
+                                    msg ?: getString(R.string.error_unauthorized),
+                                    Toast.LENGTH_LONG
+                                ).show()
+
+                                // Se quiseres, podes forçar logout defensivo:
+                                session.logout()
+                            }
+                            else -> {
+                                Toast.makeText(
+                                    requireContext(),
+                                    getString(
+                                        R.string.error_login_failed,
+                                        msg ?: e.message() ?: getString(R.string.error_generic)
+                                    ),
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        }
+                    }
+
                 } catch (e: Exception) {
                     withContext(Dispatchers.Main) {
+                        // fallback genérico
+                        binding.tilPassword.error = getString(R.string.error_login_invalid)
                         Toast.makeText(
                             requireContext(),
                             getString(
@@ -98,6 +160,8 @@ class LoginFragment : Fragment() {
                             Toast.LENGTH_LONG
                         ).show()
                     }
+                } finally {
+                    withContext(Dispatchers.Main) { setLoading(false) }
                 }
             }
         }
@@ -107,19 +171,27 @@ class LoginFragment : Fragment() {
         }
     }
 
+    private fun clearErrors() {
+        binding.tilEmail.error = null
+        binding.tilPassword.error = null
+    }
+
+    private fun setLoading(loading: Boolean) {
+        binding.btnLogin.isEnabled = !loading
+        binding.btnRegister.isEnabled = !loading
+        binding.btnLogin.text = if (loading) getString(R.string.loading) else getString(R.string.action_sign_in)
+    }
+
     private fun handlePostLoginNavigation(
         isAdmin: Boolean,
         returnToPrevious: Boolean,
         origin: String,
         originId: Int
     ) {
-        // Caso 1: queremos voltar ao contexto anterior
         if (returnToPrevious) {
 
-            // Origem: fluxo de adoção (regra especial por perfil)
             if (origin == "adotar" && originId > 0) {
                 if (isAdmin) {
-                    // Admin nunca volta ao formulário de intenção
                     findNavController().navigate(
                         R.id.gestaoFragment,
                         null,
@@ -129,7 +201,6 @@ class LoginFragment : Fragment() {
                         }
                     )
                 } else {
-                    // Utilizador normal retoma a adoção
                     val b = Bundle().apply { putInt("animalId", originId) }
                     findNavController().navigate(
                         R.id.adotarFragment,
@@ -143,16 +214,13 @@ class LoginFragment : Fragment() {
                 return
             }
 
-            // Outras origens: volta ao ecrã anterior
             if (!findNavController().navigateUp()) {
-                // fallback se não houver back stack
                 val target = if (isAdmin) R.id.gestaoFragment else R.id.homeFragment
                 findNavController().navigate(target)
             }
             return
         }
 
-        // Caso 2: login “normal”
         val target = if (isAdmin) R.id.gestaoFragment else R.id.homeFragment
         findNavController().navigate(
             target,

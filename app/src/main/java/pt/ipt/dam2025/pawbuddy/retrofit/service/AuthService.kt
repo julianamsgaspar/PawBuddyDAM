@@ -8,21 +8,16 @@ import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.POST
 
-interface AuthService {
 
-    // Registo
-    @Headers("Content-Type: application/json")
-    @POST("api/AuthController/register")
-    suspend fun register(@Body request: RegisterRequest): LoginResponse
+    interface AuthService {
 
-    // Login
-    @Headers("Content-Type: application/json")
-    @POST("api/AuthController/login")
-    suspend fun login(@Body request: LoginRequest): LoginResponse
+        @POST("api/AuthController/login")
+        suspend fun login(@Body body: LoginRequest): LoginResponse
 
-    @GET("api/AuthController/hello")
-    suspend fun hello(): String
+        @POST("api/AuthController/register")
+        suspend fun register(@Body body: RegisterRequest): LoginResponse
 
+        @POST("api/AuthController/logout")
+        suspend fun logout(): Unit
+    }
 
-
-}

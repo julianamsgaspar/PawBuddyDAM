@@ -23,12 +23,8 @@ class ListarAdocoesFinaisFragment : Fragment() {
     private var _binding: FragmentListarAdocoesFinaisBinding? = null
     private val binding get() = _binding!!
 
-    private val api = RetrofitInitializer().adotamService()
+    private val api = RetrofitProvider.adotamService
 
-    // ✅ Mantém a lista em memória
-    private var listaAtual: List<Adotam> = emptyList()
-
-    // ✅ Mantém o adapter 1 vez
     private lateinit var adapter: AdocaoAdapter
 
     override fun onCreateView(
@@ -46,7 +42,7 @@ class ListarAdocoesFinaisFragment : Fragment() {
         binding.rvAdocoes.layoutManager = LinearLayoutManager(requireContext())
 
         // ✅ Adapter criado uma vez
-        adapter = AdocaoAdapter(listaAtual) { adocao ->
+        adapter = AdocaoAdapter(emptyList()) { adocao ->
             confirmarEliminar(adocao)
         }
         binding.rvAdocoes.adapter = adapter
@@ -54,19 +50,25 @@ class ListarAdocoesFinaisFragment : Fragment() {
         carregarAdocoes()
     }
 
+    override fun onResume() {
+        super.onResume()
+        // ✅ Ao voltar a este ecrã (ou após concluir uma intenção), refaz GET
+        carregarAdocoes()
+    }
+
     private fun carregarAdocoes() {
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             try {
                 val lista = api.getAdocoes()
-                    // opcional: garante que não tens duplicados pelo animalFK
-                    .distinctBy { it.animalFK }
+                    .distinctBy { it.animalFK } // opcional
 
                 withContext(Dispatchers.Main) {
-                    listaAtual = lista
+                    // ✅ Atualiza a lista sem recriar adapter
+                    adapter.updateData(lista)
 
-                    // ✅ como o adapter recebe lista no construtor, recriamos o adapter de forma controlada
-                    adapter = AdocaoAdapter(listaAtual) { adocao -> confirmarEliminar(adocao) }
-                    binding.rvAdocoes.adapter = adapter
+                    // (Opcional) estado "sem dados" se tiveres labels no layout:
+                    // binding.rvAdocoes.visibility = if (lista.isEmpty()) View.GONE else View.VISIBLE
+                    // binding.txtSemAdocoes.visibility = if (lista.isEmpty()) View.VISIBLE else View.GONE
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
@@ -85,7 +87,7 @@ class ListarAdocoesFinaisFragment : Fragment() {
 
     private fun confirmarEliminar(adocao: Adotam) {
         val nomeAnimal = adocao.animal?.nome ?: "?"
-        val animalId = adocao.animalFK // ✅ identificador real
+        val animalId = adocao.animalFK
 
         AlertDialog.Builder(requireContext())
             .setTitle(getString(R.string.dialog_confirm_title))
@@ -109,7 +111,6 @@ class ListarAdocoesFinaisFragment : Fragment() {
                         Toast.LENGTH_SHORT
                     ).show()
 
-                    // ✅ refresh
                     carregarAdocoes()
                 }
             } catch (e: Exception) {

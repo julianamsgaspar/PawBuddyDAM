@@ -1,111 +1,228 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activity.activity.RegisterFragment"
-    android:padding="24dp">
+    android:fillViewport="true"
+    android:padding="20dp"
+    tools:context=".ui.activity.activity.RegisterFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
+
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Criar Conta"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:paddingBottom="16dp" />
+            app:cardUseCompatPadding="true"
+            app:cardCornerRadius="20dp">
 
-        <EditText
-            android:id="@+id/etNome"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="18dp">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center_horizontal"
+                    android:contentDescription="@string/home_hero_image"
+                    android:src="@drawable/ic_person_add"
+                    app:tint="?attr/colorPrimary" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/action_register"
+                    android:textAlignment="center"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="@string/register_subtitle"
+                    android:textAlignment="center"
+                    android:textSize="13sp" />
+
+                <!-- Nome -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilNome"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    app:startIconDrawable="@drawable/ic_account_circle"
+                    android:hint="@string/hint_full_name">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etNome"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName"
+                        android:maxLines="1" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Email -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    app:startIconDrawable="@drawable/ic_email"
+                    android:hint="@string/hint_email">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textEmailAddress"
+                        android:maxLines="1" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Password -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    app:startIconDrawable="@drawable/ic_lock"
+                    app:endIconMode="password_toggle"
+                    android:hint="@string/hint_password">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword"
+                        android:maxLines="1" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Data nascimento -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilDataNascimento"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    app:startIconDrawable="@drawable/ic_calendar"
+                    android:hint="@string/hint_birthdate">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etDataNascimento"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="date"
+                        android:maxLines="1" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- NIF -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilNif"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    app:startIconDrawable="@drawable/ic_badge"
+                    android:hint="@string/hint_nif">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etNif"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:maxLines="1" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Telemóvel -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilTelemovel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    app:startIconDrawable="@drawable/ic_phone"
+                    android:hint="@string/hint_phone">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etTelemovel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="phone"
+                        android:maxLines="1" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Morada -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilMorada"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    app:startIconDrawable="@drawable/ic_home"
+                    android:hint="@string/hint_address">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etMorada"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPostalAddress"
+                        android:maxLines="2" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Código Postal -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilCodPostal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    app:startIconDrawable="@drawable/ic_local_post_office"
+                    android:hint="@string/hint_postal_code">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etCodPostal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:maxLines="1" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- País -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilPais"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    app:startIconDrawable="@drawable/ic_public"
+                    android:hint="@string/hint_country">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etPais"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:maxLines="1" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnRegister"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:text="@string/action_register"
+                    app:cornerRadius="14dp" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <View
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Nome completo"
-            android:padding="12dp" />
-
-        <EditText
-            android:id="@+id/etEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Email"
-            android:inputType="textEmailAddress"
-            android:padding="12dp"
-            android:layout_marginTop="12dp" />
-
-        <EditText
-            android:id="@+id/etPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:padding="12dp"
-            android:layout_marginTop="12dp" />
-
-        <EditText
-            android:id="@+id/etDataNascimento"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Data de Nascimento (YYYY-MM-DD)"
-            android:inputType="date"
-            android:padding="12dp"
-            android:layout_marginTop="12dp" />
-
-        <EditText
-            android:id="@+id/etNif"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="NIF"
-            android:inputType="number"
-            android:padding="12dp"
-            android:layout_marginTop="12dp" />
-
-        <EditText
-            android:id="@+id/etTelemovel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Telemóvel"
-            android:inputType="phone"
-            android:padding="12dp"
-            android:layout_marginTop="12dp" />
-
-        <EditText
-            android:id="@+id/etMorada"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Morada"
-            android:inputType="text"
-            android:padding="12dp"
-            android:layout_marginTop="12dp" />
-
-        <EditText
-            android:id="@+id/etCodPostal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Código Postal"
-            android:inputType="text"
-            android:padding="12dp"
-            android:layout_marginTop="12dp" />
-
-        <EditText
-            android:id="@+id/etPais"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="País"
-            android:inputType="text"
-            android:padding="12dp"
-            android:layout_marginTop="12dp" />
-
-        <Button
-            android:id="@+id/btnRegister"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Criar Conta"
-            android:layout_marginTop="24dp" />
-
+            android:layout_height="18dp" />
 
     </LinearLayout>
-</FrameLayout>
+</ScrollView>

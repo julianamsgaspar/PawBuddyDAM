@@ -25,7 +25,8 @@ class ListaUtilizadoresFragment : Fragment() {
     private var _binding: FragmentListaUtilizadoresBinding? = null
     private val binding get() = _binding!!
 
-    private val api = RetrofitInitializer().utilizadorService()
+    private val api = RetrofitProvider.utilizadorService
+
     private lateinit var adapter: UtilizadorAdapter
 
     private val session by lazy { SessionManager(requireContext()) }

@@ -5,59 +5,158 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
+    android:clipToPadding="false"
+    android:padding="16dp"
     tools:context=".ui.activity.activity.AdotarFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:orientation="vertical">
 
-        <!-- Profissão -->
-        <com.google.android.material.textfield.TextInputLayout
+        <!-- HERO / CONTEXTO -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardAdotarHero"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:cardUseCompatPadding="true"
+            app:cardCornerRadius="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="16dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvAdotarTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/title_adoption_intent"
+                        android:textStyle="bold"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/tvAdotarSubtitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="@string/subtitle_adoption_intent"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/imgAdotar"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_marginStart="12dp"
+                    android:contentDescription="@string/accessibility_adoption"
+                    android:src="@drawable/ic_pets"
+                    app:tint="?attr/colorPrimary" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- TÍTULO SECÇÃO -->
+        <TextView
+            android:id="@+id/tvFormTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/title_form"
+            android:textStyle="bold"
+            android:textSize="16sp" />
+
+        <!-- Profissão (max 50) -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilProfissao"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:hint="@string/field_profession"
-            app:boxBackgroundMode="outline">
+            app:boxBackgroundMode="outline"
+            app:boxCornerRadiusTopStart="16dp"
+            app:boxCornerRadiusTopEnd="16dp"
+            app:boxCornerRadiusBottomStart="16dp"
+            app:boxCornerRadiusBottomEnd="16dp"
+            app:counterEnabled="true"
+            app:counterMaxLength="50"
+            app:errorEnabled="true"
+            app:startIconDrawable="@drawable/ic_work"
+            app:startIconTint="?attr/colorPrimary">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etProfissao"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:maxLength="50"
+                android:imeOptions="actionNext" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Residência -->
+        <!-- Residência (max 50) -->
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilResidencia"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/field_residence_type"
             android:layout_marginTop="12dp"
-            app:boxBackgroundMode="outline">
+            android:hint="@string/field_residence_type"
+            app:boxBackgroundMode="outline"
+            app:boxCornerRadiusTopStart="16dp"
+            app:boxCornerRadiusTopEnd="16dp"
+            app:boxCornerRadiusBottomStart="16dp"
+            app:boxCornerRadiusBottomEnd="16dp"
+            app:counterEnabled="true"
+            app:counterMaxLength="50"
+            app:errorEnabled="true"
+            app:startIconDrawable="@drawable/ic_home"
+            app:startIconTint="?attr/colorPrimary">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etResidencia"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLength="50"
+                android:imeOptions="actionNext" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Motivo -->
+        <!-- Motivo (max 500) -->
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilMotivo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/field_adoption_reason"
             android:layout_marginTop="12dp"
-            app:boxBackgroundMode="outline">
+            android:hint="@string/field_adoption_reason"
+            app:boxBackgroundMode="outline"
+            app:boxCornerRadiusTopStart="16dp"
+            app:boxCornerRadiusTopEnd="16dp"
+            app:boxCornerRadiusBottomStart="16dp"
+            app:boxCornerRadiusBottomEnd="16dp"
+            app:counterEnabled="true"
+            app:counterMaxLength="500"
+            app:errorEnabled="true"
+            app:startIconDrawable="@drawable/ic_edit"
+            app:startIconTint="?attr/colorPrimary">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etMotivo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:gravity="top|start"
                 android:minLines="3"
-                android:gravity="top"
-                android:inputType="textMultiLine" />
+                android:maxLines="6"
+                android:maxLength="500"
+                android:imeOptions="actionNext" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Tenho animais? (Dropdown bonito) -->
+        <!-- Tenho animais? (dropdown Sim/Não) -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilTemAnimais"
             android:layout_width="match_parent"
@@ -65,7 +164,14 @@
             android:layout_marginTop="12dp"
             android:hint="@string/label_tem_animais"
             app:boxBackgroundMode="outline"
-            app:endIconMode="dropdown_menu">
+            app:boxCornerRadiusTopStart="16dp"
+            app:boxCornerRadiusTopEnd="16dp"
+            app:boxCornerRadiusBottomStart="16dp"
+            app:boxCornerRadiusBottomEnd="16dp"
+            app:endIconMode="dropdown_menu"
+            app:errorEnabled="true"
+            app:startIconDrawable="@drawable/ic_pets"
+            app:startIconTint="?attr/colorPrimary">
 
             <com.google.android.material.textfield.MaterialAutoCompleteTextView
                 android:id="@+id/ddTemAnimais"
@@ -74,7 +180,7 @@
                 android:inputType="none" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Quais animais -->
+        <!-- Quais animais (max 50) - aparece só quando Sim -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilQuaisAnimais"
             android:layout_width="match_parent"
@@ -82,23 +188,42 @@
             android:layout_marginTop="12dp"
             android:hint="@string/field_which_animals"
             android:visibility="gone"
-            app:boxBackgroundMode="outline">
+            app:boxBackgroundMode="outline"
+            app:boxCornerRadiusTopStart="16dp"
+            app:boxCornerRadiusTopEnd="16dp"
+            app:boxCornerRadiusBottomStart="16dp"
+            app:boxCornerRadiusBottomEnd="16dp"
+            app:counterEnabled="true"
+            app:counterMaxLength="50"
+            app:errorEnabled="true"
+            app:startIconDrawable="@drawable/ic_list"
+            app:startIconTint="?attr/colorPrimary">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etQuaisAnimais"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLength="50"
+                android:imeOptions="actionDone" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Submeter -->
+        <!-- BOTÃO SUBMETER -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSubmeter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
-            android:text="@string/action_submit_intent" />
+            android:text="@string/action_submit_intent"
+            app:cornerRadius="16dp"
+            app:icon="@drawable/ic_send"
+            app:iconTint="@android:color/white"
+            app:iconPadding="10dp" />
 
+        <!-- Espaço final -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="18dp" />
 
     </LinearLayout>
-
 </androidx.core.widget.NestedScrollView>

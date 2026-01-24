@@ -1,99 +1,346 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/homeScroll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:padding="16dp">
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="16dp">
 
-        <TextView
-            android:id="@+id/tvHomeTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/app_name"
-            android:textStyle="bold"
-            android:textSize="24sp" />
-
-        <TextView
-            android:id="@+id/tvHomeSubtitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:text="@string/home_subtitle"
-            android:textSize="14sp" />
-
+        <!-- HERO -->
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardExplore"
+            android:id="@+id/cardHero"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
             app:cardUseCompatPadding="true"
-            app:cardCornerRadius="16dp"
-            android:clickable="true"
-            android:focusable="true">
+            app:cardCornerRadius="20dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:orientation="vertical">
+                android:orientation="horizontal"
+                android:padding="16dp">
 
-                <TextView
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/home_cta_animals_title"
-                    android:textStyle="bold"
-                    android:textSize="18sp" />
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/tvHomeTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/app_name"
+                        android:textStyle="bold"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/tvHomeSubtitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="@string/home_subtitle"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tvHomeHint"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/home_hint"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <!-- Hero icon: primary -->
+                <ImageView
+                    android:id="@+id/imgHero"
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:layout_marginStart="12dp"
+                    android:contentDescription="@string/home_hero_image"
+                    android:src="@drawable/ic_pets"
+                    app:tint="?attr/colorPrimary" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- BENEFÍCIOS / CHIPS -->
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroupBenefits"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            app:singleLine="true"
+            app:chipSpacingHorizontal="8dp">
+
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/home_chip_fast" />
+
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/home_chip_safe" />
+
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/home_chip_simple" />
+        </com.google.android.material.chip.ChipGroup>
+
+        <!-- SECÇÃO: AÇÕES -->
+        <TextView
+            android:id="@+id/tvActionsTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:text="@string/home_actions_title"
+            android:textStyle="bold"
+            android:textSize="16sp" />
+
+        <!-- Explorar Animais -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardExplore"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:rippleColor="?attr/colorPrimary"
+            app:cardUseCompatPadding="true"
+            app:cardCornerRadius="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="16dp">
+
+                <!-- secondary tint -->
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:contentDescription="@string/home_cta_animals_title"
+                    android:src="@drawable/ic_pets"
+                    app:tint="?attr/colorOnSurfaceVariant" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="@string/home_cta_animals_desc"
-                    android:textSize="13sp" />
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/home_cta_animals_title"
+                        android:textStyle="bold"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/home_cta_animals_desc"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <!-- secondary tint -->
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:contentDescription="@string/accessibility_go"
+                    android:src="@drawable/ic_chevron_right"
+                    app:tint="?attr/colorOnSurfaceVariant" />
 
             </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>
 
+        <!-- Conta (Login ou Perfil) -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardAccount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            app:cardUseCompatPadding="true"
-            app:cardCornerRadius="16dp"
             android:clickable="true"
-            android:focusable="true">
+            android:focusable="true"
+            app:rippleColor="?attr/colorPrimary"
+            app:cardUseCompatPadding="true"
+            app:cardCornerRadius="16dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:orientation="vertical">
+                android:orientation="horizontal"
+                android:padding="16dp">
+
+                <!-- Troquei para conta/perfil -->
+                <ImageView
+                    android:id="@+id/imgAccount"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:contentDescription="@string/home_cta_account_title"
+                    android:src="@drawable/ic_account_circle"
+                    app:tint="?attr/colorOnSurfaceVariant" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvAccountTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/home_cta_account_title"
+                        android:textStyle="bold"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/tvAccountDesc"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/home_cta_account_desc"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:contentDescription="@string/accessibility_go"
+                    android:src="@drawable/ic_chevron_right"
+                    app:tint="?attr/colorOnSurfaceVariant" />
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Registo (apenas não logado) -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardRegister"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:rippleColor="?attr/colorPrimary"
+            app:cardUseCompatPadding="true"
+            app:cardCornerRadius="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="16dp">
+
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:contentDescription="@string/home_cta_register_title"
+                    android:src="@drawable/ic_person_add"
+                    app:tint="?attr/colorOnSurfaceVariant" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/home_cta_register_title"
+                        android:textStyle="bold"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/home_cta_register_desc"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:contentDescription="@string/accessibility_go"
+                    android:src="@drawable/ic_chevron_right"
+                    app:tint="?attr/colorOnSurfaceVariant" />
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- COMO FUNCIONA -->
+        <TextView
+            android:id="@+id/tvHowTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:text="@string/home_how_title"
+            android:textStyle="bold"
+            android:textSize="16sp" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:cardUseCompatPadding="true"
+            app:cardCornerRadius="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:contentDescription="@string/accessibility_go"
+                    android:src="@drawable/ic_help_outline"
+                    app:tint="?attr/colorOnSurfaceVariant" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/home_cta_account_title"
-                    android:textStyle="bold"
-                    android:textSize="18sp" />
+                    android:layout_marginTop="8dp"
+                    android:text="@string/home_how_step1"
+                    android:textSize="13sp" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="@string/home_cta_account_desc"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/home_how_step2"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/home_how_step3"
                     android:textSize="13sp" />
 
             </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="18dp" />
 
     </LinearLayout>
 </ScrollView>

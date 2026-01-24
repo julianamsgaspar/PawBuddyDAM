@@ -28,7 +28,8 @@ class ListaAnimaisFragment : Fragment() {
     private var _binding: FragmentListaAnimaisBinding? = null
     private val binding get() = _binding!!
 
-    private val retrofit = RetrofitInitializer()
+    private val animalApi = RetrofitProvider.animalService
+
 
     private var allAnimais: List<Animal> = emptyList()
 
@@ -95,7 +96,11 @@ class ListaAnimaisFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             try {
-                val animais = retrofit.animalService().listarAnimais()
+                val animais = if (isAdmin) {
+                    animalApi.listarAnimais()      // admin vê tudo
+                } else {
+                    animalApi.getDisponiveis()     // público vê só disponíveis
+                }
 
                 withContext(Dispatchers.Main) {
                     binding.progress.visibility = View.GONE
@@ -121,6 +126,7 @@ class ListaAnimaisFragment : Fragment() {
             }
         }
     }
+
 
     private fun applyFilter(query: String) {
         val q = query.trim().lowercase()
@@ -169,7 +175,7 @@ class ListaAnimaisFragment : Fragment() {
     private fun eliminarAnimal(id: Int) {
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             try {
-                retrofit.animalService().eliminarAnimal(id)
+                animalApi.eliminarAnimal(id)
                 withContext(Dispatchers.Main) {
                     Toast.makeText(requireContext(), getString(R.string.success_animal_deleted), Toast.LENGTH_SHORT).show()
                     loadAnimais(showSpinner = false)

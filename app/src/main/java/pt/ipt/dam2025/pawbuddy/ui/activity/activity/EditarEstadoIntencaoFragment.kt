@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -21,16 +22,16 @@ class EditarEstadoIntencaoFragment : Fragment() {
     private var _binding: FragmentEditarEstadoIntencaoBinding? = null
     private val binding get() = _binding!!
 
-    private val api = RetrofitInitializer().intencaoService()
+    private val api = RetrofitProvider.intencaoService
 
     private var intencaoId: Int = -1
-    private var estadoAtual: String? = null
+    private var estadoAtual: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             intencaoId = it.getInt("id", -1)
-            estadoAtual = it.getString("estado") // se agora usares ints, depois ajustamos isto
+            estadoAtual = it.getInt("estado", -1) // ✅ agora é Int
         }
     }
 
@@ -46,7 +47,7 @@ class EditarEstadoIntencaoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val labels = resources.getStringArray(R.array.intent_status_labels)
-        val values = resources.getStringArray(R.array.intent_status_values) // agora deve ser "0","1","2"...
+        val values = resources.getStringArray(R.array.intent_status_values) // "0","1","2","3","4"
 
         val adapter = ArrayAdapter(
             requireContext(),
@@ -58,21 +59,25 @@ class EditarEstadoIntencaoFragment : Fragment() {
 
         binding.spinnerEstado.adapter = adapter
 
-        // Se o backend ainda te dá estado como string, este match já não serve com ints.
-        // O ideal é passares também o "estadoIndex" (int) no Bundle. Por agora, podes ignorar ou adaptar.
-        estadoAtual?.let { estadoStr ->
-            val index = values.indexOf(estadoStr)
+        // ✅ Selecionar estado atual (match por valor numérico)
+        if (estadoAtual >= 0) {
+            val index = values.indexOf(estadoAtual.toString())
             if (index >= 0) binding.spinnerEstado.setSelection(index)
         }
 
         binding.btnGuardar.setOnClickListener {
+            if (intencaoId <= 0) {
+                Toast.makeText(requireContext(), "ID inválido.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             val pos = binding.spinnerEstado.selectedItemPosition
             val novoEstadoInt = values[pos].toInt()
             atualizarEstado(novoEstadoInt)
         }
 
         binding.btnCancelar.setOnClickListener {
-            parentFragmentManager.popBackStack()
+            findNavController().popBackStack()
         }
     }
 
@@ -87,7 +92,9 @@ class EditarEstadoIntencaoFragment : Fragment() {
                         getString(R.string.success_intent_status_updated),
                         Toast.LENGTH_SHORT
                     ).show()
-                    parentFragmentManager.popBackStack()
+
+                    // ✅ volta à lista (que vai recarregar em onResume)
+                    findNavController().popBackStack()
                 }
 
             } catch (e: Exception) {

@@ -15,9 +15,13 @@ import retrofit2.http.Part
 import retrofit2.http.Path
 
 interface AnimalService {
-    // Listar todos os animais
+    // Listar todos os animais (Admin9
     @GET("api/Animal")
     suspend fun listarAnimais(): List<Animal>
+
+    //Listar animais Disponíveis
+    @GET("api/Animal/disponiveis")
+    suspend fun getDisponiveis(): List<Animal>
 
     // Detalhes de um animal
     @GET("api/Animal/{id}")

@@ -23,6 +23,10 @@
             android:name="animalId"
             app:argType="integer" />
     </fragment>
+    <fragment
+        android:id="@+id/intencaoDetalheFragment"
+        android:name="pt.ipt.dam2025.pawbuddy.ui.activity.activity.IntencaoDetalheFragment"
+        android:label="@string/title_intencao_detail" />
 
     <fragment
         android:id="@+id/adotarFragment"
@@ -110,7 +114,7 @@
         android:name="pt.ipt.dam2025.pawbuddy.ui.activity.activity.EditarEstadoIntencaoFragment"
         android:label="@string/title_edit_intent_status">
         <argument android:name="id" app:argType="integer" />
-        <argument android:name="estado" app:argType="string" />
+        <argument android:name="estado" app:argType="integer" />
     </fragment>
 
     <fragment

@@ -33,72 +33,95 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
         navController = navHostFragment.navController
 
-        // Top-level destinations (ajusta se necessário)
         val topLevelDestinations = setOf(
             R.id.homeFragment,
             R.id.listaAnimaisFragment,
             R.id.detalhesUtilizadorFragment
         )
 
-        // Config inicial AppBarConfiguration
-        appBarConfiguration = AppBarConfiguration(topLevelDestinations)
-
-        // Toolbar
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
-
-        // BottomNav
-        NavigationUI.setupWithNavController(binding.bottomNav, navController)
-
-        // Listener: controlar UI por destino + perfil
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-
+        // ✅ Start destination dinâmico (só no primeiro arranque)
+        if (savedInstanceState == null) {
             val shared = getSharedPreferences("PawBuddyPrefs", Context.MODE_PRIVATE)
             val isLogged = shared.getBoolean("isLogged", false)
             val isAdmin = shared.getBoolean("isAdmin", false)
 
-            val hideAuth = destination.id in setOf(
-                R.id.loginFragment,
-                R.id.registerFragment
+            val graph = navController.navInflater.inflate(R.navigation.nav_graph)
+            graph.setStartDestination(
+                when {
+                    !isLogged -> R.id.loginFragment
+                    isAdmin -> R.id.gestaoFragment
+                    else -> R.id.homeFragment
+                }
             )
+            navController.graph = graph
+        }
 
-            // ✅ BottomNav nunca aparece para admin
+        appBarConfiguration = AppBarConfiguration(topLevelDestinations)
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
+        NavigationUI.setupWithNavController(binding.bottomNav, navController)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            val shared = getSharedPreferences("PawBuddyPrefs", Context.MODE_PRIVATE)
+            val isLogged = shared.getBoolean("isLogged", false)
+            val isAdmin = shared.getBoolean("isAdmin", false)
+
+            // ✅ Guard: Admin nunca fica no Home
+            if (isLogged && isAdmin && destination.id == R.id.homeFragment) {
+                navController.navigate(
+                    R.id.gestaoFragment,
+                    null,
+                    navOptions {
+                        popUpTo(R.id.nav_graph) { inclusive = false } // mais robusto
+                        launchSingleTop = true
+                    }
+                )
+                return@addOnDestinationChangedListener
+            }
+
+            val hideAuth = destination.id in setOf(R.id.loginFragment, R.id.registerFragment)
             val hideBottomNav = hideAuth || (isLogged && isAdmin)
 
-            // Auth screens: esconder toolbar
             binding.toolbar.visibility = if (hideAuth) View.GONE else View.VISIBLE
             binding.bottomNav.visibility = if (hideBottomNav) View.GONE else View.VISIBLE
 
-            // Em auth: bloqueia drawer
             if (hideAuth) {
                 binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
             } else {
-                // Atualiza drawer + appbar conforme sessão
                 refreshSessionUi(topLevelDestinations)
             }
 
-            // Força redesenho do menu (Logout)
             invalidateOptionsMenu()
         }
 
-        // Estado inicial
         refreshSessionUi(topLevelDestinations)
     }
 
     override fun onResume() {
         super.onResume()
-        refreshSessionUi(
-            setOf(R.id.homeFragment, R.id.listaAnimaisFragment, R.id.detalhesUtilizadorFragment)
+        // ✅ não forces um set "fixo"; usa o mesmo set do onCreate
+        val topLevelDestinations = setOf(
+            R.id.homeFragment,
+            R.id.listaAnimaisFragment,
+            R.id.detalhesUtilizadorFragment
         )
+        refreshSessionUi(topLevelDestinations)
         invalidateOptionsMenu()
     }
+
 
     private fun refreshSessionUi(topLevelDestinations: Set<Int>) {
         val shared = getSharedPreferences("PawBuddyPrefs", Context.MODE_PRIVATE)
         val isLogged = shared.getBoolean("isLogged", false)
         val isAdmin = shared.getBoolean("isAdmin", false)
 
-        // Drawer só para admin logado
         val enableAdminDrawer = isLogged && isAdmin
+
+        val adminTopLevel = setOf(
+            R.id.gestaoFragment
+            // adiciona outros destinos "raiz" do admin se existirem
+        )
+
+        val activeTopLevel = if (enableAdminDrawer) adminTopLevel else topLevelDestinations
 
         binding.adminDrawer.visibility = if (enableAdminDrawer) View.VISIBLE else View.GONE
         binding.drawerLayout.setDrawerLockMode(
@@ -109,21 +132,19 @@ class MainActivity : AppCompatActivity() {
         // ✅ BottomNav nunca mostrar ao Admin
         binding.bottomNav.visibility = if (enableAdminDrawer) View.GONE else View.VISIBLE
 
-        // AppBarConfiguration: com drawer se admin
         appBarConfiguration = if (enableAdminDrawer) {
-            AppBarConfiguration(topLevelDestinations, binding.drawerLayout)
+            AppBarConfiguration(activeTopLevel, binding.drawerLayout)
         } else {
-            AppBarConfiguration(topLevelDestinations)
+            AppBarConfiguration(activeTopLevel)
         }
 
-        // Reassociar action bar ao novo appBarConfiguration
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
 
-        // Drawer (admin) só quando ativo
         if (enableAdminDrawer) {
             NavigationUI.setupWithNavController(binding.adminDrawer, navController)
         }
     }
+
 
     // MENU (Logout)
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
