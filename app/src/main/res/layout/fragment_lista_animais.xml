@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  Layout do ecrã "Lista de Animais".
+  Usa NestedScrollView para permitir scroll de todo o conteúdo e SwipeRefreshLayout para "pull to refresh".
+-->
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,12 +12,13 @@
     android:padding="16dp"
     tools:context=".ui.activity.activity.ListaAnimaisFragment">
 
+    <!-- Container vertical para título, pesquisa e lista -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Título -->
+        <!-- Título do ecrã -->
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="match_parent"
@@ -23,7 +28,7 @@
             android:textStyle="bold"
             android:paddingBottom="10dp" />
 
-        <!-- Pesquisa -->
+        <!-- Campo de pesquisa com ícone de limpar texto (Material) -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilSearch"
             android:layout_width="match_parent"
@@ -31,6 +36,7 @@
             app:endIconMode="clear_text"
             android:layout_marginBottom="12dp">
 
+            <!-- Input da pesquisa -->
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etSearch"
                 android:layout_width="match_parent"
@@ -40,17 +46,18 @@
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Pull to refresh -->
+        <!-- SwipeRefreshLayout: permite atualizar a lista ao puxar para baixo -->
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipeRefresh"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <!-- FrameLayout para sobrepor estados (lista, loading, empty, erro) -->
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <!-- Recycler -->
+                <!-- RecyclerView onde são listados os animais -->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvAnimais"
                     android:layout_width="match_parent"
@@ -58,7 +65,7 @@
                     android:clipToPadding="false"
                     android:paddingBottom="12dp" />
 
-                <!-- Loading -->
+                <!-- Indicador de carregamento (invisível por defeito) -->
                 <com.google.android.material.progressindicator.CircularProgressIndicator
                     android:id="@+id/progress"
                     android:layout_width="wrap_content"
@@ -66,7 +73,7 @@
                     android:visibility="gone"
                     android:layout_gravity="center" />
 
-                <!-- Empty state -->
+                <!-- Estado vazio: mostrado quando não há resultados -->
                 <LinearLayout
                     android:id="@+id/emptyState"
                     android:layout_width="match_parent"
@@ -76,6 +83,7 @@
                     android:visibility="gone"
                     android:padding="24dp">
 
+                    <!-- Ícone ilustrativo do estado vazio -->
                     <ImageView
                         android:layout_width="56dp"
                         android:layout_height="56dp"
@@ -83,6 +91,7 @@
                         android:contentDescription="@null"
                         android:alpha="0.7" />
 
+                    <!-- Mensagem principal do estado vazio -->
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -91,6 +100,7 @@
                         android:layout_marginTop="10dp"
                         android:textStyle="bold" />
 
+                    <!-- Descrição/ajuda do estado vazio -->
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -100,7 +110,7 @@
                         android:layout_marginTop="4dp" />
                 </LinearLayout>
 
-                <!-- Erro (mantém ID original) -->
+                <!-- Mensagem de erro (mantém o ID original para compatibilidade com o Fragment) -->
                 <TextView
                     android:id="@+id/txtErro"
                     android:layout_width="match_parent"
@@ -112,7 +122,6 @@
 
             </FrameLayout>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

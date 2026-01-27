@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  Layout do Fragment AdotarFragment.
+  Estrutura principal com NestedScrollView para permitir scroll em formulários longos
+  e garantir que o conteúdo ocupa o ecrã (fillViewport).
+-->
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,12 +14,14 @@
     android:padding="16dp"
     tools:context=".ui.activity.activity.AdotarFragment">
 
+    <!-- Container vertical do conteúdo do ecrã -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- HERO / CONTEXTO -->
+        <!-- HERO / CONTEXTO:
+             Card inicial com título/descrição e ícone ilustrativo -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardAdotarHero"
             android:layout_width="match_parent"
@@ -22,18 +29,21 @@
             app:cardUseCompatPadding="true"
             app:cardCornerRadius="20dp">
 
+            <!-- Conteúdo horizontal do card (texto à esquerda, ícone à direita) -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:padding="16dp">
 
+                <!-- Bloco de texto (título + subtítulo) -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
+                    <!-- Título principal do ecrã -->
                     <TextView
                         android:id="@+id/tvAdotarTitle"
                         android:layout_width="match_parent"
@@ -42,6 +52,7 @@
                         android:textStyle="bold"
                         android:textSize="18sp" />
 
+                    <!-- Subtítulo/descritivo -->
                     <TextView
                         android:id="@+id/tvAdotarSubtitle"
                         android:layout_width="match_parent"
@@ -51,6 +62,7 @@
                         android:textSize="13sp" />
                 </LinearLayout>
 
+                <!-- Ícone ilustrativo do tema “adoção” -->
                 <ImageView
                     android:id="@+id/imgAdotar"
                     android:layout_width="56dp"
@@ -62,7 +74,8 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- TÍTULO SECÇÃO -->
+        <!-- TÍTULO DE SECÇÃO:
+             Introduz a área do formulário -->
         <TextView
             android:id="@+id/tvFormTitle"
             android:layout_width="match_parent"
@@ -72,7 +85,8 @@
             android:textStyle="bold"
             android:textSize="16sp" />
 
-        <!-- Profissão (max 50) -->
+        <!-- Profissão:
+             Input de texto com contador e validação (erro) -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilProfissao"
             android:layout_width="match_parent"
@@ -99,7 +113,8 @@
                 android:imeOptions="actionNext" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Residência (max 50) -->
+        <!-- Residência:
+             Input de texto com contador e validação (erro) -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilResidencia"
             android:layout_width="match_parent"
@@ -126,7 +141,8 @@
                 android:imeOptions="actionNext" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Motivo (max 500) -->
+        <!-- Motivo:
+             Campo multi-linha para justificar a intenção de adoção -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilMotivo"
             android:layout_width="match_parent"
@@ -156,7 +172,8 @@
                 android:imeOptions="actionNext" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Tenho animais? (dropdown Sim/Não) -->
+        <!-- Tenho animais?:
+             Dropdown (MaterialAutoCompleteTextView) com opções Sim/Não -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilTemAnimais"
             android:layout_width="match_parent"
@@ -180,7 +197,8 @@
                 android:inputType="none" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Quais animais (max 50) - aparece só quando Sim -->
+        <!-- Quais animais:
+             Campo complementar que deve ser mostrado apenas quando a resposta anterior é "Sim" -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilQuaisAnimais"
             android:layout_width="match_parent"
@@ -208,7 +226,8 @@
                 android:imeOptions="actionDone" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- BOTÃO SUBMETER -->
+        <!-- BOTÃO SUBMETER:
+             Ação principal do formulário -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSubmeter"
             android:layout_width="match_parent"
@@ -220,7 +239,7 @@
             app:iconTint="@android:color/white"
             app:iconPadding="10dp" />
 
-        <!-- Espaço final -->
+        <!-- Espaço final para conforto visual no fim do scroll -->
         <View
             android:layout_width="match_parent"
             android:layout_height="18dp" />

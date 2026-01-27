@@ -1,7 +1,35 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- ENTRAR (quando não autenticado) -->
+    <!--
+        Menu de ações globais (AppBar / Toolbar).
+
+        Responsabilidade:
+        - Definir ações relacionadas com autenticação do utilizador.
+        - Adaptar dinamicamente a visibilidade das opções conforme o estado de sessão
+          (autenticado vs não autenticado).
+
+        Nota de design:
+        - A lógica de controlo de visibilidade (login/logout) não reside neste ficheiro,
+          mas sim na Activity/Fragment que infla o menu e ajusta android:visible em runtime.
+        - Esta abordagem segue o princípio de separação de responsabilidades:
+          XML define estrutura; Kotlin define comportamento.
+    -->
+
+    <!--
+        Ação: ENTRAR (Login)
+
+        Contexto de uso:
+        - Visível apenas quando o utilizador NÃO está autenticado.
+        - Permite iniciar o processo de autenticação.
+
+        Decisões de UI:
+        - Ícone + texto (withText) melhoram clareza sem depender apenas de iconografia.
+        - showAsAction="ifRoom" permite que a ação vá para overflow se não houver espaço,
+          mantendo responsividade em diferentes tamanhos de ecrã.
+        - visible="false" por defeito garante que a decisão de exibição é controlada
+          explicitamente pela lógica da aplicação.
+    -->
     <item
         android:id="@+id/action_login"
         android:title="@string/action_login"
@@ -9,7 +37,19 @@
         app:showAsAction="ifRoom|withText"
         android:visible="false" />
 
-    <!-- SAIR (quando autenticado) -->
+    <!--
+        Ação: SAIR (Logout)
+
+        Contexto de uso:
+        - Visível apenas quando o utilizador está autenticado.
+        - Permite terminar a sessão ativa de forma explícita.
+
+        Decisões de UI e segurança:
+        - A separação explícita entre Login e Logout evita estados ambíguos na interface.
+        - Tal como no login, a visibilidade é controlada programaticamente,
+          reforçando coerência entre estado da sessão e UI apresentada.
+        - O uso de ícone distinto facilita reconhecimento rápido da ação.
+    -->
     <item
         android:id="@+id/action_logout"
         android:title="@string/action_logout"

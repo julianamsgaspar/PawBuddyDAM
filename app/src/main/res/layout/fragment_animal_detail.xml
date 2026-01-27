@@ -1,84 +1,207 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--
+  Layout do Fragment AnimalDetailFragment.
+  Utiliza NestedScrollView para permitir scroll e manter o conteúdo responsivo em diferentes ecrãs.
+-->
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activity.activity.AnimalDetailFragment"
-    android:padding="12dp">
+    android:fillViewport="true"
+    android:padding="12dp"
+    tools:context=".ui.activity.activity.AnimalDetailFragment">
 
+    <!-- Container vertical do ecrã -->
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/ivAnimal"
+        <!-- HERO:
+             Card superior com imagem do animal e informação principal sobreposta (nome + espécie) -->
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
-            android:layout_height="347dp"
-            android:contentDescription="@string/content_desc_animal_image"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_pet_placeholder" />
+            android:layout_height="270dp"
+            app:cardCornerRadius="18dp"
+            app:cardUseCompatPadding="true"
+            app:cardElevation="2dp">
 
-        <TextView
-            android:id="@+id/txtNome"
-            android:layout_width="wrap_content"
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <!-- Imagem principal do animal (placeholder por defeito) -->
+                <ImageView
+                    android:id="@+id/ivAnimal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/content_desc_animal_image"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_pet_placeholder" />
+
+                <!-- Overlay escuro para melhorar legibilidade do texto sobre a imagem -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#2B000000" />
+
+                <!-- Bloco de texto sobreposto na base do hero -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <!-- Nome do animal -->
+                    <TextView
+                        android:id="@+id/txtNome"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textSize="22sp"
+                        android:textColor="@android:color/white"
+                        tools:text="" />
+
+                    <!-- Espécie do animal -->
+                    <TextView
+                        android:id="@+id/txtEspecie"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/white"
+                        android:alpha="0.92"
+                        tools:text="Espécie:" />
+                </LinearLayout>
+
+            </FrameLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- DETALHES:
+             Card com atributos do animal apresentados sob a forma de chips -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:layout_marginTop="8dp" />
+            android:layout_marginTop="12dp"
+            app:cardCornerRadius="18dp"
+            app:cardUseCompatPadding="true"
+            app:cardElevation="1dp">
 
-        <TextView android:id="@+id/txtEspecie"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="14dp">
 
-        <TextView android:id="@+id/txtIdade"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+                <!-- Título da secção de detalhes -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_animal_detail"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="10dp"
+                    tools:text="Detalhes" />
 
-        <TextView android:id="@+id/txtGenero"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+                <!-- ChipGroup para apresentar propriedades de forma compacta e legível -->
+                <com.google.android.material.chip.ChipGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:singleLine="false"
+                    app:chipSpacingHorizontal="8dp"
+                    app:chipSpacingVertical="8dp">
 
-        <TextView android:id="@+id/txtRaca"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+                    <!-- Idade -->
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/txtIdade"
+                        style="@style/Widget.Material3.Chip.Assist"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:chipIconVisible="false"
+                        tools:text="Idade: " />
 
-        <TextView android:id="@+id/txtCor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+                    <!-- Género -->
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/txtGenero"
+                        style="@style/Widget.Material3.Chip.Assist"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:chipIconVisible="false"
+                        tools:text="Género: " />
 
-        <Button
+                    <!-- Raça -->
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/txtRaca"
+                        style="@style/Widget.Material3.Chip.Assist"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:chipIconVisible="false"
+                        tools:text="Raça: " />
+
+                    <!-- Cor -->
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/txtCor"
+                        style="@style/Widget.Material3.Chip.Assist"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:chipIconVisible="false"
+                        tools:text="Cor: " />
+
+                </com.google.android.material.chip.ChipGroup>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- BOTÃO ADOTAR:
+             Ação principal do utilizador (fora do card para maior destaque visual) -->
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnAdotar"
-            android:text="@string/action_adopt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="14dp"
+            android:text="@string/action_adopt"
+            app:cornerRadius="14dp" />
 
-        <Button
-            android:id="@+id/btnAlterar"
-            android:layout_width="wrap_content"
+        <!-- AÇÕES ADMIN:
+             Botões opcionais (editar/eliminar), inicialmente escondidos e mostrados apenas em contexto admin -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/action_edit_animal"
-            android:visibility="gone" />
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
 
-        <Button
-            android:id="@+id/btnEliminar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/action_delete_animal"
-            android:visibility="gone" />
+            <!-- Editar animal (visível apenas para admin) -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAlterar"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/action_edit_animal"
+                android:visibility="gone"
+                app:cornerRadius="14dp" />
 
+            <!-- Espaçamento horizontal entre botões -->
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="0dp" />
+
+            <!-- Eliminar animal (visível apenas para admin) -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnEliminar"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/action_delete_animal"
+                android:visibility="gone"
+                app:cornerRadius="14dp" />
+        </LinearLayout>
+
+        <!-- Espaço final para evitar “encostar” o conteúdo ao fim do scroll -->
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="12dp" />
 
     </LinearLayout>
-
-</FrameLayout>
-
-
-
-
-
-
-
-
-
-
+</androidx.core.widget.NestedScrollView>

@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  Layout do Fragment GestaoFragment (dashboard de administração).
+  Usa NestedScrollView para suportar scroll e ConstraintLayout + Flow para organizar cards em grelha.
+-->
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,11 +12,13 @@
     android:padding="16dp"
     tools:context=".ui.activity.activity.GestaoFragment">
 
+    <!-- Root do ecrã (ConstraintLayout para permitir posicionamento com constraints e Flow) -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <!-- Header -->
+        <!-- HEADER:
+             Título e subtítulo do dashboard administrativo -->
         <TextView
             android:id="@+id/tvAdminTitle"
             android:layout_width="0dp"
@@ -38,7 +44,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- Cards (vamos posicionar com Flow) -->
+        <!-- CARD: Adicionar animal
+             Ação rápida para abrir o fluxo de criação/registo de um novo animal -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardAddAnimal"
             android:layout_width="0dp"
@@ -77,7 +84,6 @@
                     android:textColor="?attr/colorOnSurfaceVariant"
                     android:layout_marginTop="4dp" />
 
-
                 <Button
                     android:id="@+id/btnAdicionarAnimal"
                     style="?attr/materialButtonOutlinedStyle"
@@ -88,6 +94,8 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
+        <!-- CARD: Listar animais
+             Acesso à listagem para gestão/consulta de animais -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardListAnimals"
             android:layout_width="0dp"
@@ -134,6 +142,8 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
+        <!-- CARD: Listar utilizadores
+             Acesso à gestão e consulta de utilizadores -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardListUsers"
             android:layout_width="0dp"
@@ -180,6 +190,8 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
+        <!-- CARD: Listar intenções
+             Acesso à listagem de intenções de adoção (para validação/gestão) -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardListIntents"
             android:layout_width="0dp"
@@ -226,7 +238,8 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Flow: organiza os 4 cards em grid de 2 colunas -->
+        <!-- FLOW:
+             Helper do ConstraintLayout para organizar os 4 cards anteriores em grelha (2 colunas) -->
         <androidx.constraintlayout.helper.widget.Flow
             android:id="@+id/flowCards"
             android:layout_width="0dp"
@@ -240,7 +253,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- Adoções finais (full width) -->
+        <!-- CARD: Adoções finais
+             Secção full width (abaixo da grelha) para consulta de adoções concluídas -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardFinalAdoptions"
             android:layout_width="0dp"
@@ -267,6 +281,7 @@
                     android:contentDescription="@null"
                     app:tint="?attr/colorOnSurfaceVariant"/>
 
+                <!-- Bloco de texto (título + descrição) -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -289,6 +304,7 @@
                         android:layout_marginTop="2dp" />
                 </LinearLayout>
 
+                <!-- Botão de acesso à listagem de adoções -->
                 <Button
                     android:id="@+id/btnListarAdocoes"
                     style="?attr/materialButtonOutlinedStyle"

@@ -17,29 +17,77 @@ import kotlinx.coroutines.withContext
 import pt.ipt.dam2025.pawbuddy.R
 import pt.ipt.dam2025.pawbuddy.databinding.FragmentAdotarBinding
 import pt.ipt.dam2025.pawbuddy.model.CriarIntencaoRequest
+import pt.ipt.dam2025.pawbuddy.retrofit.RetrofitProvider
 import pt.ipt.dam2025.pawbuddy.session.SessionManager
 import retrofit2.HttpException
 
+/**
+ * AdotarFragment
+ *
+ * Fragment responsável pela submissão de uma intenção de adoção de um animal.
+ *
+ * Responsabilidades:
+ *  - Validar pré-condições (utilizador autenticado e animalId válido)
+ *  - Recolher e validar dados do formulário
+ *  - Construir o pedido CriarIntencaoRequest
+ *  - Submeter ao backend via Retrofit (intencaoService)
+ *  - Tratar erros relevantes do servidor (401/403, 409, outros)
+ *  - Controlar estado de carregamento e navegação (backstack)
+ *
+ * Notas académicas:
+ *  - Utiliza ViewBinding para acesso seguro à UI
+ *  - Usa corrotinas com Dispatchers.IO para rede e Dispatchers.Main para UI
+ *  - Aplica limites de input e validação local antes de executar chamada remota
+ */
 class AdotarFragment : Fragment() {
 
+    /**
+     * Referência nullable ao binding, libertada em onDestroyView()
+     * para evitar fugas de memória associadas ao ciclo de vida do Fragment.
+     */
     private var _binding: FragmentAdotarBinding? = null
     private val binding get() = _binding!!
 
+    /**
+     * Serviço Retrofit responsável pelos endpoints de "intenção de adoção".
+     */
     private val api = RetrofitProvider.intencaoService
+
+    /**
+     * Gestor de sessão, usado para verificar autenticação e obter o ID do utilizador.
+     * É lazy para garantir que requireContext() só é usado quando o Fragment está anexado.
+     */
     private val session by lazy { SessionManager(requireContext()) }
 
+    /**
+     * Identificador do animal alvo da intenção.
+     * É recebido por argumentos (Bundle) e validado antes do envio.
+     */
     private var animalId: Int = -1
 
+    /**
+     * Constantes de validação (limites máximos).
+     * MAX_50: campos curtos; MAX_MOTIVO: texto longo justificativo.
+     */
     companion object {
         private const val MAX_50 = 50
         private const val MAX_MOTIVO = 500
     }
 
+    /**
+     * Lê argumentos recebidos e obtém animalId.
+     * É executado antes da criação da view.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         animalId = arguments?.getInt("animalId", -1) ?: -1
     }
 
+    /**
+     * Infla a view e inicializa o binding.
+     *
+     * @return View raiz do fragmento
+     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,6 +96,14 @@ class AdotarFragment : Fragment() {
         return binding.root
     }
 
+    /**
+     * Configura a interface e as regras do formulário:
+     *  - valida pré-condições (login e animalId)
+     *  - aplica limites de input
+     *  - configura dropdown (tem animais)
+     *  - validação reativa (limpa erros ao focar)
+     *  - listener de submissão
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -69,6 +125,10 @@ class AdotarFragment : Fragment() {
         binding.btnSubmeter.setOnClickListener { enviarIntencao() }
     }
 
+    /**
+     * Aplica filtros de comprimento máximo para prevenir inputs acima do permitido,
+     * reduzindo erros de validação e inconsistências com regras do backend.
+     */
     private fun applyInputLimits() {
         binding.etProfissao.filters = arrayOf(InputFilter.LengthFilter(MAX_50))
         binding.etResidencia.filters = arrayOf(InputFilter.LengthFilter(MAX_50))
@@ -76,6 +136,14 @@ class AdotarFragment : Fragment() {
         binding.etMotivo.filters = arrayOf(InputFilter.LengthFilter(MAX_MOTIVO))
     }
 
+    /**
+     * Configura o dropdown "Tem animais?" com duas opções ("Não" e "Sim").
+     *
+     * Comportamento:
+     *  - Valor por defeito: "Não"
+     *  - Campo "Quais animais" fica oculto até o utilizador escolher "Sim"
+     *  - Ao escolher "Não", limpa o conteúdo de "Quais animais" e erros associados
+     */
     private fun setupDropdownTemAnimais() {
         val opcoes = listOf(getString(R.string.option_no), getString(R.string.option_yes))
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, opcoes)
@@ -97,6 +165,10 @@ class AdotarFragment : Fragment() {
         }
     }
 
+    /**
+     * Validação “live” mínima: ao ganhar foco, remove o erro do respetivo TextInputLayout,
+     * melhorando a experiência do utilizador e reduzindo fricção na correção do formulário.
+     */
     private fun setupLiveValidation() {
         binding.etProfissao.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) binding.tilProfissao.error = null
@@ -112,6 +184,19 @@ class AdotarFragment : Fragment() {
         }
     }
 
+    /**
+     * Efetua a validação e submissão da intenção ao backend.
+     *
+     * Estrutura:
+     *  - valida sessão
+     *  - valida campos do formulário (obrigatórios, limites, coerência)
+     *  - executa chamada Retrofit em Dispatchers.IO
+     *  - trata códigos HTTP relevantes:
+     *      401/403: sessão inválida → logout e reencaminhar para login
+     *      409: intenção já existente → informar e navegar para lista
+     *      outros: mostrar erro genérico parametrizado
+     *  - gere UI (loading) e backstack via Navigation Component
+     */
     private fun enviarIntencao() {
         clearErrors()
 
@@ -140,7 +225,6 @@ class AdotarFragment : Fragment() {
             ""
         }
 
-        // ---------- Validação ----------
         var ok = true
 
         if (profissao.isBlank()) {
@@ -205,11 +289,11 @@ class AdotarFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             try {
-                // ✅ Criar intenção (backend deve devolver 409 se já existir)
+                // Criar intenção (backend deve devolver 409 se já existir)
                 api.criar(body)
 
                 withContext(Dispatchers.Main) {
-                    // ✅ Vai para "Minhas Intenções" e remove o formulário da backstack
+                    // Vai para "Minhas Intenções" e remove o formulário da backstack
                     // para o botão físico "Voltar" não regressar ao formulário.
                     val b = Bundle().apply {
                         putBoolean("showBanner", true)
@@ -220,7 +304,7 @@ class AdotarFragment : Fragment() {
                         R.id.listaIntencoesFragment,
                         b,
                         navOptions {
-                            // ✅ Back deve ir, no máximo, para a lista de animais
+                            // Back deve ir, no máximo, para a lista de animais
                             popUpTo(R.id.listaAnimaisFragment) { inclusive = false }
                             launchSingleTop = true
                         }
@@ -244,7 +328,7 @@ class AdotarFragment : Fragment() {
                         }
 
                         409 -> {
-                            // ✅ Já existe intenção para este animal (1 intenção por utilizador/animal)
+                            // Já existe intenção para este animal (1 intenção por utilizador/animal)
                             Toast.makeText(
                                 requireContext(),
                                 msg ?: getString(R.string.error_intent_already_exists),
@@ -292,6 +376,14 @@ class AdotarFragment : Fragment() {
         }
     }
 
+    /**
+     * Navega para o ecrã de login preservando contexto de retorno.
+     *
+     * Estratégia:
+     *  - Envia flags/argumentos para que o LoginFragment saiba que deve retornar
+     *    ao fluxo de adoção após autenticação
+     *  - Remove AdotarFragment da backstack para evitar regressos inconsistentes
+     */
     private fun navegarParaLoginReturnToAdotar() {
         val b = Bundle().apply {
             putBoolean("returnToPrevious", true)
@@ -309,6 +401,9 @@ class AdotarFragment : Fragment() {
         )
     }
 
+    /**
+     * Limpa mensagens de erro dos componentes de input, preparando nova validação.
+     */
     private fun clearErrors() {
         binding.tilProfissao.error = null
         binding.tilResidencia.error = null
@@ -317,6 +412,13 @@ class AdotarFragment : Fragment() {
         binding.tilQuaisAnimais.error = null
     }
 
+    /**
+     * Controla o estado de carregamento durante a submissão.
+     *
+     * Ações:
+     *  - Desativa inputs e botão para evitar duplicação de pedidos
+     *  - Ajusta texto do botão para feedback ao utilizador
+     */
     private fun setLoading(loading: Boolean) {
         binding.btnSubmeter.isEnabled = !loading
         binding.etProfissao.isEnabled = !loading
@@ -329,6 +431,9 @@ class AdotarFragment : Fragment() {
             if (loading) getString(R.string.loading) else getString(R.string.action_submit_intent)
     }
 
+    /**
+     * Libertação do binding ao destruir a view para evitar memory leaks.
+     */
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

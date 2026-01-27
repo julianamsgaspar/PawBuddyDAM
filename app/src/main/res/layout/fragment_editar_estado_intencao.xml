@@ -1,49 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--
+  Layout do Fragment EditarEstadoIntencaoFragment.
+  Estrutura com NestedScrollView para suportar ecrãs pequenos e evitar cortes de conteúdo.
+-->
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activity.activity.EditarEstadoIntencaoFragment"
-    android:orientation="vertical"
-    android:padding="20dp">
+    android:fillViewport="true"
+    android:padding="16dp"
+    tools:context=".ui.activity.activity.EditarEstadoIntencaoFragment">
 
-
-    <TextView
-        android:id="@+id/txtTitulo"
+    <!-- Container vertical do ecrã -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/title_edit_intent_status"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_marginBottom="24dp" />
+        android:orientation="vertical">
 
+        <!-- TÍTULO:
+             Identifica o objetivo do ecrã (edição do estado da intenção) -->
+        <TextView
+            android:id="@+id/txtTitulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_edit_intent_status"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:paddingBottom="12dp" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/label_status"
-        android:textStyle="bold"
-        android:layout_marginBottom="8dp" />
+        <!-- CARTÃO:
+             Agrupa a seleção do estado para melhor leitura e organização visual -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardUseCompatPadding="true"
+            app:cardCornerRadius="18dp"
+            app:cardElevation="1dp"
+            app:strokeWidth="1dp">
 
-    <Spinner
-        android:id="@+id/spinnerEstado"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
 
+                <!-- Label do campo de seleção -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_status"
+                    android:textStyle="bold"
+                    android:alpha="0.85" />
 
-    <Button
-        android:id="@+id/btnGuardar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/action_save_changes"
-        android:layout_marginBottom="12dp" />
+                <!-- InputLayout apenas como contentor/estilo.
+                     Mantém Spinner para compatibilidade com o Kotlin existente. -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/label_status">
 
-    <Button
-        android:id="@+id/btnCancelar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/action_cancel" />
+                    <!-- Spinner com modo dropdown para seleção do novo estado -->
+                    <Spinner
+                        android:id="@+id/spinnerEstado"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:spinnerMode="dropdown" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-</LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- AÇÕES:
+             Botões para confirmar (guardar) ou abortar (cancelar) a operação -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="14dp">
+
+            <!-- Guarda alterações -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnGuardar"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_weight="1"
+                android:text="@string/action_save_changes"
+                app:cornerRadius="16dp" />
+
+            <!-- Cancela e regressa -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCancelar"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_weight="1"
+                android:layout_marginStart="10dp"
+                android:text="@string/action_cancel"
+                app:cornerRadius="16dp"
+                android:insetLeft="0dp"
+                android:insetRight="0dp" />
+
+        </LinearLayout>
+
+        <!-- Espaçamento final para conforto visual no fim do scroll -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="12dp" />
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  Layout do ecrã de Login.
+  Usa ScrollView para garantir scroll em ecrãs pequenos e um CardView para agrupar o formulário.
+-->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,29 +12,32 @@
     android:padding="20dp"
     tools:context=".ui.activity.activity.LoginFragment">
 
+    <!-- Container principal vertical -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Top spacing -->
+        <!-- Espaçamento superior -->
         <View
             android:layout_width="match_parent"
             android:layout_height="18dp" />
 
+        <!-- Card que contém o formulário de login -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardUseCompatPadding="true"
             app:cardCornerRadius="20dp">
 
+            <!-- Conteúdo do card -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="18dp">
 
-                <!-- Header -->
+                <!-- Ícone / cabeçalho -->
                 <ImageView
                     android:layout_width="48dp"
                     android:layout_height="48dp"
@@ -39,6 +46,7 @@
                     android:src="@drawable/ic_pets"
                     app:tint="?attr/colorPrimary" />
 
+                <!-- Título do login -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -48,6 +56,7 @@
                     android:textSize="22sp"
                     android:textStyle="bold" />
 
+                <!-- Texto de apoio -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -56,7 +65,7 @@
                     android:textAlignment="center"
                     android:textSize="13sp" />
 
-                <!-- Email -->
+                <!-- Campo de email -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilEmail"
                     android:layout_width="match_parent"
@@ -74,7 +83,7 @@
                         android:maxLines="1" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Password -->
+                <!-- Campo de password com toggle de visibilidade -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilPassword"
                     android:layout_width="match_parent"
@@ -92,7 +101,7 @@
                         android:maxLines="1" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Primary button -->
+                <!-- Botão principal: login -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnLogin"
                     android:layout_width="match_parent"
@@ -101,7 +110,7 @@
                     android:text="@string/action_sign_in"
                     app:cornerRadius="14dp" />
 
-                <!-- Secondary (outlined) -->
+                <!-- Botão secundário: registo -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnRegister"
                     android:layout_width="match_parent"
@@ -115,6 +124,7 @@
 
         </com.google.android.material.card.MaterialCardView>
 
+        <!-- Espaçamento inferior -->
         <View
             android:layout_width="match_parent"
             android:layout_height="18dp" />

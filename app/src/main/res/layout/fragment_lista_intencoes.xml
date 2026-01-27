@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  Layout do ecrã "Lista de Intenções de Adoção".
+  Estrutura simples com título, filtros opcionais e RecyclerView.
+-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -8,7 +12,7 @@
     android:padding="16dp"
     tools:context=".ui.activity.activity.ListaIntencoesFragment">
 
-    <!-- Título -->
+    <!-- Título do ecrã -->
     <TextView
         android:id="@+id/tvTitulo"
         android:layout_width="match_parent"
@@ -19,7 +23,7 @@
         android:gravity="center"
         android:paddingBottom="12dp" />
 
-    <!-- Filtro (apenas User normal) -->
+    <!-- Grupo de filtros (visível apenas para utilizador normal) -->
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/chipGroupFiltro"
         android:layout_width="match_parent"
@@ -29,6 +33,7 @@
         app:singleSelection="true"
         app:chipSpacingHorizontal="8dp">
 
+        <!-- Filtro: intenções em curso -->
         <com.google.android.material.chip.Chip
             android:id="@+id/chipEmCurso"
             android:layout_width="wrap_content"
@@ -37,6 +42,7 @@
             android:checkable="true"
             app:checkedIconVisible="false" />
 
+        <!-- Filtro: intenções finalizadas -->
         <com.google.android.material.chip.Chip
             android:id="@+id/chipFinalizadas"
             android:layout_width="wrap_content"
@@ -46,8 +52,7 @@
             app:checkedIconVisible="false" />
     </com.google.android.material.chip.ChipGroup>
 
-
-    <!-- Lista -->
+    <!-- RecyclerView que apresenta a lista de intenções -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvIntencoes"
         android:layout_width="match_parent"
@@ -56,7 +61,7 @@
         android:clipToPadding="false"
         android:paddingBottom="16dp" />
 
-    <!-- Empty state -->
+    <!-- Estado vazio: mostrado quando não existem intenções -->
     <TextView
         android:id="@+id/txtSemIntencoes"
         android:layout_width="wrap_content"
@@ -67,6 +72,5 @@
         android:visibility="gone"
         android:layout_gravity="center"
         android:padding="16dp" />
-
 
 </LinearLayout>

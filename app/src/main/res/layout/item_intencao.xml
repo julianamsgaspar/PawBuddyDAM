@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  Item de lista (card) para uma intenção de adoção.
+  É clicável e mostra informação principal + ações (apenas para admin).
+-->
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -13,16 +18,16 @@
     app:checkedIconVisible="false"
     app:cardElevation="2dp"
     app:cardPreventCornerOverlap="true"
-    app:strokeColor="?attr/colorOutline"
     app:strokeWidth="1dp">
 
+    <!-- Container vertical do conteúdo do card -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="14dp">
 
-        <!-- Linha topo: Animal + Estado -->
+        <!-- Linha superior: nome do animal (esquerda) e estado (direita) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -46,7 +51,7 @@
                 android:textSize="13sp" />
         </LinearLayout>
 
-        <!-- Data -->
+        <!-- Data associada à intenção -->
         <TextView
             android:id="@+id/txtDataIA"
             android:layout_width="match_parent"
@@ -55,6 +60,7 @@
             android:text="Data: -"
             android:textSize="12sp" />
 
+        <!-- Utilizador (pode ser mostrado/ocultado consoante o perfil) -->
         <TextView
             android:id="@+id/txtUtilizador"
             android:layout_width="match_parent"
@@ -64,7 +70,7 @@
             android:textSize="12sp"
             android:visibility="gone"/>
 
-        <!-- Ações (Admin) -->
+        <!-- Linha de ações para Admin (editar estado / eliminar) -->
         <LinearLayout
             android:id="@+id/rowAcoesAdmin"
             android:layout_width="match_parent"
@@ -81,6 +87,7 @@
                 android:layout_height="wrap_content"
                 android:text="Editar Estado" />
 
+            <!-- Espaçamento entre botões -->
             <View
                 android:layout_width="10dp"
                 android:layout_height="1dp" />
@@ -92,6 +99,8 @@
                 android:layout_height="wrap_content"
                 android:text="Eliminar" />
         </LinearLayout>
+
+        <!-- Call-to-action "Ver mais" no fundo do card -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

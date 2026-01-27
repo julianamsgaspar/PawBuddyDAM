@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  Layout do ecrã de detalhe da Intenção de Adoção.
+  Usa NestedScrollView para permitir scroll e garantir boa leitura em ecrãs pequenos.
+-->
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
 
+    <!-- Container vertical com padding global do conteúdo -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp">
 
+        <!-- Card principal:
+             Agrupa toda a informação da intenção de adoção de forma consistente -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -24,7 +31,8 @@
                 android:orientation="vertical"
                 android:padding="14dp">
 
-                <!-- Título -->
+                <!-- TÍTULO:
+                     Identificação do ecrã -->
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/txtTitulo"
                     android:layout_width="match_parent"
@@ -33,7 +41,8 @@
                     android:textStyle="bold"
                     android:textSize="18sp" />
 
-                <!-- Estado -->
+                <!-- ESTADO:
+                     Campo informativo sobre o estado atual da intenção -->
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/lblEstado"
                     android:layout_width="match_parent"
@@ -50,7 +59,8 @@
                     android:layout_marginTop="2dp"
                     android:text="-" />
 
-                <!-- Data -->
+                <!-- DATA:
+                     Data associada ao registo/submissão -->
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/lblData"
                     android:layout_width="match_parent"
@@ -67,7 +77,8 @@
                     android:layout_marginTop="2dp"
                     android:text="-" />
 
-                <!-- Utilizador (Admin) -->
+                <!-- UTILIZADOR:
+                     Informação do utilizador associado (tipicamente relevante em contexto admin) -->
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/lblUtilizador"
                     android:layout_width="match_parent"
@@ -83,7 +94,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:text="-" />
-                <!-- ID do Utilizador (Admin) -->
+
+                <!-- ID DO UTILIZADOR:
+                     Campo adicional para identificação do registo (admin/depuração) -->
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/lblUtilizadorId"
                     android:layout_width="match_parent"
@@ -100,12 +113,13 @@
                     android:layout_marginTop="2dp"
                     android:text="-" />
 
-                <!-- Separador -->
+                <!-- Separador visual simples antes da secção do animal -->
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="14dp" />
 
-                <!-- Animal -->
+                <!-- ANIMAL:
+                     Identificação do animal pretendido -->
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/lblAnimal"
                     android:layout_width="match_parent"
@@ -121,7 +135,8 @@
                     android:layout_marginTop="2dp"
                     android:text="-" />
 
-                <!-- Profissão -->
+                <!-- PROFISSÃO:
+                     Dado fornecido pelo utilizador no formulário -->
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/lblProfissao"
                     android:layout_width="match_parent"
@@ -138,7 +153,8 @@
                     android:layout_marginTop="2dp"
                     android:text="-" />
 
-                <!-- Residência -->
+                <!-- RESIDÊNCIA:
+                     Tipo de residência indicado -->
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/lblResidencia"
                     android:layout_width="match_parent"
@@ -155,7 +171,8 @@
                     android:layout_marginTop="2dp"
                     android:text="-" />
 
-                <!-- Tem animais -->
+                <!-- TEM ANIMAIS:
+                     Indica se o utilizador já possui animais -->
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/lblTemAnimais"
                     android:layout_width="match_parent"
@@ -172,7 +189,8 @@
                     android:layout_marginTop="2dp"
                     android:text="-" />
 
-                <!-- Quais -->
+                <!-- QUAIS:
+                     Lista/descrição dos animais existentes (quando aplicável) -->
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/lblQuais"
                     android:layout_width="match_parent"
@@ -189,7 +207,8 @@
                     android:layout_marginTop="2dp"
                     android:text="-" />
 
-                <!-- Motivo -->
+                <!-- MOTIVO:
+                     Texto justificativo submetido pelo utilizador -->
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/lblMotivo"
                     android:layout_width="match_parent"

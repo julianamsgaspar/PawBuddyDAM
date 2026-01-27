@@ -1,23 +1,91 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+        Menu de navegação administrativa (Navigation Drawer / Bottom Navigation).
+
+        Responsabilidade:
+        - Definir as opções de navegação disponíveis para utilizadores com perfil administrativo.
+        - Agrupar destinos relacionados com gestão (dashboard, utilizadores, intenções e animais).
+
+        Enquadramento académico:
+        - Este menu materializa um controlo de acesso ao nível da interface (UI),
+          expondo funcionalidades avançadas apenas a utilizadores autorizados.
+        - A validação efetiva de permissões deve existir também no backend;
+          este menu atua apenas como camada de apresentação.
+    -->
+
+    <!--
+        Grupo de navegação com comportamento de seleção única.
+
+        Justificação:
+        - checkableBehavior="single" garante que apenas um item é marcado como ativo,
+          refletindo o destino atualmente selecionado.
+        - Este comportamento melhora a usabilidade e consistência visual,
+          alinhando-se com o modelo mental de navegação por secções.
+    -->
     <group android:checkableBehavior="single">
+
+        <!--
+            Dashboard Administrativo
+
+            Função:
+            - Ponto central de acesso às funcionalidades de gestão.
+            - Pode agregar métricas, atalhos ou visão geral do sistema.
+
+            Nota:
+            - O id corresponde diretamente a um Fragment, facilitando integração
+              com o Navigation Component (NavController).
+        -->
         <item
             android:id="@+id/gestaoFragment"
             android:icon="@drawable/ic_admin"
             android:title="@string/admin_dashboard"/>
 
+        <!--
+            Gestão de Utilizadores
+
+            Função:
+            - Permitir visualizar, gerir e eventualmente remover utilizadores.
+            - Destinado exclusivamente a administradores.
+
+            Observação:
+            - A separação desta opção evidencia um princípio de organização por domínio
+              (utilizadores como entidade distinta).
+        -->
         <item
             android:id="@+id/listaUtilizadoresFragment"
             android:icon="@drawable/ic_users"
             android:title="@string/admin_utilizadores"/>
 
+        <!--
+            Gestão de Intenções de Adoção
+
+            Função:
+            - Visualizar e tratar intenções de adoção submetidas.
+            - Alterar estados, validar ou rejeitar pedidos.
+
+            Relação com o domínio:
+            - Corresponde diretamente ao fluxo principal de negócio da aplicação PawBuddy.
+        -->
         <item
             android:id="@+id/listaIntencoesFragment"
             android:icon="@drawable/ic_list"
             android:title="@string/admin_intencoes"/>
 
+        <!--
+            Adicionar Animal
+
+            Função:
+            - Permitir ao administrador inserir novos animais no sistema.
+            - Ponto de entrada para criação de entidades do tipo Animal.
+
+            Nota de UX:
+            - Ícone de adição reforça semanticamente a ação de criação.
+        -->
         <item
             android:id="@+id/adicionarAnimalFragment"
             android:icon="@drawable/ic_add"
             android:title="@string/admin_add_animal"/>
+
     </group>
 </menu>

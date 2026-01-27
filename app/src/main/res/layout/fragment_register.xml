@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  Layout do ecrã de Registo.
+  Usa ScrollView para permitir scroll em formulários longos.
+-->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,27 +12,32 @@
     android:padding="20dp"
     tools:context=".ui.activity.activity.RegisterFragment">
 
+    <!-- Container principal vertical -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <!-- Espaçamento superior -->
         <View
             android:layout_width="match_parent"
             android:layout_height="10dp" />
 
+        <!-- Card que agrupa todo o formulário -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardUseCompatPadding="true"
             app:cardCornerRadius="20dp">
 
+            <!-- Conteúdo interno do card -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="18dp">
 
+                <!-- Ícone ilustrativo do ecrã -->
                 <ImageView
                     android:layout_width="48dp"
                     android:layout_height="48dp"
@@ -37,6 +46,7 @@
                     android:src="@drawable/ic_person_add"
                     app:tint="?attr/colorPrimary" />
 
+                <!-- Título do formulário -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -46,6 +56,7 @@
                     android:textSize="22sp"
                     android:textStyle="bold" />
 
+                <!-- Subtítulo explicativo -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -54,7 +65,7 @@
                     android:textAlignment="center"
                     android:textSize="13sp" />
 
-                <!-- Nome -->
+                <!-- Campo: Nome completo -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilNome"
                     android:layout_width="match_parent"
@@ -71,7 +82,7 @@
                         android:maxLines="1" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Email -->
+                <!-- Campo: Email -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilEmail"
                     android:layout_width="match_parent"
@@ -88,7 +99,7 @@
                         android:maxLines="1" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Password -->
+                <!-- Campo: Password -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilPassword"
                     android:layout_width="match_parent"
@@ -106,7 +117,7 @@
                         android:maxLines="1" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Data nascimento -->
+                <!-- Campo: Data de nascimento -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilDataNascimento"
                     android:layout_width="match_parent"
@@ -123,7 +134,7 @@
                         android:maxLines="1" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- NIF -->
+                <!-- Campo: NIF -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilNif"
                     android:layout_width="match_parent"
@@ -140,7 +151,7 @@
                         android:maxLines="1" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Telemóvel -->
+                <!-- Campo: Telemóvel -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilTelemovel"
                     android:layout_width="match_parent"
@@ -157,7 +168,7 @@
                         android:maxLines="1" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Morada -->
+                <!-- Campo: Morada -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilMorada"
                     android:layout_width="match_parent"
@@ -174,7 +185,7 @@
                         android:maxLines="2" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Código Postal -->
+                <!-- Campo: Código Postal -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilCodPostal"
                     android:layout_width="match_parent"
@@ -191,7 +202,7 @@
                         android:maxLines="1" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- País -->
+                <!-- Campo: País -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilPais"
                     android:layout_width="match_parent"
@@ -208,6 +219,7 @@
                         android:maxLines="1" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <!-- Botão de submissão do registo -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnRegister"
                     android:layout_width="match_parent"
@@ -220,6 +232,7 @@
 
         </com.google.android.material.card.MaterialCardView>
 
+        <!-- Espaçamento inferior -->
         <View
             android:layout_width="match_parent"
             android:layout_height="18dp" />

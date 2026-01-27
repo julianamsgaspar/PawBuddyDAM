@@ -4,16 +4,55 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/homeFragment">
 
-    <!-- USER -->
+    <!--
+        NavGraph principal da aplicação PawBuddy (Navigation Component).
+
+        Responsabilidade:
+        - Declarar os destinos de navegação (Fragments) disponíveis na aplicação.
+        - Definir o destino inicial (startDestination).
+        - Formalizar a passagem de parâmetros entre ecrãs através de <argument>,
+          permitindo navegação tipada e previsível.
+
+        Enquadramento académico:
+        - Este ficheiro implementa a navegação declarativa do Android Jetpack,
+          promovendo:
+            (i) separação entre definição de rotas e lógica de UI,
+            (ii) previsibilidade do fluxo de ecrãs,
+            (iii) redução de erros na passagem de dados (contrato explícito de argumentos).
+        - O uso de labels via strings.xml facilita internacionalização (i18n).
+        - A coexistência de destinos “USER” e “ADMIN” reflete requisitos de controlo de acesso
+          ao nível de apresentação (UI). A validação de permissões deve existir também no backend.
+    -->
+
+    <!--
+        Destino inicial:
+        - homeFragment é o ponto de entrada após abertura da app.
+        - Serve como ecrã principal com acesso a funcionalidades base.
+    -->
+
+    <!-- ========================= -->
+    <!--          USER             -->
+    <!-- ========================= -->
+
     <fragment
         android:id="@+id/homeFragment"
         android:name="pt.ipt.dam2025.pawbuddy.ui.activity.activity.HomeFragment"
         android:label="@string/nav_home" />
+    <!--
+        HomeFragment (Utilizador):
+        - Ecrã inicial/landing.
+        - Tende a agregar atalhos e informação geral.
+    -->
 
     <fragment
         android:id="@+id/listaAnimaisFragment"
         android:name="pt.ipt.dam2025.pawbuddy.ui.activity.activity.ListaAnimaisFragment"
         android:label="@string/nav_animais" />
+    <!--
+        ListaAnimaisFragment:
+        - Listagem de animais disponíveis.
+        - Normalmente integra RecyclerView + Adapter (ex.: AnimalAdapter).
+    -->
 
     <fragment
         android:id="@+id/animalDetailFragment"
@@ -23,10 +62,26 @@
             android:name="animalId"
             app:argType="integer" />
     </fragment>
+    <!--
+        AnimalDetailFragment:
+        - Ecrã de detalhe de um animal específico.
+        - Recebe o argumento obrigatório animalId (Integer), atuando como chave de carregamento
+          (API/BD) para o recurso.
+        - A presença explícita do argumento formaliza o contrato de navegação.
+    -->
+
     <fragment
         android:id="@+id/intencaoDetalheFragment"
         android:name="pt.ipt.dam2025.pawbuddy.ui.activity.activity.IntencaoDetalheFragment"
         android:label="@string/title_intencao_detail" />
+    <!--
+        IntencaoDetalheFragment:
+        - Ecrã de detalhe de uma intenção de adoção.
+        - Neste grafo não estão definidos argumentos; presume-se que o detalhe pode ser carregado
+          via estado partilhado (ex.: ViewModel) ou que o payload chega por outra via.
+        - Em termos académicos, se o detalhe depender de um ID, poderia existir <argument> explícito,
+          mas não se altera o código.
+    -->
 
     <fragment
         android:id="@+id/adotarFragment"
@@ -36,6 +91,12 @@
             android:name="animalId"
             app:argType="integer" />
     </fragment>
+    <!--
+        AdotarFragment:
+        - Fluxo de criação/submissão de intenção de adoção para um animal.
+        - Recebe animalId (Integer) para associar a intenção ao animal correto.
+        - Argumento obrigatório reforça integridade do fluxo (evita adoções “sem alvo”).
+    -->
 
     <fragment
         android:id="@+id/detalhesUtilizadorFragment"
@@ -49,7 +110,20 @@
             android:name="fromList"
             app:argType="boolean"
             android:defaultValue="false" />
+
     </fragment>
+    <!--
+        DetalhesUtilizadorFragment:
+        - Ecrã de perfil/detalhes de utilizador.
+        - userId tem defaultValue=-1:
+            * sugere suporte a dois modos:
+              (a) perfil do utilizador autenticado (sem ID explícito ou com fallback),
+              (b) detalhe de um utilizador específico (ex.: vindo de lista/admin).
+        - fromList (Boolean) com default=false:
+            * funciona como “flag de contexto” para ajustar comportamento/UX (ex.: mostrar botão voltar,
+              esconder certas ações, alterar origem de navegação).
+        - O uso de defaults reduz necessidade de argumentos obrigatórios e evita crashes por ausência.
+    -->
 
     <fragment
         android:id="@+id/loginFragment"
@@ -71,34 +145,69 @@
             app:argType="integer"
             android:defaultValue="-1" />
     </fragment>
-
+    <!--
+        LoginFragment:
+        - Ecrã de autenticação.
+        - Implementa um mecanismo de navegação contextual (pós-login):
+            * returnToPrevious: indica se, após autenticação, se deve regressar ao ecrã anterior.
+            * origin/originId: permitem identificar a origem do fluxo (ex.: “adotar”, “perfil”, etc.)
+              e um identificador associado (ex.: animalId), preservando continuidade do caso de uso.
+        - Academic note: isto aproxima-se de um padrão de “deep-link / return routing”, útil para UX.
+    -->
 
     <fragment
         android:id="@+id/registerFragment"
         android:name="pt.ipt.dam2025.pawbuddy.ui.activity.activity.RegisterFragment"
         android:label="@string/title_register" />
+    <!--
+        RegisterFragment:
+        - Ecrã de registo/criação de conta.
+        - Sem argumentos, assumindo fluxo standard.
+    -->
 
-    <!-- "Minhas Intenções" / "Intenções" -->
+    <!--
+        "Minhas Intenções" / "Intenções"
+        - Destino partilhado por utilizador e admin (listagem), conforme permissões/filtragem.
+        - Label está configurado para @string/admin_intencoes; em termos de UX, poderás ter duas labels,
+          mas não se altera o ficheiro.
+    -->
     <fragment
         android:id="@+id/listaIntencoesFragment"
         android:name="pt.ipt.dam2025.pawbuddy.ui.activity.activity.ListaIntencoesFragment"
         android:label="@string/admin_intencoes" />
 
-    <!-- ADMIN -->
+    <!-- ========================= -->
+    <!--          ADMIN            -->
+    <!-- ========================= -->
+
     <fragment
         android:id="@+id/gestaoFragment"
         android:name="pt.ipt.dam2025.pawbuddy.ui.activity.activity.GestaoFragment"
         android:label="@string/admin_dashboard" />
+    <!--
+        GestaoFragment (Admin Dashboard):
+        - Ecrã central de gestão administrativa (backoffice).
+    -->
 
     <fragment
         android:id="@+id/listaUtilizadoresFragment"
         android:name="pt.ipt.dam2025.pawbuddy.ui.activity.activity.ListaUtilizadoresFragment"
         android:label="@string/admin_utilizadores" />
+    <!--
+        ListaUtilizadoresFragment:
+        - Gestão de utilizadores (listar, ver, possivelmente remover/editar).
+        - Tipicamente associado a UtilizadorAdapter e ações administrativas.
+    -->
 
     <fragment
         android:id="@+id/adicionarAnimalFragment"
         android:name="pt.ipt.dam2025.pawbuddy.ui.activity.activity.AdicionarAnimalFragment"
         android:label="@string/admin_add_animal" />
+    <!--
+        AdicionarAnimalFragment:
+        - Criação de registos Animal (admin).
+        - Ponto de entrada para inserção de novos animais no sistema.
+    -->
 
     <fragment
         android:id="@+id/alterarAnimalFragment"
@@ -108,6 +217,11 @@
             android:name="animalId"
             app:argType="integer" />
     </fragment>
+    <!--
+        AlterarAnimalFragment:
+        - Edição de um animal existente (admin).
+        - Recebe animalId como argumento obrigatório para identificar o registo a editar.
+    -->
 
     <fragment
         android:id="@+id/editarEstadoIntencaoFragment"
@@ -116,10 +230,34 @@
         <argument android:name="id" app:argType="integer" />
         <argument android:name="estado" app:argType="integer" />
     </fragment>
+    <!--
+        EditarEstadoIntencaoFragment:
+        - Ecrã focado na alteração de estado de uma intenção (admin).
+        - Recebe:
+            * id: identificador da intenção (chave do registo)
+            * estado: valor atual do estado (permite pré-preencher UI e suportar validação)
+        - A existência do argumento 'estado' pode reduzir chamadas adicionais (otimização), mas deve ser
+          validada/confirmada com dados do backend ao submeter alterações (princípio de consistência).
+    -->
 
     <fragment
         android:id="@+id/listarAdocoesFinaisFragment"
         android:name="pt.ipt.dam2025.pawbuddy.ui.activity.activity.ListarAdocoesFinaisFragment"
         android:label="@string/admin_final_adoptions" />
+    <!--
+        ListarAdocoesFinaisFragment:
+        - Listagem de adoções finalizadas (admin).
+        - Útil para auditoria, reporting ou histórico operacional.
+    -->
+
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="pt.ipt.dam2025.pawbuddy.ui.activity.activity.AboutFragment"
+        android:label="@string/about_title" />
+    <!--
+        AboutFragment:
+        - Ecrã informativo (ex.: versão, autor(es), objetivos, créditos).
+        - Frequentemente usado em contexto académico para identificação do projeto.
+    -->
 
 </navigation>

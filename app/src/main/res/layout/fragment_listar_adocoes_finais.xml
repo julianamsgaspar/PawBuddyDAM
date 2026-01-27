@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  Layout do ecrã "Adoções Finais".
+  Estrutura simples com título e uma lista (RecyclerView).
+-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,6 +11,7 @@
     android:padding="16dp"
     tools:context=".ui.activity.activity.ListarAdocoesFinaisFragment">
 
+    <!-- Título do ecrã -->
     <TextView
         android:id="@+id/tvTitulo"
         android:layout_width="match_parent"
@@ -17,12 +22,12 @@
         android:gravity="center"
         android:paddingBottom="12dp" />
 
+    <!-- RecyclerView que apresenta a lista de adoções finais -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvAdocoes"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         tools:listitem="@layout/item_adocao" />
-
 
 </LinearLayout>

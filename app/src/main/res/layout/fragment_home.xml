@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  Layout do ecrã Home (HomeFragment).
+  Usa ScrollView para permitir scroll e suportar conteúdos longos, mantendo fillViewport para ocupar o ecrã.
+-->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/homeScroll"
@@ -6,13 +10,15 @@
     android:layout_height="match_parent"
     android:fillViewport="true">
 
+    <!-- Container vertical do conteúdo principal -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- HERO -->
+        <!-- HERO:
+             Cartão de apresentação da app (título, subtítulo, dica) e ícone principal -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardHero"
             android:layout_width="match_parent"
@@ -26,12 +32,14 @@
                 android:orientation="horizontal"
                 android:padding="16dp">
 
+                <!-- Bloco de texto do hero -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
+                    <!-- Nome da aplicação -->
                     <TextView
                         android:id="@+id/tvHomeTitle"
                         android:layout_width="match_parent"
@@ -40,6 +48,7 @@
                         android:textStyle="bold"
                         android:textSize="24sp" />
 
+                    <!-- Subtítulo/descrição curta -->
                     <TextView
                         android:id="@+id/tvHomeSubtitle"
                         android:layout_width="match_parent"
@@ -48,6 +57,7 @@
                         android:text="@string/home_subtitle"
                         android:textSize="14sp" />
 
+                    <!-- Dica adicional / callout -->
                     <TextView
                         android:id="@+id/tvHomeHint"
                         android:layout_width="match_parent"
@@ -57,7 +67,7 @@
                         android:textSize="13sp" />
                 </LinearLayout>
 
-                <!-- Hero icon: primary -->
+                <!-- Ícone do hero (tint primário) -->
                 <ImageView
                     android:id="@+id/imgHero"
                     android:layout_width="72dp"
@@ -70,7 +80,8 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- BENEFÍCIOS / CHIPS -->
+        <!-- BENEFÍCIOS / CHIPS:
+             ChipGroup em linha única com mensagens curtas de valor -->
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chipGroupBenefits"
             android:layout_width="match_parent"
@@ -95,7 +106,8 @@
                 android:text="@string/home_chip_simple" />
         </com.google.android.material.chip.ChipGroup>
 
-        <!-- SECÇÃO: AÇÕES -->
+        <!-- SECÇÃO: AÇÕES
+             Introduz o conjunto de cartões clicáveis (CTAs) -->
         <TextView
             android:id="@+id/tvActionsTitle"
             android:layout_width="match_parent"
@@ -105,7 +117,8 @@
             android:textStyle="bold"
             android:textSize="16sp" />
 
-        <!-- Explorar Animais -->
+        <!-- CTA: Explorar Animais
+             Card clicável que direciona para a listagem de animais -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardExplore"
             android:layout_width="match_parent"
@@ -123,7 +136,7 @@
                 android:orientation="horizontal"
                 android:padding="16dp">
 
-                <!-- secondary tint -->
+                <!-- Ícone do CTA (tint secundário/neutral) -->
                 <ImageView
                     android:layout_width="28dp"
                     android:layout_height="28dp"
@@ -131,6 +144,7 @@
                     android:src="@drawable/ic_pets"
                     app:tint="?attr/colorOnSurfaceVariant" />
 
+                <!-- Texto do CTA -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -153,7 +167,7 @@
                         android:textSize="13sp" />
                 </LinearLayout>
 
-                <!-- secondary tint -->
+                <!-- Indicador visual de navegação -->
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
@@ -165,67 +179,8 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Conta (Login ou Perfil) -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardAccount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:clickable="true"
-            android:focusable="true"
-            app:rippleColor="?attr/colorPrimary"
-            app:cardUseCompatPadding="true"
-            app:cardCornerRadius="16dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="16dp">
-
-                <!-- Troquei para conta/perfil -->
-                <ImageView
-                    android:id="@+id/imgAccount"
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    android:contentDescription="@string/home_cta_account_title"
-                    android:src="@drawable/ic_account_circle"
-                    app:tint="?attr/colorOnSurfaceVariant" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tvAccountTitle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/home_cta_account_title"
-                        android:textStyle="bold"
-                        android:textSize="18sp" />
-
-                    <TextView
-                        android:id="@+id/tvAccountDesc"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="@string/home_cta_account_desc"
-                        android:textSize="13sp" />
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:contentDescription="@string/accessibility_go"
-                    android:src="@drawable/ic_chevron_right"
-                    app:tint="?attr/colorOnSurfaceVariant" />
-            </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-        <!-- Minhas Intenções (apenas user logado não-admin) -->
+        <!-- CTA: Minhas Intenções
+             Visível apenas para utilizador autenticado não-admin (controlado no Kotlin) -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardMyIntents"
             android:layout_width="match_parent"
@@ -283,7 +238,8 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Registo (apenas não logado) -->
+        <!-- CTA: Registo
+             Visível tipicamente quando o utilizador não está autenticado (controlado no Kotlin) -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardRegister"
             android:layout_width="match_parent"
@@ -340,7 +296,66 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- COMO FUNCIONA -->
+        <!-- CTA: Sobre (About)
+             Card de acesso à informação institucional e detalhes técnicos -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardAbout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:rippleColor="?attr/colorPrimary"
+            app:cardUseCompatPadding="true"
+            app:cardCornerRadius="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="16dp">
+
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:contentDescription="@string/accessibility_about"
+                    android:src="@drawable/ic_info"
+                    app:tint="?attr/colorOnSurfaceVariant" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/home_cta_about_title"
+                        android:textStyle="bold"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/home_cta_about_desc"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:contentDescription="@string/accessibility_go"
+                    android:src="@drawable/ic_chevron_right"
+                    app:tint="?attr/colorOnSurfaceVariant" />
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- COMO FUNCIONA:
+             Secção explicativa com passos resumidos do fluxo de adoção -->
         <TextView
             android:id="@+id/tvHowTitle"
             android:layout_width="match_parent"
@@ -363,13 +378,7 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:contentDescription="@string/accessibility_go"
-                    android:src="@drawable/ic_help_outline"
-                    app:tint="?attr/colorOnSurfaceVariant" />
-
+                <!-- Passo 1 -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -377,6 +386,7 @@
                     android:text="@string/home_how_step1"
                     android:textSize="13sp" />
 
+                <!-- Passo 2 -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -384,6 +394,7 @@
                     android:text="@string/home_how_step2"
                     android:textSize="13sp" />
 
+                <!-- Passo 3 -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -395,6 +406,7 @@
 
         </com.google.android.material.card.MaterialCardView>
 
+        <!-- Espaço final para conforto visual -->
         <View
             android:layout_width="match_parent"
             android:layout_height="18dp" />

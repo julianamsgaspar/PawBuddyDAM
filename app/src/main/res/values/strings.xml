@@ -1,34 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- ===================================================== -->
+    <!--                     APLICAÇÃO                         -->
+    <!-- ===================================================== -->
     <string name="app_name">PawBuddy</string>
 
-    <!-- Fragments -->
+    <!-- ===================================================== -->
+    <!--                 NAVEGAÇÃO / MENUS                     -->
+    <!-- ===================================================== -->
+    <string name="nav_home">PawBuddy</string>
+    <string name="nav_animais">Animais</string>
+    <string name="nav_perfil">Detalhes de Perfil</string>
+
+    <string name="action_login">Entrar</string>
+    <string name="action_logout">Sair</string>
+    <string name="action_register">Registar</string>
+
+    <string name="action_open">Abrir</string>
+    <string name="action_back">Voltar</string>
+    <string name="action_cancel">Cancelar</string>
+
+    <string name="action_admin_menu">Menu de Gestão</string>
+    <string name="action_save_changes">Guardar alterações</string>
+
+    <!-- ===================================================== -->
+    <!--                       HOME                             -->
+    <!-- ===================================================== -->
+    <string name="home_subtitle">Encontra um animal para adotar e acompanha o processo.</string>
+    <string name="home_hint">Explora animais disponíveis mesmo sem conta.</string>
+
+    <string name="home_actions_title">Começar</string>
+
+    <string name="home_cta_animals_title">Explorar animais</string>
+    <string name="home_cta_animals_desc">Vê a lista de animais disponíveis para adoção.</string>
+
+    <string name="home_cta_account_title">Conta e perfil</string>
+    <string name="home_cta_account_desc">Entra para gerir o teu perfil e intenções de adoção.</string>
+
+    <string name="home_cta_register_title">Criar conta</string>
+    <string name="home_cta_register_desc">Regista-te para gerir as tuas intenções e acompanhar o processo.</string>
+
+    <string name="home_cta_login_title">Iniciar sessão</string>
+    <string name="home_cta_login_desc">Entra para veres o teu perfil e acompanhar as tuas intenções.</string>
+
+    <string name="home_cta_profile_title">O meu perfil</string>
+    <string name="home_cta_profile_desc">Consulta os teus dados.</string>
+
+    <string name="home_cta_about_title">Sobre</string>
+    <string name="home_cta_about_desc">Curso, disciplina, autores e bibliotecas usadas no projeto.</string>
+
+    <string name="home_how_title">Como funciona</string>
+    <string name="home_how_step1">➤ Explora os animais disponíveis e escolhe o teu favorito.</string>
+    <string name="home_how_step2">➤ Regista-te ou inicia sessão para submeter a tua intenção de adoção.</string>
+    <string name="home_how_step3">➤ O processo é validado e acompanhado até à conclusão.</string>
+
+    <string name="home_chip_fast">Rápido</string>
+    <string name="home_chip_safe">Seguro</string>
+    <string name="home_chip_simple">Simples</string>
+
+    <string name="home_hero_image">Imagem de destaque</string>
+
+    <!-- Atalhos Home (ações) -->
+    <string name="action_view_animals">Ver Animais</string>
+    <string name="action_admin">Gestão</string>
+    <string name="action_view_profile">Ver Perfil</string>
+    <string name="action_view_adoptions">Ver Adoções</string>
+
+    <!-- ===================================================== -->
+    <!--                       ANIMAIS                          -->
+    <!-- ===================================================== -->
     <string name="add_animal_title">Adicionar Animal</string>
-    <string name="image_preview">Preview da imagem</string>
-    <string name="choose_gallery">Escolher da Galeria</string>
-    <string name="take_photo">Tirar Foto</string>
+    <string name="edit_animal_title">Editar Animal</string>
+    <string name="title_animal_detail">Detalhes do Animal</string>
+    <string name="title_alterar_animal">Editar</string>
+
     <string name="field_name">Nome</string>
+    <string name="field_species">Espécie</string>
     <string name="field_breed">Raça</string>
     <string name="field_age">Idade</string>
     <string name="field_gender">Género</string>
-    <string name="field_species">Espécie</string>
     <string name="field_color">Cor</string>
-    <string name="action_add_animal">Adicionar Animal</string>
-    <string name="action_back_home">Voltar para Home</string>
-    <string name="field_profession">Profissão</string>
-    <string name="field_residence_type">Tipo de residência</string>
-    <string name="field_adoption_reason">Motivo da adoção</string>
-    <string name="field_which_animals">Quais animais?</string>
-    <string name="action_submit_intent">Submeter Intenção</string>
-    <string name="action_back">Voltar</string>
-    <string name="action_save_changes">Guardar alterações</string>
-    <string name="edit_animal_title">Editar Animal</string>
-    <string name="action_cancel">Cancelar</string>
-    <string name="action_adopt">Adotar</string>
-    <string name="action_edit_animal">Alterar Animal</string>
-    <string name="action_delete_animal">Eliminar Animal</string>
-    <string name="action_back_to_animals">Voltar para a Lista de Animais</string>
-    <string name="content_desc_animal_image">Imagem do animal</string>
-    <string name="animal_image_placeholder">Imagem de animal (placeholder)</string>
 
     <string name="label_species">Espécie: %1$s</string>
     <string name="label_age">Idade: %1$s</string>
@@ -36,20 +88,139 @@
     <string name="label_breed">Raça: %1$s</string>
     <string name="label_color">Cor: %1$s</string>
 
-    <string name="success_animal_deleted">Animal eliminado com sucesso.</string>
+    <string name="action_add_animal">Adicionar Animal</string>
+    <string name="action_edit_animal">Alterar Animal</string>
+    <string name="action_delete_animal">Eliminar Animal</string>
 
+    <string name="action_back_to_animals">Voltar para a Lista de Animais</string>
+    <string name="action_back_home">Voltar para Home</string>
+
+    <string name="search_animals_hint">Pesquisar por nome, raça ou espécie</string>
+    <string name="empty_animals">Sem animais disponíveis</string>
+    <string name="empty_animals_desc">Atualiza a lista ou tenta novamente mais tarde.</string>
+
+    <!-- Imagens (animais) -->
+    <string name="content_desc_animal_image">Imagem do animal</string>
+    <string name="animal_image_placeholder">Imagem de animal (placeholder)</string>
+    <string name="image_preview">Preview da imagem</string>
+    <string name="choose_gallery">Abrir Galeria</string>
+    <string name="take_photo">Tirar Foto</string>
+
+    <!-- Feedback (animais) -->
+    <string name="success_animal_created">Animal criado com sucesso.</string>
+    <string name="success_animal_modified">Animal alterado com sucesso.</string>
+    <string name="success_animal_deleted">Animal eliminado com sucesso.</string>
     <string name="error_fetch_animal_details">Erro ao buscar detalhes: %1$s</string>
     <string name="error_delete_animal">Erro ao eliminar animal: %1$s</string>
-    <string name="error_generic">Ocorreu um erro inesperado.</string>
-    <string name="error_network">Erro de ligação ao servidor.</string>
     <string name="error_load_animals">Erro ao carregar animais: %1$s</string>
-
     <string name="error_select_or_take_photo">Selecione ou tire uma foto.</string>
-    <string name="success_animal_created">Animal criado com sucesso.</string>
-    <string name="error_generic_with_message">Erro: %1$s</string>
-    <string name="error_permission_denied">Permissão negada.</string>
 
-    <!-- Labels de Utilizador -->
+    <!-- ===================================================== -->
+    <!--                  ADOÇÃO / INTENÇÕES                    -->
+    <!-- ===================================================== -->
+    <string name="title_adotar">Formulário de Adoção</string>
+    <string name="title_adoption_intent">Pedido de Adoção</string>
+    <string name="subtitle_adoption_intent">Preenche o formulário para o administrador validar a tua intenção.</string>
+    <string name="title_form">Dados do formulário</string>
+
+    <string name="action_adopt">Adotar</string>
+    <string name="action_submit_intent">Submeter Intenção</string>
+    <string name="action_view_status">Ver estado</string>
+
+    <string name="field_profession">Profissão</string>
+    <string name="field_residence_type">Tipo de residência</string>
+    <string name="field_adoption_reason">Motivo da adoção</string>
+    <string name="field_which_animals">Quais animais?</string>
+    <string name="label_tem_animais">Tenho animais em casa?</string>
+
+    <string name="option_no">Não</string>
+    <string name="option_yes">Sim</string>
+
+    <string name="error_fill_required_fields">Preencha todos os campos obrigatórios.</string>
+    <string name="error_submit_intent">Erro ao enviar: %1$s</string>
+    <string name="success_intent_created">Intenção submetida com sucesso.</string>
+
+    <string name="cta_login_to_adopt">Inicie sessão para adotar</string>
+    <string name="error_login_required">Precisa de iniciar sessão para continuar.</string>
+
+    <!-- Lista de intenções -->
+    <string name="title_adoption_intents_list">Lista de Intenções de Adoção</string>
+    <string name="empty_adoption_intents">Não existem intenções de adoção.</string>
+
+    <string name="intents_filter_active">Em curso</string>
+    <string name="intents_filter_finished">Finalizadas</string>
+
+    <string name="error_load_intents">Erro ao carregar intenções: %1$s</string>
+    <string name="success_intent_deleted">Intenção eliminada.</string>
+    <string name="error_delete_intent">Erro ao eliminar intenção: %1$s</string>
+
+    <string name="error_intent_already_exists">Já tens uma intenção submetida para este animal.</string>
+
+    <!-- Detalhe da intenção -->
+    <string name="title_intencao_detail">Detalhe da Intenção</string>
+    <string name="intencao_detail_title">Resumo da intenção</string>
+    <string name="intencao_detail_subtitle">Aqui vês o estado e os dados submetidos.</string>
+    <string name="intencao_detail_section_form">Dados submetidos</string>
+
+    <string name="label_estado">Estado</string>
+    <string name="label_data">Data</string>
+    <string name="label_utilizador">Utilizador</string>
+    <string name="label_animal">Animal</string>
+    <string name="label_profissao">Profissão</string>
+    <string name="label_residencia">Residência</string>
+    <string name="label_quais">Quais</string>
+    <string name="label_motivo">Motivo</string>
+    <string name="label_utilizador_id">ID do utilizador</string>
+
+    <string name="ver_mais">Ver mais</string>
+
+    <string name="banner_intent_submitted">Intenção submetida com sucesso. Podes ver o resumo e o estado em “Minhas Intenções”.</string>
+    <string name="banner_intencao_success">Intenção submetida com sucesso. Vê o estado em "Minhas Intenções".</string>
+    <string name="success_intent_created_banner">Intenção submetida com sucesso. Podes acompanhar o estado em “Minhas Intenções”.</string>
+
+    <string name="error_intent_not_found">Não foi possível carregar a intenção.</string>
+
+    <!-- Validações do formulário -->
+    <string name="error_max_chars">Máximo de %1$d caracteres.</string>
+    <string name="error_select_option">Seleciona uma opção.</string>
+    <string name="error_fix_form_fields">Revê os campos assinalados.</string>
+
+    <!-- Estado da intenção (editar) -->
+    <string name="title_edit_intent_status">Editar Estado da Intenção</string>
+    <string name="label_status">Estado</string>
+    <string name="success_intent_status_updated">Estado atualizado com sucesso.</string>
+    <string name="error_update_intent_status">Erro ao atualizar estado: %1$s</string>
+
+    <!-- Estados (mapper) -->
+    <string name="estado_reservado">Reservado</string>
+    <string name="estado_em_processo">Em processo</string>
+    <string name="estado_em_validacao">Em validação</string>
+    <string name="estado_concluido">Concluído</string>
+    <string name="estado_rejeitado">Rejeitado</string>
+    <string name="estado_desconhecido">Desconhecido</string>
+
+    <!-- ===================================================== -->
+    <!--                  ADOÇÕES FINAIS                        -->
+    <!-- ===================================================== -->
+    <string name="title_final_adoptions">Adoções Finais</string>
+
+    <string name="error_load_adoptions">Erro ao carregar adoções: %1$s</string>
+    <string name="error_delete_adoption">Erro ao eliminar adoção: %1$s</string>
+    <string name="success_adoption_deleted">Adoção eliminada.</string>
+
+    <string name="dialog_delete_adoption_message">Eliminar adoção do animal %1$s?</string>
+    <string name="dialog_delete">Eliminar</string>
+    <string name="dialog_cancel">Cancelar</string>
+
+    <!-- Strings de item (adoções / recycler) -->
+    <string name="placeholder_dash">—</string>
+    <string name="label_adopted_by">Adotado por: %1$s</string>
+    <string name="label_date">Data: %1$s</string>
+    <string name="separator_dot"> • </string>
+
+    <!-- ===================================================== -->
+    <!--                    UTILIZADOR                          -->
+    <!-- ===================================================== -->
     <string name="label_name">Nome</string>
     <string name="label_email">Email</string>
     <string name="label_address">Morada</string>
@@ -58,31 +229,71 @@
     <string name="label_phone">Telemóvel</string>
     <string name="label_nif">NIF</string>
 
-    <!-- Ações -->
     <string name="action_delete_user">Eliminar Utilizador</string>
 
-    <!-- Utilizador -->
+    <string name="search_users_hint">Pesquisar por ID, NIF, nome e email </string>
+    <string name="empty_users">Sem utilizadores para mostrar</string>
+
     <string name="error_invalid_user_id">Erro: ID inválido.</string>
     <string name="error_load_user">Erro ao carregar utilizador: %1$s</string>
     <string name="success_user_deleted">Utilizador eliminado com sucesso.</string>
     <string name="error_delete_user">Erro ao eliminar utilizador: %1$s</string>
 
-    <string name="success_intent_status_updated">Estado atualizado com sucesso.</string>
-    <string name="error_update_intent_status">Erro ao atualizar estado: %1$s</string>
+    <string name="error_load_users">Erro ao carregar utilizadores: %1$s</string>
 
-    <string name="intents_filter_active">Em curso</string>
-    <string name="intents_filter_finished">Finalizadas</string>
+    <!-- ===================================================== -->
+    <!--                  LOGIN / REGISTO                       -->
+    <!-- ===================================================== -->
+    <string name="title_login">Login</string>
+    <string name="title_register">Registo</string>
 
-    <string name="dialog_confirm_title">Confirmação</string>
-    <string name="dialog_confirm_delete_user">Deseja realmente eliminar este utilizador?</string>
-    <string name="dialog_yes">Sim</string>
-    <string name="dialog_no">Não</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
 
-    <!-- Intenção de adoção: editar estado -->
-    <string name="title_edit_intent_status">Editar Estado da Intenção</string>
-    <string name="label_status">Estado</string>
+    <string name="action_sign_in">Entrar</string>
 
-    <!-- Gestão (Admin) -->
+    <string name="error_fill_email_password">Preencha email e password.</string>
+    <string name="success_login">Login efetuado: %1$s</string>
+    <string name="error_login_failed">Erro ao fazer login: %1$s</string>
+
+    <!-- Register (campos) -->
+    <string name="register_subtitle">Preenche os teus dados para começar o processo de adoção.</string>
+    <string name="hint_full_name">Nome completo</string>
+    <string name="hint_birthdate">Data de Nascimento (YYYY-MM-DD)</string>
+    <string name="hint_nif">NIF</string>
+    <string name="hint_phone">Telemóvel (+351)</string>
+    <string name="hint_address">Morada</string>
+    <string name="hint_postal_code">Código Postal (0000-000)</string>
+    <string name="hint_country">País</string>
+
+    <string name="error_fill_all_fields">Preencha todos os campos</string>
+    <string name="register_success">Registo efetuado: %1$s</string>
+    <string name="register_error">Erro ao registar: %1$s</string>
+
+    <string name="info_login_after_register">Conta criada. Faz login para continuar.</string>
+
+    <!-- Validações auth -->
+    <string name="error_email_required">Email é obrigatório.</string>
+    <string name="error_password_required">Password é obrigatória.</string>
+    <string name="error_login_invalid">Credenciais inválidas.</string>
+    <string name="error_required_field">Campo obrigatório.</string>
+    <string name="error_email_already_exists">Já existe uma conta com este email.</string>
+
+    <string name="success_logout">Logout realizado!</string>
+
+    <!-- ===================================================== -->
+    <!--                   ADMIN / GESTÃO                       -->
+    <!-- ===================================================== -->
+    <string name="admin_panel">Painel de Administração</string>
+
+    <string name="admin_dashboard">Dashboard</string>
+    <string name="admin_dashboard_subtitle">Ações rápidas para gerir a plataforma</string>
+
+    <!-- Títulos do menu/admin -->
+    <string name="admin_utilizadores">Utilizadores</string>
+    <string name="admin_intencoes">Intenções</string>
+
+    <!-- Ações/admin -->
     <string name="admin_add_animal">Adicionar Animal</string>
     <string name="admin_list_animals">Listar Animais</string>
     <string name="admin_list_users">Listar Utilizadores</string>
@@ -90,110 +301,67 @@
     <string name="admin_final_adoptions">Adoções Finais</string>
     <string name="admin_back_home">Voltar a Home</string>
 
-    <!-- Home -->
-    <string name="action_login">Entrar</string>
-    <string name="action_logout">Sair</string>
-
-    <string name="action_register">Registar</string>
-    <string name="action_view_animals">Ver Animais</string>
-    <string name="action_admin">Gestão</string>
-    <string name="action_view_profile">Ver Perfil</string>
-    <string name="action_view_adoptions">Ver Adoções</string>
-    <string name="success_logout">Logout realizado!</string>
-
-    <!-- Intenções -->
-    <string name="title_adoption_intents_list">Lista de Intenções de Adoção</string>
-    <string name="empty_adoption_intents">Não existem intenções de adoção.</string>
-
-    <!-- Intenções -->
-    <string name="error_load_intents">Erro ao carregar intenções: %1$s</string>
-    <string name="success_intent_deleted">Intenção eliminada.</string>
-    <string name="error_delete_intent">Erro ao eliminar intenção: %1$s</string>
-
-    <string name="action_admin_menu">Menu de Gestão</string>
-    <string name="error_load_users">Erro ao carregar utilizadores: %1$s</string>
-    <string name="title_final_adoptions">Adoções Finais</string>
-
-    <!-- Adoções finais -->
-    <string name="error_load_adoptions">Erro ao carregar adoções: %1$s</string>
-    <string name="error_delete_adoption">Erro ao eliminar adoção: %1$s</string>
-    <string name="success_adoption_deleted">Adoção eliminada.</string>
-
-    <!-- Diálogo de confirmação -->
-    <string name="dialog_delete_adoption_message">Eliminar adoção do animal %1$s?</string>
-    <string name="dialog_delete">Eliminar</string>
-    <string name="dialog_cancel">Cancelar</string>
-
-    <!-- Adoções (Recycler item) -->
-    <string name="placeholder_dash">—</string>
-    <string name="label_adopted_by">Adotado por: %1$s</string>
-    <string name="label_date">Data: %1$s</string>
-    <string name="separator_dot"> • </string>
-
-    <!-- Login -->
-    <string name="title_login">Login</string>
-    <string name="hint_email">Email</string>
-    <string name="hint_password">Password</string>
-
-    <string name="action_sign_in">Entrar</string>
-    <string name="error_fill_email_password">Preencha email e password.</string>
-    <string name="success_login">Login efetuado: %1$s</string>
-    <string name="error_login_failed">Erro ao fazer login: %1$s</string>
-
-        <!-- Register -->
-    <string name="error_fill_all_fields">Preencha todos os campos</string>
-    <string name="register_success">Registo efetuado: %1$s</string>
-    <string name="register_error">Erro ao registar: %1$s</string>
-
-
-    <string name="nav_home">PawBuddy</string>
-    <string name="nav_animais">Animais</string>
-    <string name="nav_perfil">Perfil</string>
-
-    <string name="admin_panel">Painel de Administração</string>
-    <string name="admin_dashboard">Dashboard</string>
-    <string name="admin_utilizadores">Utilizadores</string>
-    <string name="admin_intencoes">Intenções</string>
-
-    <string name="title_register">Registo</string>
-    <string name="title_animal_detail">Detalhes do Animal</string>
-    <string name="title_adotar">Formulário de Adoção</string>
-    <string name="title_alterar_animal">Editar</string>
-
-    <string name="error_login_required">Precisa de iniciar sessão para continuar.</string>
-    <string name="cta_login_to_adopt">Inicie sessão para adotar</string>
-    <string name="success_intent_created">Intenção submetida com sucesso.</string>
-    <string name="error_fill_required_fields">Preencha todos os campos obrigatórios.</string>
-    <string name="option_no">Não</string>
-    <string name="option_yes">Sim</string>
-    <string name="error_submit_intent">Erro ao enviar: %1$s</string>
-
-    <string name="label_tem_animais">Tenho animais em casa?</string>
-
-    <string name="home_subtitle">Encontra um animal para adotar e acompanha o processo.</string>
-
-    <string name="home_cta_animals_title">Explorar animais</string>
-    <string name="home_cta_animals_desc">Vê a lista de animais disponíveis para adoção.</string>
-
-    <string name="home_cta_account_title">Conta e perfil</string>
-    <string name="home_cta_account_desc">Entra para gerir o teu perfil e intenções de adoção.</string>
-    <string name="admin_dashboard_subtitle">Ações rápidas para gerir a plataforma</string>
-
+    <!-- Descrições/admin -->
     <string name="admin_add_animal_desc">Registar um novo animal para adoção</string>
     <string name="admin_list_animals_desc">Ver e gerir animais registados</string>
     <string name="admin_list_users_desc">Consultar utilizadores e detalhes</string>
     <string name="admin_list_intents_desc">Rever pedidos e atualizar estados</string>
     <string name="admin_final_adoptions_desc">Histórico e registos concluídos</string>
 
-    <string name="action_open">Abrir</string>
-    <string name="search_animals_hint">Pesquisar por nome, raça ou espécie</string>
-    <string name="empty_animals">Sem animais disponíveis</string>
-    <string name="empty_animals_desc">Atualiza a lista ou tenta novamente mais tarde.</string>
+    <!-- ===================================================== -->
+    <!--                 DIÁLOGOS / CONFIRMAÇÕES                -->
+    <!-- ===================================================== -->
+    <string name="dialog_confirm_title">Confirmação</string>
+    <string name="dialog_confirm_delete_user">Deseja realmente eliminar este utilizador?</string>
+    <string name="dialog_yes">Sim</string>
+    <string name="dialog_no">Não</string>
+
+    <!-- ===================================================== -->
+    <!--                 ERROS / FEEDBACK GENÉRICO              -->
+    <!-- ===================================================== -->
+    <string name="error_generic">Ocorreu um erro inesperado.</string>
+    <string name="error_network">Erro de ligação ao servidor.</string>
+    <string name="error_generic_with_message">Erro: %1$s</string>
+    <string name="error_permission_denied">Permissão negada.</string>
+    <string name="error_unauthorized">Sem autorização. Faz login novamente.</string>
+    <string name="loading">Aguarda…</string>
+
+    <!-- ===================================================== -->
+    <!--                 ACESSIBILIDADE                         -->
+    <!-- ===================================================== -->
+    <string name="accessibility_go">Abrir</string>
+    <string name="accessibility_adoption">Ícone de adoção</string>
+    <string name="accessibility_about">Ícone sobre</string>
+
+    <!-- ===================================================== -->
+    <!--                 ABOUT / CRÉDITOS                       -->
+    <!-- ===================================================== -->
+    <string name="about_title">Sobre</string>
+    <string name="about_course_title">Curso / Disciplina / Ano letivo</string>
+    <string name="about_authors_title">Autores</string>
+    <string name="about_thirdparty_title">Bibliotecas e código de terceiros</string>
+
+    <string name="about_course_line1">Curso: Licenciatura em Engenharia Informática</string>
+    <string name="about_course_line2">Disciplina: Desenvolvimento de Aplicações Móveis</string>
+    <string name="about_course_line3">Ano letivo: 2025/2026</string>
+
+    <string name="about_open_source_note">
+    As bibliotecas abaixo foram obtidas via Gradle/Maven Central ou repositórios oficiais.
+</string>
+
+    <string name="about_section_services">Serviços externos</string>
+    <string name="about_api_desc">API REST desenvolvida no âmbito do projeto, alojada em Microsoft Azure App Service.</string>
+    <string name="about_open_api">Abrir API</string>
+
+    <!-- ===================================================== -->
+    <!--                 MISC / UI (TEXTOS SOLTOS)              -->
+    <!-- ===================================================== -->
     <string name="animal_photo_desc">Foto do animal\n\n</string>
     <string name="action_delete">Apagar\n</string>
-    <string name="search_users_hint">Pesquisar por ID, NIF, nome e email </string>
-    <string name="empty_users">Sem utilizadores para mostrar</string>
 
+    <!-- ===================================================== -->
+    <!--                 ARRAYS / LISTAS                        -->
+    <!-- ===================================================== -->
     <string-array name="species_values">
         <item>Cão</item>
         <item>Gato</item>
@@ -228,78 +396,6 @@
         <item>3</item>
         <item>4</item>
     </string-array>
-    <string name="home_hint">Explora animais disponíveis mesmo sem conta.</string>
-    <string name="home_hero_image">Imagem de destaque</string>
-    <string name="home_actions_title">Começar</string>
-    <string name="estado_reservado">Reservado</string>
-    <string name="estado_em_processo">Em processo</string>
-    <string name="estado_em_validacao">Em validação</string>
-    <string name="estado_concluido">Concluído</string>
-    <string name="estado_rejeitado">Rejeitado</string>
-    <string name="estado_desconhecido">Desconhecido</string>
-
-    <string name="home_chip_fast">Rápido</string>
-    <string name="home_chip_safe">Seguro</string>
-    <string name="home_chip_simple">Simples</string>
-    <string name="home_cta_register_title">Criar conta</string>
-    <string name="home_cta_register_desc">Regista-te para gerir as tuas intenções e acompanhar o processo.</string>
-    <string name="home_cta_login_title">Iniciar sessão</string>
-    <string name="home_cta_login_desc">Entra para veres o teu perfil e acompanhar as tuas intenções.</string>
-    <string name="home_cta_profile_title">O meu perfil</string>
-    <string name="home_cta_profile_desc">Consulta os teus dados e acompanha as tuas intenções de adoção.</string>
-
-    <string name="home_how_title">Como funciona</string>
-    <string name="home_how_step1">1) Explora os animais disponíveis e escolhe o teu favorito.</string>
-    <string name="home_how_step2">2) Regista-te ou inicia sessão para submeter a tua intenção de adoção.</string>
-    <string name="home_how_step3">3) O processo é validado e acompanhado até à conclusão.</string>
-
-    <string name="accessibility_go">Abrir</string>
-    <string name="register_subtitle">Preenche os teus dados para começar o processo de adoção.</string>
-    <string name="hint_full_name">Nome completo</string>
-    <string name="hint_birthdate">Data de Nascimento (YYYY-MM-DD)</string>
-    <string name="hint_nif">NIF</string>
-    <string name="hint_phone">Telemóvel (+351)</string>
-    <string name="hint_address">Morada</string>
-    <string name="hint_postal_code">Código Postal (0000-000)</string>
-    <string name="hint_country">País</string>
-    <string name="loading">Aguarda…</string>
-    <string name="error_email_required">Email é obrigatório.</string>
-    <string name="error_password_required">Password é obrigatória.</string>
-    <string name="error_login_invalid">Credenciais inválidas.</string>
-    <string name="error_required_field">Campo obrigatório.</string>
-    <string name="error_email_already_exists">Já existe uma conta com este email.</string>
-    <string name="info_login_after_register">Conta criada. Faz login para continuar.</string>
-
-    <string name="error_unauthorized">Sem autorização. Faz login novamente.</string>
-
-    <string name="title_adoption_intent">Pedido de Adoção</string>
-    <string name="subtitle_adoption_intent">Preenche o formulário para o administrador validar a tua intenção.</string>
-    <string name="title_form">Dados do formulário</string>
-    <string name="accessibility_adoption">Ícone de adoção</string>
-    <string name="error_max_chars">Máximo de %1$d caracteres.</string>
-    <string name="error_select_option">Seleciona uma opção.</string>
-    <string name="error_fix_form_fields">Revê os campos assinalados.</string>
-    <string name="success_intent_created_banner">Intenção submetida com sucesso. Podes acompanhar o estado em “Minhas Intenções”.</string>
-    <string name="action_view_status">Ver estado</string>
-    <string name="intencao_detail_title">Resumo da intenção</string>
-    <string name="intencao_detail_subtitle">Aqui vês o estado e os dados submetidos.</string>
-    <string name="intencao_detail_section_form">Dados submetidos</string>
-    <string name="field_status">Estado</string>
-    <string name="title_intencao_detail">Detalhe da Intenção</string>
-    <string name="banner_intent_submitted">Intenção submetida com sucesso. Podes ver o resumo e o estado em “Minhas Intenções”.</string>
-    <string name="error_intent_not_found">Não foi possível carregar a intenção.</string>
-    <string name="banner_intencao_success">Intenção submetida com sucesso. Vê o estado em "Minhas Intenções".</string>
-    <string name="ver_mais">Ver mais</string>
-    <string name="label_estado">Estado</string>
-    <string name="label_data">Data</string>
-    <string name="label_utilizador">Utilizador</string>
-    <string name="label_animal">Animal</string>
-    <string name="label_profissao">Profissão</string>
-    <string name="label_residencia">Residência</string>
-    <string name="label_quais">Quais</string>
-    <string name="label_motivo">Motivo</string>
-    <string name="label_utilizador_id">ID do utilizador</string>
-    <string name="error_intent_already_exists">Já tens uma intenção submetida para este animal.</string>
 
 
 </resources>

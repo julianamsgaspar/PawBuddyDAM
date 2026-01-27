@@ -1,152 +1,302 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<!--
+Ecrã de adicionar animal
+Layout com scroll, cartões Material e formulário estruturado
+-->
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
+    android:padding="16dp"
     tools:context=".ui.activity.activity.AdicionarAnimalFragment">
 
+    <!--
+    Container principal vertical
+    -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="20dp">
+        android:orientation="vertical">
 
-        <!-- PREVIEW DA IMAGEM -->
+        <!--
+        Título do ecrã
+        -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/action_add_animal"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:paddingBottom="12dp" />
+
+        <!--
+        Cartão da imagem do animal e ações associadas
+        -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardUseCompatPadding="true"
-            app:cardCornerRadius="14dp"
-            app:cardElevation="2dp">
+            app:cardCornerRadius="18dp"
+            app:cardElevation="1dp">
 
-            <ImageView
-                android:id="@+id/ivPreviewImagem"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="220dp"
-                android:scaleType="centerCrop"
-                android:background="#DDDDDD"
-                android:visibility="gone"
-                android:contentDescription="@string/image_preview" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="14dp">
+
+                <!--
+                Zona de preview da imagem / placeholder
+                -->
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:background="?attr/colorSurfaceVariant">
+
+                    <ImageView
+                        android:id="@+id/ivPreviewImagem"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/image_preview"
+                        android:scaleType="centerCrop"
+                        android:visibility="gone" />
+
+                    <!--
+                    Placeholder apresentado quando não existe imagem
+                    -->
+                    <LinearLayout
+                        android:id="@+id/llPlaceholderImagem"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="16dp">
+
+                        <ImageView
+                            android:layout_width="44dp"
+                            android:layout_height="44dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_pets"
+                            app:tint="?attr/colorPrimary" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/image_preview"
+                            android:alpha="0.8" />
+                    </LinearLayout>
+
+                </FrameLayout>
+
+                <!--
+                Botões para escolher imagem da galeria ou tirar fotografia
+                -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="12dp"
+                    android:weightSum="2">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnGaleria"
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:minWidth="0dp"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:text="@string/choose_gallery"
+                        app:icon="@drawable/ic_image"
+                        app:iconGravity="textStart"
+                        app:iconPadding="8dp"
+                        android:insetLeft="0dp"
+                        android:insetRight="0dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnTirarFoto"
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="10dp"
+                        android:minWidth="0dp"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:text="@string/take_photo"
+                        app:icon="@drawable/ic_camera"
+                        app:iconGravity="textStart"
+                        app:iconPadding="8dp"
+                        android:insetLeft="0dp"
+                        android:insetRight="0dp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- BOTÕES DE IMAGEM -->
-        <LinearLayout
+        <!--
+        Cartão com os dados do animal
+        -->
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_marginTop="12dp">
+            android:layout_marginTop="12dp"
+            app:cardUseCompatPadding="true"
+            app:cardCornerRadius="18dp"
+            app:cardElevation="1dp">
 
-            <Button
-                android:id="@+id/btnGaleria"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/choose_gallery" />
-
-            <Button
-                android:id="@+id/btnTirarFoto"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:text="@string/take_photo" />
-        </LinearLayout>
-
-        <!-- NOME -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:hint="@string/field_name">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etNome"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:maxLines="1" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:orientation="vertical"
+                android:padding="14dp">
 
-        <!-- RAÇA -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/field_breed"
-            android:layout_marginTop="10dp">
+                <!--
+                Título da secção de dados
+                -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/nav_animais"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:paddingBottom="10dp" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etRaca"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:maxLines="1" />
-        </com.google.android.material.textfield.TextInputLayout>
+                <!--
+                Campo do nome do animal
+                -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/field_name"
+                    app:startIconDrawable="@drawable/ic_fav">
 
-        <!-- COR -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/field_color"
-            android:layout_marginTop="10dp">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etNome"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName"
+                        android:maxLines="1" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etCor"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:maxLines="1" />
-        </com.google.android.material.textfield.TextInputLayout>
+                <!--
+                Seleção da espécie (dropdown Material)
+                -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilEspecie"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/field_species">
 
-        <!-- IDADE (Spinner) -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:hint="@string/field_age">
+                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                        android:id="@+id/spEspecie"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <Spinner
-                android:id="@+id/spIdade"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:spinnerMode="dropdown" />
-        </com.google.android.material.textfield.TextInputLayout>
+                <!--
+                Campo da raça
+                -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/field_breed"
+                    app:startIconDrawable="@drawable/ic_tag">
 
-        <!-- GÉNERO (Spinner) -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:hint="@string/field_gender">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etRaca"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:maxLines="1" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <Spinner
-                android:id="@+id/spGenero"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:spinnerMode="dropdown" />
-        </com.google.android.material.textfield.TextInputLayout>
+                <!--
+                Seleção da idade (dropdown Material)
+                -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilIdade"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/field_age">
 
-        <!-- ESPÉCIE (Spinner) -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:hint="@string/field_species">
+                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                        android:id="@+id/spIdade"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <Spinner
-                android:id="@+id/spEspecie"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:spinnerMode="dropdown" />
-        </com.google.android.material.textfield.TextInputLayout>
+                <!--
+                Seleção do género (dropdown Material)
+                -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilGenero"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/field_gender">
 
-        <!-- BOTÃO DE ADICIONAR -->
-        <Button
+                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                        android:id="@+id/spGenero"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--
+                Campo da cor
+                -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/field_color"
+                    app:startIconDrawable="@drawable/ic_palette">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etCor"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:maxLines="1" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!--
+        Botão principal de submissão
+        -->
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnAdicionar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="22dp"
-            android:text="@string/action_add_animal" />
+            android:layout_marginTop="14dp"
+            android:text="@string/action_add_animal"
+            app:cornerRadius="16dp"
+            android:minHeight="52dp" />
+
+        <!--
+        Espaçamento final inferior
+        -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="12dp" />
 
     </LinearLayout>
-</ScrollView>
+</androidx.core.widget.NestedScrollView>

@@ -1,10 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!--
+        Recursos de opções (string-array) da aplicação PawBuddy.
+    -->
+
+    <!--
+        Opções: "Tem animais em casa?"
+
+        Contexto de uso:
+        - Utilizado no formulário de intenção de adoção.
+        - Permite ao utilizador indicar se já possui outros animais.
+
+        Justificação de design:
+        - As opções são binárias (Sim / Não), logo um array simples é suficiente.
+        - A ordem dos itens é relevante e deve corresponder à ordem apresentada na UI.
+        - Caso futuramente seja necessário suportar múltiplos idiomas,
+          este array pode ser duplicado em values-en/values-fr, etc.
+
+    -->
     <string-array name="opcoes_tem_animais">
         <item>Não</item>
         <item>Sim</item>
     </string-array>
-
 
 </resources>

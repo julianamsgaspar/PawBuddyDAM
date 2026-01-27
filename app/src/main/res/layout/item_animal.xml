@@ -1,69 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<!--
+  Item de lista/card para apresentar um animal (imagem + info em overlay).
+  MaterialCardView dá o aspeto de "cartão" com cantos arredondados.
+-->
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_margin="6dp"
-    app:cardCornerRadius="14dp"
+    app:cardCornerRadius="18dp"
     app:cardUseCompatPadding="true"
-    app:cardElevation="2dp"
+    app:cardElevation="1dp"
     app:strokeWidth="1dp">
 
-    <LinearLayout
+    <!--
+      ConstraintLayout para controlar a proporção da imagem (ratio) e permitir overlay (scrim + texto).
+    -->
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <!-- Imagem quadrada (ideal para grid) -->
+        <!-- Imagem do animal com proporção fixa (4:3) e corte central -->
         <ImageView
             android:id="@+id/ivAnimal"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
             android:contentDescription="@string/animal_photo_desc"
-            android:src="@drawable/ic_pet_placeholder" />
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_pet_placeholder"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintDimensionRatio="4:3" />
 
+        <!-- Overlay/gradiente para melhorar legibilidade do texto sobre a imagem -->
+        <View
+            android:id="@+id/vScrim"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/bg_bottom_scrim"
+            app:layout_constraintTop_toTopOf="@id/ivAnimal"
+            app:layout_constraintBottom_toBottomOf="@id/ivAnimal"
+            app:layout_constraintStart_toStartOf="@id/ivAnimal"
+            app:layout_constraintEnd_toEndOf="@id/ivAnimal" />
+
+        <!-- Bloco de informação (texto) alinhado ao fundo da imagem -->
         <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/llInfo"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="10dp">
+            android:padding="12dp"
+            app:layout_constraintBottom_toBottomOf="@id/ivAnimal"
+            app:layout_constraintStart_toStartOf="@id/ivAnimal"
+            app:layout_constraintEnd_toEndOf="@id/ivAnimal">
 
+            <!-- Nome do animal -->
             <TextView
                 android:id="@+id/tvNome"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textSize="14sp"
+                android:textSize="16sp"
+                android:textColor="@android:color/white"
                 android:maxLines="1"
                 android:ellipsize="end"
                 tools:text="Bobby" />
 
+            <!-- Espécie e raça (ou info curta equivalente) -->
             <TextView
                 android:id="@+id/tvEspecie"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:alpha="0.85"
+                android:textSize="13sp"
+                android:textColor="@android:color/white"
+                android:alpha="0.92"
                 android:maxLines="1"
                 android:ellipsize="end"
                 tools:text="Cão · Labrador" />
 
+            <!-- Idade e género (ou info curta equivalente) -->
             <TextView
                 android:id="@+id/tvIdade"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="11sp"
-                android:alpha="0.75"
+                android:textSize="12sp"
+                android:textColor="@android:color/white"
+                android:alpha="0.85"
                 android:maxLines="1"
                 android:ellipsize="end"
-                tools:text="2 · Fêmea" />
+                tools:text="2 anos · Fêmea" />
 
-            <!-- Campos antigos: mantidos para não rebentar o adapter,
-                 mas escondidos porque num grid estragam o layout -->
+            <!-- Views escondidas, mantidas por compatibilidade com o adapter (IDs existentes) -->
             <TextView
                 android:id="@+id/tvGenero"
                 android:layout_width="0dp"
@@ -83,6 +114,6 @@
                 android:visibility="gone" />
         </LinearLayout>
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>
