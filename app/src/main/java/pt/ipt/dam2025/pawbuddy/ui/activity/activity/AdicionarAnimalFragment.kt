@@ -2,7 +2,7 @@ package pt.ipt.dam2025.pawbuddy.ui.activity.activity
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
+import java.text.SimpleDateFormat
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -30,6 +31,7 @@ import pt.ipt.dam2025.pawbuddy.databinding.FragmentAdicionarAnimalBinding
 import pt.ipt.dam2025.pawbuddy.retrofit.RetrofitProvider
 import java.io.File
 import java.io.FileOutputStream
+import java.util.Date
 import java.util.Locale
 
 /**
@@ -80,15 +82,30 @@ class AdicionarAnimalFragment : Fragment() {
         }
 
     /**
-     * Launcher para captura de imagem via câmara (preview em Bitmap).
-     * O Bitmap é persistido como ficheiro temporário para manter um Uri utilizável em upload.
+     * URI temporário da fotografia capturada pela câmara.
+     * É gerado previamente via FileProvider e usado pelo contrato TakePicture().
      */
-    private val cameraPreview =
-        registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
-            if (bitmap != null) {
-                imagemUri = salvarBitmap(bitmap)
+    private var cameraPhotoUri: Uri? = null
+
+    /**
+     * Launcher para captura de imagem em resolução total através da câmara.
+     *
+     * - Grava a fotografia diretamente no URI fornecido (cameraPhotoUri);
+     * - Em caso de sucesso, atualiza a pré-visualização e guarda o URI para upload;
+     * - Em caso de falha, apresenta feedback ao utilizador.
+     */
+    private val takePicture =
+        registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+            if (success && cameraPhotoUri != null) {
+                imagemUri = cameraPhotoUri
                 showImagePreview()
-                binding.ivPreviewImagem.setImageBitmap(bitmap)
+                binding.ivPreviewImagem.setImageURI(imagemUri)
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "Não foi possível tirar a foto.",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
@@ -157,17 +174,36 @@ class AdicionarAnimalFragment : Fragment() {
         // Captura de imagem via câmara (TakePicturePreview) condicionada a permissões.
         binding.btnTirarFoto.setOnClickListener {
             if (allPermissionsGranted()) {
-                cameraPreview.launch(null)
+                cameraPhotoUri = createImageUri()
+                takePicture.launch(cameraPhotoUri)
             } else {
                 requestPermissions()
             }
         }
+
 
         // Submissão do formulário.
         binding.btnAdicionar.setOnClickListener {
             enviarAnimal()
         }
     }
+    /**
+     * Cria um URI seguro para armazenamento temporário da fotografia capturada.
+     *
+     * O ficheiro é criado em cacheDir e exposto via FileProvider,
+     * permitindo à aplicação da câmara gravar a imagem em resolução total.
+     */
+    private fun createImageUri(): Uri {
+        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
+        val imageFile = File(requireContext().cacheDir, "camera_$timeStamp.jpg")
+
+        return FileProvider.getUriForFile(
+            requireContext(),
+            "${requireContext().packageName}.fileprovider",
+            imageFile
+        )
+    }
+
 
     /**
      * Configura os dropdowns (espécie, género, idade).
@@ -361,21 +397,6 @@ class AdicionarAnimalFragment : Fragment() {
         return lower.replaceFirstChar { ch ->
             if (ch.isLowerCase()) ch.titlecase(pt) else ch.toString()
         }
-    }
-
-    /**
-     * Persiste um Bitmap (câmara preview) em ficheiro temporário no cacheDir e devolve um Uri.
-     *
-     * Justificação:
-     * - O upload multipart é mais simples/estável a partir de File/RequestBody.
-     * - cacheDir é adequado para ficheiros temporários que não requerem persistência a longo prazo.
-     */
-    private fun salvarBitmap(bitmap: Bitmap): Uri {
-        val file = File(requireActivity().cacheDir, "foto_${System.currentTimeMillis()}.jpg")
-        FileOutputStream(file).use { stream ->
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream)
-        }
-        return Uri.fromFile(file)
     }
 
     /**
