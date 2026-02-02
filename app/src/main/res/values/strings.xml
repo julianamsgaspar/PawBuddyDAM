@@ -115,6 +115,15 @@
     <string name="error_load_animals">Erro ao carregar animais: %1$s</string>
     <string name="error_select_or_take_photo">Selecione ou tire uma foto.</string>
 
+    <!-- Filtros (animais) -->
+    <string name="filters_title">Filtros</string>
+    <string name="filters_toggle">Mostrar/ocultar filtros</string>
+    <string name="filter_species">Espécie</string>
+    <string name="filter_gender">Género</string>
+    <string name="filter_sort">Ordenar por</string>
+    <string name="action_apply">Aplicar</string>
+    <string name="action_clear">Limpar</string>
+
     <!-- ===================================================== -->
     <!--                  ADOÇÃO / INTENÇÕES                    -->
     <!-- ===================================================== -->
@@ -249,12 +258,15 @@
 
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
+    <string name="hint_confirm_password">Confirmar palavra-passe</string>
 
     <string name="action_sign_in">Entrar</string>
 
     <string name="error_fill_email_password">Preencha email e password.</string>
     <string name="success_login">Login efetuado: %1$s</string>
     <string name="error_login_failed">Erro ao fazer login: %1$s</string>
+    <string name="error_passwords_do_not_match">As palavras-passe não coincidem</string>
+
 
     <!-- Register (campos) -->
     <string name="register_subtitle">Preenche os teus dados para começar o processo de adoção.</string>

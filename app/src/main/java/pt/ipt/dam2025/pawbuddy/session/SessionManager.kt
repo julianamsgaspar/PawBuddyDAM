@@ -60,6 +60,14 @@ class SessionManager(context: Context) {
         prefs.getBoolean("isAdmin", false)
 
     /**
+     * Obtém o nome do utilizador autenticado.
+     *
+     * @return Nome do utilizador ou null caso não exista sessão ativa
+     */
+    fun userName(): String? =
+        prefs.getString("userName", null)
+
+    /**
      * Guarda os dados da sessão após autenticação bem-sucedida.
      *
      * Armazena:
@@ -73,13 +81,15 @@ class SessionManager(context: Context) {
      * @param userId Identificador único do utilizador
      * @param isAdmin Indica se o utilizador tem privilégios administrativos
      */
-    fun saveLogin(userId: Int, isAdmin: Boolean) {
+    fun saveLogin(userId: Int, userName: String, isAdmin: Boolean) {
         prefs.edit()
             .putBoolean("isLogged", true)
             .putInt("utilizadorId", userId)
+            .putString("userName", userName)
             .putBoolean("isAdmin", isAdmin)
             .apply()
     }
+
 
     /**
      * Termina a sessão do utilizador.

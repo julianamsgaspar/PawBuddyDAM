@@ -160,8 +160,13 @@ class LoginFragment : Fragment() {
                     val resposta: LoginResponse = authApi.login(req)
 
                     withContext(Dispatchers.Main) {
-                        // Persistência de sessão local.
-                        session.saveLogin(resposta.id, resposta.isAdmin)
+
+                        // Persistência de sessão local (agora inclui nome).
+                        session.saveLogin(
+                            userId = resposta.id,
+                            userName = resposta.user,
+                            isAdmin = resposta.isAdmin
+                        )
 
                         // Feedback ao utilizador (UX).
                         Toast.makeText(
@@ -178,6 +183,7 @@ class LoginFragment : Fragment() {
                             originId = originId
                         )
                     }
+
 
                 } catch (e: HttpException) {
                     // Tentativa de obter uma mensagem do backend (quando devolvida no errorBody).

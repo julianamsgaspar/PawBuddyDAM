@@ -20,33 +20,19 @@ import pt.ipt.dam2025.pawbuddy.session.SessionManager
  */
 class AuthRepository(private val context: Context) {
 
-    /** Gestor responsável pela persistência do estado de sessão do utilizador */
     private val session = SessionManager(context)
 
-    /**
-     * Efetua o processo de autenticação do utilizador.
-     *
-     * Este metodo comunica com a API REST para autenticar o utilizador
-     * através das credenciais fornecidas. Em caso de sucesso, a informação
-     * relevante da sessão (identificador do utilizador e permissões) é
-     * persistida localmente.
-     *
-     * O metodo é suspenso (suspend) para permitir execução assíncrona
-     * utilizando coroutines, evitando bloqueios da thread principal.
-     *
-     * @param email Endereço de correio eletrónico do utilizador.
-     * @param pass Palavra-passe do utilizador.
-     * @return Resultado da operação de login encapsulado num objeto [Result].
-     *         Em caso de sucesso, retorna [Result.success].
-     *         Em caso de erro, retorna [Result.failure] com a exceção associada.
-     */
     suspend fun login(email: String, pass: String): Result<Unit> {
         return try {
             val resp = RetrofitProvider.authService
                 .login(LoginRequest(email, pass))
 
-            // Guarda informação da sessão após autenticação bem-sucedida
-            session.saveLogin(resp.id, resp.isAdmin)
+            // Guarda sessão completa (id, nome, permissões)
+            session.saveLogin(
+                userId = resp.id,
+                userName = resp.user,
+                isAdmin = resp.isAdmin
+            )
 
             Result.success(Unit)
         } catch (e: Exception) {
@@ -54,3 +40,4 @@ class AuthRepository(private val context: Context) {
         }
     }
 }
+

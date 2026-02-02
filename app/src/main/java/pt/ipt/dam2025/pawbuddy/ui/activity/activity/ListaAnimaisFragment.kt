@@ -80,6 +80,16 @@ class ListaAnimaisFragment : Fragment() {
     private var firstLoadDone: Boolean = false
 
     /**
+     * Filtros/Ordenação
+     */
+
+    private enum class SortMode { MOST_RECENT, OLDEST, NAME_AZ, NAME_ZA }
+
+    private var selectedSpecies: String = "Todos"
+    private var selectedGender: String = "Todos"
+    private var selectedSort: SortMode = SortMode.MOST_RECENT
+
+    /**
      * Infla o layout do Fragment e inicializa o ViewBinding.
      */
     override fun onCreateView(
@@ -104,6 +114,7 @@ class ListaAnimaisFragment : Fragment() {
         isAdmin = session.isLogged() && session.isAdmin()
 
         setupRecyclerByMode()
+        setupFiltersUi()
 
         // Swipe-to-refresh: força nova leitura dos dados sem bloquear a UI com spinner adicional.
         binding.swipeRefresh.setOnRefreshListener {
@@ -112,7 +123,7 @@ class ListaAnimaisFragment : Fragment() {
 
         // Pesquisa local: aplica filtro à lista já carregada.
         binding.etSearch.doAfterTextChanged {
-            applyFilter(it?.toString().orEmpty())
+            applyAllFilters()
         }
 
         loadAnimais(showSpinner = true)
@@ -166,6 +177,71 @@ class ListaAnimaisFragment : Fragment() {
     }
 
     /**
+     * Configura UI dos filtros:
+     * - Dropdown espécie, género e ordenação;
+     * - Botões aplicar e limpar;
+     * - Toggle expand/collapse do painel.
+     *
+     * Requisitos no XML:
+     * actSpecies, actGender, actSort, btnApplyFilters, btnClearFilters,
+     * btnToggleFilters, filtersContent.
+     */
+    private fun setupFiltersUi() {
+        // Ajusta estas opções consoante os teus valores reais.
+        val speciesOptions = listOf("Todos", "Cão", "Gato")
+        val genderOptions = listOf("Todos", "Macho", "Fêmea")
+        val sortOptions = listOf("Mais recente", "Mais antigo", "Nome A–Z", "Nome Z–A")
+
+        // Necessita MaterialAutoCompleteTextView no layout.
+        binding.actSpecies.setSimpleItems(speciesOptions.toTypedArray())
+        binding.actGender.setSimpleItems(genderOptions.toTypedArray())
+        binding.actSort.setSimpleItems(sortOptions.toTypedArray())
+
+        // Defaults visuais
+        binding.actSpecies.setText(selectedSpecies, false)
+        binding.actGender.setText(selectedGender, false)
+        binding.actSort.setText("Mais recente", false)
+
+        binding.btnApplyFilters.setOnClickListener {
+            selectedSpecies = binding.actSpecies.text?.toString().orEmpty().ifBlank { "Todos" }
+            selectedGender = binding.actGender.text?.toString().orEmpty().ifBlank { "Todos" }
+
+            selectedSort = when (binding.actSort.text?.toString().orEmpty()) {
+                "Mais antigo" -> SortMode.OLDEST
+                "Nome A–Z" -> SortMode.NAME_AZ
+                "Nome Z–A" -> SortMode.NAME_ZA
+                else -> SortMode.MOST_RECENT
+            }
+
+            applyAllFilters()
+        }
+
+        binding.btnClearFilters.setOnClickListener {
+            selectedSpecies = "Todos"
+            selectedGender = "Todos"
+            selectedSort = SortMode.MOST_RECENT
+
+            binding.actSpecies.setText("Todos", false)
+            binding.actGender.setText("Todos", false)
+            binding.actSort.setText("Mais recente", false)
+
+            applyAllFilters()
+        }
+
+        binding.btnToggleFilters.setOnClickListener {
+            val isVisible = binding.filtersContent.visibility == View.VISIBLE
+            binding.filtersContent.visibility = if (isVisible) View.GONE else View.VISIBLE
+            binding.btnToggleFilters.setImageResource(
+                if (isVisible) R.drawable.ic_expand_more else R.drawable.ic_expand_less
+            )
+        }
+        binding.actSpecies.setOnClickListener { binding.actSpecies.showDropDown() }
+        binding.actGender.setOnClickListener { binding.actGender.showDropDown() }
+        binding.actSort.setOnClickListener { binding.actSort.showDropDown() }
+
+    }
+
+    /**
      * Carrega a lista de animais a partir da API.
      *
      * - Público: consulta apenas animais disponíveis;
@@ -195,7 +271,7 @@ class ListaAnimaisFragment : Fragment() {
                     firstLoadDone = true
 
                     // Aplica filtro existente (se houver texto na pesquisa).
-                    applyFilter(binding.etSearch.text?.toString().orEmpty())
+                    applyAllFilters()
                 }
 
             } catch (e: HttpException) {
@@ -245,27 +321,48 @@ class ListaAnimaisFragment : Fragment() {
     }
 
     /**
-     * Aplica filtragem local à lista carregada, com base no texto introduzido na pesquisa.
-     *
-     * O filtro considera nome, espécie e raça (case-insensitive).
-     *
-     * @param query texto de pesquisa.
+     * Aplica pesquisa + filtros + ordenação sobre allAnimais e submete ao adapter.
      */
-    private fun applyFilter(query: String) {
-        val q = query.trim().lowercase()
+    private fun applyAllFilters() {
+        val q = binding.etSearch.text?.toString().orEmpty().trim().lowercase()
 
-        val filtered = if (q.isBlank()) {
-            allAnimais
-        } else {
-            allAnimais.filter { a ->
+        var list = allAnimais
+
+        // 1) Pesquisa (nome/especie/raca)
+        if (q.isNotBlank()) {
+            list = list.filter { a ->
                 a.nome.lowercase().contains(q) ||
                         a.especie.lowercase().contains(q) ||
                         a.raca.lowercase().contains(q)
             }
         }
 
-        submitList(filtered)
-        binding.emptyState.visibility = if (filtered.isEmpty()) View.VISIBLE else View.GONE
+        // 2) Filtro por espécie (assumindo a.especie = "Cão"/"Gato"/etc.)
+        if (selectedSpecies != "Todos") {
+            list = list.filter { a -> a.especie.equals(selectedSpecies, ignoreCase = true) }
+        }
+
+        // 3) Filtro por género
+        // Ajusta conforme o teu model:
+        // - Se tiveres a.genero: String? -> "Macho"/"Fêmea"
+        // - Se tiveres enum/int -> traduz aqui.
+        if (selectedGender != "Todos") {
+            list = list.filter { a ->
+                val g = a.genero?.toString().orEmpty()
+                g.equals(selectedGender, ignoreCase = true)
+            }
+        }
+
+        // 4) Ordenação
+        list = when (selectedSort) {
+            SortMode.NAME_AZ -> list.sortedBy { it.nome.lowercase() }
+            SortMode.NAME_ZA -> list.sortedByDescending { it.nome.lowercase() }
+            SortMode.OLDEST -> list.sortedBy { it.id } // fallback sem datas
+            SortMode.MOST_RECENT -> list.sortedByDescending { it.id } // fallback sem datas
+        }
+
+        submitList(list)
+        binding.emptyState.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
         binding.txtErro.visibility = View.GONE
     }
 

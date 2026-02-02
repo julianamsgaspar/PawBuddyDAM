@@ -120,6 +120,7 @@ class RegisterFragment : Fragment() {
             val nome = binding.etNome.text?.toString()?.trim().orEmpty()
             val email = binding.etEmail.text?.toString()?.trim().orEmpty()
             val password = binding.etPassword.text?.toString().orEmpty()
+            val confirmPassword = binding.etConfirmPassword.text?.toString().orEmpty()
             val dataNascimento = binding.etDataNascimento.text?.toString()?.trim().orEmpty()
             val nif = binding.etNif.text?.toString()?.trim().orEmpty()
             val telemovel = binding.etTelemovel.text?.toString()?.trim().orEmpty()
@@ -133,12 +134,17 @@ class RegisterFragment : Fragment() {
             if (nome.isBlank()) { binding.tilNome.error = getString(R.string.error_required_field); ok = false }
             if (email.isBlank()) { binding.tilEmail.error = getString(R.string.error_required_field); ok = false }
             if (password.isBlank()) { binding.tilPassword.error = getString(R.string.error_required_field); ok = false }
+            if (confirmPassword.isBlank()) { binding.tilConfirmPassword.error = getString(R.string.error_required_field); ok = false }
             if (dataNascimento.isBlank()) { binding.tilDataNascimento.error = getString(R.string.error_required_field); ok = false }
             if (nif.isBlank()) { binding.tilNif.error = getString(R.string.error_required_field); ok = false }
             if (telemovel.isBlank()) { binding.tilTelemovel.error = getString(R.string.error_required_field); ok = false }
             if (morada.isBlank()) { binding.tilMorada.error = getString(R.string.error_required_field); ok = false }
             if (codPostal.isBlank()) { binding.tilCodPostal.error = getString(R.string.error_required_field); ok = false }
             if (pais.isBlank()) { binding.tilPais.error = getString(R.string.error_required_field); ok = false }
+            if (ok && password != confirmPassword) {
+                binding.tilConfirmPassword.error = getString(R.string.error_passwords_do_not_match)
+                ok = false
+            }
             if (!ok) return@setOnClickListener
 
             // UI: estado de loading (desativa botão e altera texto).
@@ -178,7 +184,12 @@ class RegisterFragment : Fragment() {
 
                         withContext(Dispatchers.Main) {
                             // Persistência de sessão e navegação para destino principal.
-                            session.saveLogin(loginResp.id, loginResp.isAdmin)
+                            session.saveLogin(
+                                userId = loginResp.id,
+                                userName = loginResp.user,
+                                isAdmin = loginResp.isAdmin
+                            )
+
                             val target =
                                 if (loginResp.isAdmin) R.id.gestaoFragment else R.id.homeFragment
 

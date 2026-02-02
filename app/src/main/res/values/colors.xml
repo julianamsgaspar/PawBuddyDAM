@@ -1,84 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!--
-        Ficheiro de recursos de cores da aplicação PawBuddy.
+    <!-- =========================================================
+         PawBuddy — Cores (values/colors.xml)
 
-        Responsabilidade:
-        - Centralizar a definição da paleta cromática da aplicação.
-        - Garantir consistência visual entre layouts, temas e componentes.
-        - Facilitar manutenção, alteração de identidade visual e suporte a temas futuros
-          (ex.: dark mode, variações de branding).
+         Objetivos:
+         - Centralizar paleta cromática (consistência e manutenção)
+         - Evitar hardcoded nos layouts
+         - Preparar base para night/colors.xml (dark mode)
 
-        Enquadramento académico:
-        - A externalização de cores em resources.xml segue boas práticas de engenharia de software,
-          promovendo reutilização, legibilidade e desacoplamento entre lógica e apresentação.
-        - Evita valores "hardcoded" nos layouts, reduzindo erros e custos de refatoração.
-    -->
+         Nota:
+         - Nomes semânticos (paw_primary, paw_surface, etc.) > nomes visuais
+           porque descrevem intenção de uso.
+         ========================================================= -->
 
-    <!--
-        Cores base (neutras)
-
-        Uso típico:
-        - Texto genérico
-        - Ícones
-        - Fundos simples
-    -->
+    <!-- =========================
+         Neutros base
+         ========================= -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <!--
-        Cores de estado / erro
-
-        Uso típico:
-        - Mensagens de erro
-        - Estados críticos
-        - Ações destrutivas (ex.: eliminar, rejeitar)
-
-        Nota:
-        - danger_red e error_red partilham o mesmo valor hexadecimal.
-        - A duplicação semântica é intencional:
-            * danger_red → ações destrutivas (UX)
-            * error_red  → validações / feedback de erro
-        - Isto melhora legibilidade semântica do código XML/Kotlin,
-          mesmo que a cor visual seja idêntica.
-    -->
+    <!-- =========================
+         Estados (erro / destrutivo)
+         ========================= -->
     <color name="danger_red">#D32F2F</color>
     <color name="error_red">#D32F2F</color>
 
-    <!--
-        Paleta principal da aplicação (branding PawBuddy)
-
-        paw_primary:
-        - Cor principal da marca.
-        - Utilizada em botões primários, destaques e elementos de ação.
-
-        paw_secondary:
-        - Cor secundária/complementar.
-        - Usada para ações alternativas, ícones ou estados secundários.
-
-        paw_surface:
-        - Cor de superfície/fundo.
-        - Adequada para cards, backgrounds claros e áreas de conteúdo.
-
-        paw_text:
-        - Cor padrão para texto principal.
-        - Garantida legibilidade sobre paw_surface e white.
-    -->
-    <color name="paw_primary">#00C2A8</color>
-    <color name="paw_secondary">#6C4DFF</color>
-    <color name="paw_surface">#FAFAFF</color>
+    <!-- =========================
+         Texto (fallback/apoio)
+         Nota: Em Material 3, ideal é usar ?attr/colorOnSurface,
+               mas manter paw_text pode ser útil em casos pontuais.
+         ========================= -->
     <color name="paw_text">#1C1B1F</color>
 
-    <!--
-        Nota final (boas práticas):
-        - Esta estrutura facilita futura extensão para:
-            * themes.xml (MaterialTheme)
-            * night/colors.xml (Dark Mode)
-            * rebranding sem impacto direto nos layouts
-        - A nomenclatura semântica (paw_primary, paw_surface, etc.)
-          é preferível a nomes visuais (ex.: blue1, green2),
-          pois descreve intenção e não aparência.
-    -->
+    <!-- =========================
+         Branding PawBuddy — Turquesa vivo e alegre
+         (Mais saturação e “energia”, sem perder contraste)
+         ========================= -->
+
+    <!-- Primária (turquesa vivo) -->
+    <color name="paw_primary">#00A9A6</color>
+    <color name="paw_on_primary">#FFFFFF</color>
+
+    <!-- Secundária (turquesa mais "mint", complementar) -->
+    <color name="paw_secondary">#00C2B8</color>
+    <color name="paw_on_secondary">#003734</color>
+
+    <!-- Primária Container (fundos suaves: hero card, badges, destaques) -->
+    <color name="paw_primary_container">#C8F7F4</color>
+    <color name="paw_on_primary_container">#004B46</color>
+
+    <!-- =========================
+         Superfícies e fundos (tema claro)
+         - background: cinza muito claro (separa do branco dos cards)
+         - surface: branco (cards e áreas de conteúdo)
+         - surface_variant: levemente “cool” para blocos secundários
+         ========================= -->
+    <color name="paw_background">#F2F4F5</color>
+    <color name="paw_surface">#FFFFFF</color>
+    <color name="paw_surface_variant">#E6F7F6</color>
+
+    <!-- =========================
+         Cores “on*” (texto/ícones sobre fundos)
+         ========================= -->
+    <color name="paw_on_surface">#1F1F1F</color>
+    <color name="paw_on_surface_variant">#2F3F3E</color>
+
+    <!-- =========================
+         Contornos / divisórias
+         ========================= -->
+    <color name="paw_outline">#B7D6D3</color>
 
 </resources>

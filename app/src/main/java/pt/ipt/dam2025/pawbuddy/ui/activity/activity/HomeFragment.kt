@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import pt.ipt.dam2025.pawbuddy.R
 import pt.ipt.dam2025.pawbuddy.databinding.FragmentHomeBinding
+import pt.ipt.dam2025.pawbuddy.session.SessionManager
 
 /**
  * Fragment que implementa o ecrã inicial (Home) da aplicação PawBuddy.
@@ -42,6 +43,8 @@ class HomeFragment : Fragment() {
      * Getter não-null do binding; assume que apenas é acedido quando a View existe.
      */
     private val binding get() = _binding!!
+
+    private val session by lazy { SessionManager(requireContext()) }
 
     /**
      * Infla o layout do Fragment e inicializa o View Binding.
@@ -77,10 +80,24 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Leitura das preferências persistidas da aplicação (sessão do utilizador).
-        val prefs = requireContext().getSharedPreferences("PawBuddyPrefs", Context.MODE_PRIVATE)
-        val isLogged = prefs.getBoolean("isLogged", false)
-        val isAdmin = prefs.getBoolean("isAdmin", false)
+        val isLogged = session.isLogged()
+        val isAdmin = session.isAdmin()
+        val userName = session.userName()
+
+
+        binding.tvWelcome.text = when {
+            isLogged && !userName.isNullOrBlank() ->
+                "Olá, $userName"
+
+            isLogged ->
+                "Sessão expirada"
+
+            else ->
+                "Bem-vindo ao PawBuddy"
+        }
+
+        binding.tvWelcome.visibility = View.VISIBLE
+
 
         // Card "Explorar": sempre disponível, direciona para a lista de animais.
         binding.cardExplore.setOnClickListener { v ->

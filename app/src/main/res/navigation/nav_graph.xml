@@ -47,7 +47,7 @@
     <fragment
         android:id="@+id/listaAnimaisFragment"
         android:name="pt.ipt.dam2025.pawbuddy.ui.activity.activity.ListaAnimaisFragment"
-        android:label="@string/nav_animais" />
+        android:label="@string/nav_home" />
     <!--
         ListaAnimaisFragment:
         - Listagem de animais disponíveis.
@@ -57,7 +57,7 @@
     <fragment
         android:id="@+id/animalDetailFragment"
         android:name="pt.ipt.dam2025.pawbuddy.ui.activity.activity.AnimalDetailFragment"
-        android:label="@string/title_animal_detail">
+        android:label="@string/nav_home">
         <argument
             android:name="animalId"
             app:argType="integer" />
@@ -73,7 +73,7 @@
     <fragment
         android:id="@+id/intencaoDetalheFragment"
         android:name="pt.ipt.dam2025.pawbuddy.ui.activity.activity.IntencaoDetalheFragment"
-        android:label="@string/title_intencao_detail" />
+        android:label="@string/nav_home" />
     <!--
         IntencaoDetalheFragment:
         - Ecrã de detalhe de uma intenção de adoção.
@@ -86,7 +86,7 @@
     <fragment
         android:id="@+id/adotarFragment"
         android:name="pt.ipt.dam2025.pawbuddy.ui.activity.activity.AdotarFragment"
-        android:label="@string/title_adotar">
+        android:label="@string/nav_home">
         <argument
             android:name="animalId"
             app:argType="integer" />
@@ -101,7 +101,7 @@
     <fragment
         android:id="@+id/detalhesUtilizadorFragment"
         android:name="pt.ipt.dam2025.pawbuddy.ui.activity.activity.DetalhesUtilizadorFragment"
-        android:label="@string/nav_perfil">
+        android:label="@string/nav_home">
         <argument
             android:name="userId"
             app:argType="integer"
@@ -174,7 +174,7 @@
     <fragment
         android:id="@+id/listaIntencoesFragment"
         android:name="pt.ipt.dam2025.pawbuddy.ui.activity.activity.ListaIntencoesFragment"
-        android:label="@string/admin_intencoes" />
+        android:label="@string/nav_home"/>
 
     <!-- ========================= -->
     <!--          ADMIN            -->
@@ -183,7 +183,7 @@
     <fragment
         android:id="@+id/gestaoFragment"
         android:name="pt.ipt.dam2025.pawbuddy.ui.activity.activity.GestaoFragment"
-        android:label="@string/admin_dashboard" />
+        android:label="@string/nav_home" />
     <!--
         GestaoFragment (Admin Dashboard):
         - Ecrã central de gestão administrativa (backoffice).
@@ -192,7 +192,7 @@
     <fragment
         android:id="@+id/listaUtilizadoresFragment"
         android:name="pt.ipt.dam2025.pawbuddy.ui.activity.activity.ListaUtilizadoresFragment"
-        android:label="@string/admin_utilizadores" />
+        android:label="@string/nav_home" />
     <!--
         ListaUtilizadoresFragment:
         - Gestão de utilizadores (listar, ver, possivelmente remover/editar).
@@ -202,7 +202,7 @@
     <fragment
         android:id="@+id/adicionarAnimalFragment"
         android:name="pt.ipt.dam2025.pawbuddy.ui.activity.activity.AdicionarAnimalFragment"
-        android:label="@string/admin_add_animal" />
+        android:label="@string/nav_home" />
     <!--
         AdicionarAnimalFragment:
         - Criação de registos Animal (admin).
@@ -212,7 +212,7 @@
     <fragment
         android:id="@+id/alterarAnimalFragment"
         android:name="pt.ipt.dam2025.pawbuddy.ui.activity.activity.AlterarAnimalFragment"
-        android:label="@string/title_alterar_animal">
+        android:label="@string/nav_home">
         <argument
             android:name="animalId"
             app:argType="integer" />
@@ -226,7 +226,7 @@
     <fragment
         android:id="@+id/editarEstadoIntencaoFragment"
         android:name="pt.ipt.dam2025.pawbuddy.ui.activity.activity.EditarEstadoIntencaoFragment"
-        android:label="@string/title_edit_intent_status">
+        android:label="@string/nav_home">
         <argument android:name="id" app:argType="integer" />
         <argument android:name="estado" app:argType="integer" />
     </fragment>
@@ -243,7 +243,7 @@
     <fragment
         android:id="@+id/listarAdocoesFinaisFragment"
         android:name="pt.ipt.dam2025.pawbuddy.ui.activity.activity.ListarAdocoesFinaisFragment"
-        android:label="@string/admin_final_adoptions" />
+        android:label="@string/nav_home" />
     <!--
         ListarAdocoesFinaisFragment:
         - Listagem de adoções finalizadas (admin).
@@ -253,7 +253,7 @@
     <fragment
         android:id="@+id/aboutFragment"
         android:name="pt.ipt.dam2025.pawbuddy.ui.activity.activity.AboutFragment"
-        android:label="@string/about_title" />
+        android:label="@string/nav_home"/>
     <!--
         AboutFragment:
         - Ecrã informativo (ex.: versão, autor(es), objetivos, créditos).

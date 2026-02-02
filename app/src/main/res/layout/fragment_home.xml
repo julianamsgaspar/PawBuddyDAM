@@ -17,6 +17,16 @@
         android:orientation="vertical"
         android:padding="16dp">
 
+        <!-- Saudação / estado de sessão -->
+        <TextView
+            android:id="@+id/tvWelcome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Olá, Utilizador "
+            android:textSize="18sp"
+            android:textColor="?attr/colorOnPrimaryContainer"
+            android:alpha="0.90" />
         <!-- HERO:
              Cartão de apresentação da app (título, subtítulo, dica) e ícone principal -->
         <com.google.android.material.card.MaterialCardView
@@ -24,7 +34,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardUseCompatPadding="true"
-            app:cardCornerRadius="20dp">
+            app:cardCornerRadius="20dp"
+            app:cardElevation="1dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="?attr/colorOutline"
+            app:cardBackgroundColor="?attr/colorPrimaryContainer">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -46,7 +60,8 @@
                         android:layout_height="wrap_content"
                         android:text="@string/app_name"
                         android:textStyle="bold"
-                        android:textSize="24sp" />
+                        android:textSize="24sp"
+                        android:textColor="?attr/colorOnPrimaryContainer" />
 
                     <!-- Subtítulo/descrição curta -->
                     <TextView
@@ -55,7 +70,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
                         android:text="@string/home_subtitle"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        android:textColor="?attr/colorOnPrimaryContainer"
+                        android:alpha="0.88" />
 
                     <!-- Dica adicional / callout -->
                     <TextView
@@ -64,10 +81,12 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:text="@string/home_hint"
-                        android:textSize="13sp" />
+                        android:textSize="13sp"
+                        android:textColor="?attr/colorOnPrimaryContainer"
+                        android:alpha="0.82" />
                 </LinearLayout>
 
-                <!-- Ícone do hero (tint primário) -->
+                <!-- Ícone do hero (tint coerente com container) -->
                 <ImageView
                     android:id="@+id/imgHero"
                     android:layout_width="72dp"
@@ -75,7 +94,7 @@
                     android:layout_marginStart="12dp"
                     android:contentDescription="@string/home_hero_image"
                     android:src="@drawable/ic_pets"
-                    app:tint="?attr/colorPrimary" />
+                    app:tint="?attr/colorOnPrimaryContainer" />
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -87,23 +106,62 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
+            android:gravity="center"
             app:singleLine="true"
             app:chipSpacingHorizontal="8dp">
 
-            <com.google.android.material.chip.Chip
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/home_chip_fast" />
 
             <com.google.android.material.chip.Chip
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/home_chip_safe" />
+                android:text="@string/home_chip_fast"
+                app:chipIcon="@drawable/ic_speed"
+                app:chipIconTint="?attr/colorPrimary"
+                app:iconStartPadding="6dp"
+                app:chipBackgroundColor="?attr/colorSurfaceVariant"
+                app:chipStrokeWidth="0dp"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="12sp"
+                app:chipMinHeight="32dp"
+                android:clickable="false"
+                android:checkable="false"
+                android:focusable="false"
+                />
+
 
             <com.google.android.material.chip.Chip
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/home_chip_simple" />
+                android:text="@string/home_chip_safe"
+                app:chipIcon="@drawable/ic_shield"
+                app:chipIconTint="?attr/colorPrimary"
+                app:iconStartPadding="6dp"
+                app:chipBackgroundColor="?attr/colorSurfaceVariant"
+                app:chipStrokeWidth="0dp"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="12sp"
+                app:chipMinHeight="32dp"
+                android:clickable="false"
+                android:checkable="false"
+                android:focusable="false"
+                />
+
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/home_chip_simple"
+                app:chipIcon="@drawable/ic_check"
+                app:chipIconTint="?attr/colorPrimary"
+                app:iconStartPadding="6dp"
+                app:chipBackgroundColor="?attr/colorSurfaceVariant"
+                app:chipStrokeWidth="0dp"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="12sp"
+                app:chipMinHeight="32dp"
+                android:clickable="false"
+                android:checkable="false"
+                android:focusable="false"
+                />
         </com.google.android.material.chip.ChipGroup>
 
         <!-- SECÇÃO: AÇÕES
@@ -115,7 +173,8 @@
             android:layout_marginTop="18dp"
             android:text="@string/home_actions_title"
             android:textStyle="bold"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:textColor="?attr/colorOnSurface" />
 
         <!-- CTA: Explorar Animais
              Card clicável que direciona para a listagem de animais -->
@@ -128,7 +187,11 @@
             android:focusable="true"
             app:rippleColor="?attr/colorPrimary"
             app:cardUseCompatPadding="true"
-            app:cardCornerRadius="16dp">
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="?attr/colorOutline"
+            app:cardBackgroundColor="?attr/colorSurface">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -136,7 +199,7 @@
                 android:orientation="horizontal"
                 android:padding="16dp">
 
-                <!-- Ícone do CTA (tint secundário/neutral) -->
+                <!-- Ícone do CTA -->
                 <ImageView
                     android:layout_width="28dp"
                     android:layout_height="28dp"
@@ -157,14 +220,16 @@
                         android:layout_height="wrap_content"
                         android:text="@string/home_cta_animals_title"
                         android:textStyle="bold"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        android:textColor="?attr/colorOnSurface" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="@string/home_cta_animals_desc"
-                        android:textSize="13sp" />
+                        android:textSize="13sp"
+                        android:textColor="?attr/colorOnSurfaceVariant" />
                 </LinearLayout>
 
                 <!-- Indicador visual de navegação -->
@@ -179,8 +244,7 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- CTA: Minhas Intenções
-             Visível apenas para utilizador autenticado não-admin (controlado no Kotlin) -->
+        <!-- CTA: Minhas Intenções -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardMyIntents"
             android:layout_width="match_parent"
@@ -191,7 +255,11 @@
             android:visibility="gone"
             app:rippleColor="?attr/colorPrimary"
             app:cardUseCompatPadding="true"
-            app:cardCornerRadius="16dp">
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="?attr/colorOutline"
+            app:cardBackgroundColor="?attr/colorSurface">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -218,14 +286,16 @@
                         android:layout_height="wrap_content"
                         android:text="@string/action_view_adoptions"
                         android:textStyle="bold"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        android:textColor="?attr/colorOnSurface" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="@string/home_cta_login_desc"
-                        android:textSize="13sp" />
+                        android:textSize="13sp"
+                        android:textColor="?attr/colorOnSurfaceVariant" />
                 </LinearLayout>
 
                 <ImageView
@@ -238,8 +308,7 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- CTA: Registo
-             Visível tipicamente quando o utilizador não está autenticado (controlado no Kotlin) -->
+        <!-- CTA: Registo -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardRegister"
             android:layout_width="match_parent"
@@ -249,7 +318,11 @@
             android:focusable="true"
             app:rippleColor="?attr/colorPrimary"
             app:cardUseCompatPadding="true"
-            app:cardCornerRadius="16dp">
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="?attr/colorOutline"
+            app:cardBackgroundColor="?attr/colorSurface">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -276,14 +349,16 @@
                         android:layout_height="wrap_content"
                         android:text="@string/home_cta_register_title"
                         android:textStyle="bold"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        android:textColor="?attr/colorOnSurface" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="@string/home_cta_register_desc"
-                        android:textSize="13sp" />
+                        android:textSize="13sp"
+                        android:textColor="?attr/colorOnSurfaceVariant" />
                 </LinearLayout>
 
                 <ImageView
@@ -296,8 +371,7 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- CTA: Sobre (About)
-             Card de acesso à informação institucional e detalhes técnicos -->
+        <!-- CTA: Sobre (About) -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardAbout"
             android:layout_width="match_parent"
@@ -307,7 +381,11 @@
             android:focusable="true"
             app:rippleColor="?attr/colorPrimary"
             app:cardUseCompatPadding="true"
-            app:cardCornerRadius="16dp">
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="?attr/colorOutline"
+            app:cardBackgroundColor="?attr/colorSurface">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -334,14 +412,16 @@
                         android:layout_height="wrap_content"
                         android:text="@string/home_cta_about_title"
                         android:textStyle="bold"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        android:textColor="?attr/colorOnSurface" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="@string/home_cta_about_desc"
-                        android:textSize="13sp" />
+                        android:textSize="13sp"
+                        android:textColor="?attr/colorOnSurfaceVariant" />
                 </LinearLayout>
 
                 <ImageView
@@ -354,8 +434,7 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- COMO FUNCIONA:
-             Secção explicativa com passos resumidos do fluxo de adoção -->
+        <!-- COMO FUNCIONA -->
         <TextView
             android:id="@+id/tvHowTitle"
             android:layout_width="match_parent"
@@ -363,14 +442,19 @@
             android:layout_marginTop="18dp"
             android:text="@string/home_how_title"
             android:textStyle="bold"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:textColor="?attr/colorOnSurface" />
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             app:cardUseCompatPadding="true"
-            app:cardCornerRadius="16dp">
+            app:cardCornerRadius="16dp"
+            app:cardElevation="1dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="?attr/colorOutline"
+            app:cardBackgroundColor="?attr/colorSurfaceVariant">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -378,29 +462,29 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <!-- Passo 1 -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="@string/home_how_step1"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    android:textColor="?attr/colorOnSurfaceVariant" />
 
-                <!-- Passo 2 -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="@string/home_how_step2"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    android:textColor="?attr/colorOnSurfaceVariant" />
 
-                <!-- Passo 3 -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="@string/home_how_step3"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    android:textColor="?attr/colorOnSurfaceVariant" />
 
             </LinearLayout>
 

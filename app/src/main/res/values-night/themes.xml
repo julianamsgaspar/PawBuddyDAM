@@ -1,7 +1,69 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.PawBuddy" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
-    </style>
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- =========================================================
+         PawBuddy — Cores (values-night/colors.xml)
+
+         Objetivo:
+         - Dark mode consistente com a identidade turquesa
+         - Contraste elevado e confortável (evitar "neon")
+         ========================================================= -->
+
+    <!-- =========================
+         Neutros base
+         ========================= -->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- =========================
+         Estados (erro / destrutivo)
+         ========================= -->
+    <color name="danger_red">#EF5350</color>
+    <color name="error_red">#EF5350</color>
+
+    <!-- =========================
+         Texto (fallback/apoio)
+         ========================= -->
+    <color name="paw_text">#E7E7E7</color>
+
+    <!-- =========================
+         Branding PawBuddy — Dark Mode
+         Nota:
+         - Mantemos o turquesa vivo para CTAs/destaques
+         - "on_primary" passa a ser escuro (texto sobre turquesa claro)
+         ========================= -->
+
+    <!-- Primária (turquesa vivo) -->
+    <color name="paw_primary">#00C2B8</color>
+    <color name="paw_on_primary">#003734</color>
+
+    <!-- Secundária (mint turquesa, para estados/ícones) -->
+    <color name="paw_secondary">#5AF2E6</color>
+    <color name="paw_on_secondary">#003734</color>
+
+    <!-- Primária Container (blocos destacados no dark: hero card / badges) -->
+    <color name="paw_primary_container">#004B46</color>
+    <color name="paw_on_primary_container">#C8F7F4</color>
+
+    <!-- =========================
+         Superfícies e fundos (tema escuro)
+         - background: quase preto com leve tom “cool”
+         - surface: ligeiramente mais claro para cards
+         - surface_variant: para blocos secundários
+         ========================= -->
+    <color name="paw_background">#0F1414</color>
+    <color name="paw_surface">#121A19</color>
+    <color name="paw_surface_variant">#1A2625</color>
+
+    <!-- =========================
+         Cores “on*” (texto/ícones sobre fundos)
+         ========================= -->
+    <color name="paw_on_surface">#E6E6E6</color>
+    <color name="paw_on_surface_variant">#C7D6D4</color>
+
+    <!-- =========================
+         Contornos / divisórias (subtil no dark)
+         ========================= -->
+    <color name="paw_outline">#2F4A47</color>
+
 </resources>
