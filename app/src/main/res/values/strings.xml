@@ -293,6 +293,11 @@
 
     <string name="success_logout">Logout realizado!</string>
 
+    <string name="error_invalid_email">Email inválido.</string>
+    <string name="error_nif_9_digits">O NIF deve ter 9 dígitos.</string>
+    <string name="error_phone_9_digits">O telemóvel deve ter 9 dígitos.</string>
+    <string name="error_postal_format">O código postal deve ter o formato 1234-567.</string>
+
     <!-- ===================================================== -->
     <!--                   ADMIN / GESTÃO                       -->
     <!-- ===================================================== -->

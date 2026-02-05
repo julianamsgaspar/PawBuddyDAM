@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Layout do ecrã de Registo.
-  Usa ScrollView para permitir scroll em formulários longos.
+  Layout do ecrã de Registo (RegisterFragment).
+
+  Enquadramento:
+  - O formulário é apresentado dentro de um MaterialCardView para melhorar legibilidade e hierarquia visual.
+  - O uso de ScrollView garante acessibilidade em ecrãs pequenos (evita cortes e permite scroll).
+
+  Notas de UX/validação:
+  - Alguns constraints são colocados no XML (ex.: inputType, maxLength, focus/click), mas a validação final
+    e filtros adicionais são aplicados no Fragment (InputFilters/TextWatchers), garantindo robustez.
 -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -12,32 +19,32 @@
     android:padding="20dp"
     tools:context=".ui.activity.activity.RegisterFragment">
 
-    <!-- Container principal vertical -->
+    <!-- Container principal do conteúdo (stack vertical). -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Espaçamento superior -->
+        <!-- Espaçamento superior (respiração visual). -->
         <View
             android:layout_width="match_parent"
             android:layout_height="10dp" />
 
-        <!-- Card que agrupa todo o formulário -->
+        <!-- Card que agrupa o formulário (Material Design). -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardUseCompatPadding="true"
             app:cardCornerRadius="20dp">
 
-            <!-- Conteúdo interno do card -->
+            <!-- Conteúdo interno do card. -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="18dp">
 
-                <!-- Ícone ilustrativo do ecrã -->
+                <!-- Ícone ilustrativo do ecrã. -->
                 <ImageView
                     android:layout_width="48dp"
                     android:layout_height="48dp"
@@ -46,7 +53,7 @@
                     android:src="@drawable/ic_person_add"
                     app:tint="?attr/colorPrimary" />
 
-                <!-- Título do formulário -->
+                <!-- Título principal. -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -56,7 +63,7 @@
                     android:textSize="22sp"
                     android:textStyle="bold" />
 
-                <!-- Subtítulo explicativo -->
+                <!-- Texto auxiliar. -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -71,15 +78,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="18dp"
-                    app:startIconDrawable="@drawable/ic_account_circle"
-                    android:hint="@string/hint_full_name">
+                    android:hint="@string/hint_full_name"
+                    app:startIconDrawable="@drawable/ic_account_circle">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etNome"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPersonName"
-                        android:maxLines="1" />
+                        android:maxLines="1"
+                        android:maxLength="80" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Campo: Email -->
@@ -88,8 +96,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    app:startIconDrawable="@drawable/ic_email"
-                    android:hint="@string/hint_email">
+                    android:hint="@string/hint_email"
+                    app:startIconDrawable="@drawable/ic_email">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etEmail"
@@ -105,9 +113,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    app:startIconDrawable="@drawable/ic_lock"
+                    android:hint="@string/hint_password"
                     app:endIconMode="password_toggle"
-                    android:hint="@string/hint_password">
+                    app:startIconDrawable="@drawable/ic_lock">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etPassword"
@@ -123,9 +131,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    app:startIconDrawable="@drawable/ic_lock"
+                    android:hint="@string/hint_confirm_password"
                     app:endIconMode="password_toggle"
-                    android:hint="@string/hint_confirm_password">
+                    app:startIconDrawable="@drawable/ic_lock">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etConfirmPassword"
@@ -135,54 +143,73 @@
                         android:maxLines="1" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Campo: Data de nascimento -->
+                <!--
+                  Campo: Data de nascimento
+
+                  Implementação recomendada:
+                  - Campo não editável (inputType none) e interação via DatePickerDialog no Fragment.
+                  - Evita inconsistências de formato e melhora UX (seleção por calendário).
+                -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilDataNascimento"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    app:startIconDrawable="@drawable/ic_calendar"
-                    android:hint="@string/hint_birthdate">
+                    android:hint="@string/hint_birthdate"
+                    app:startIconDrawable="@drawable/ic_calendar">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etDataNascimento"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="date"
-                        android:maxLines="1" />
+                        android:focusable="false"
+                        android:clickable="true"
+                        android:inputType="none"
+                        android:maxLines="1"
+                        tools:text="01/01/2000" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Campo: NIF -->
+                <!--
+                  Campo: NIF
+                  - Apenas numérico.
+                  - Comprimento fixo esperado: 9 dígitos (controlado por maxLength e filtros no Fragment).
+                -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilNif"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    app:startIconDrawable="@drawable/ic_badge"
-                    android:hint="@string/hint_nif">
+                    android:hint="@string/hint_nif"
+                    app:startIconDrawable="@drawable/ic_badge">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etNif"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="number"
+                        android:maxLength="9"
                         android:maxLines="1" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Campo: Telemóvel -->
+                <!--
+                  Campo: Telemóvel
+                  - inputType "phone" para teclado adequado.
+                  - Comprimento fixo esperado: 9 dígitos (validado no Fragment).
+                -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilTelemovel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    app:startIconDrawable="@drawable/ic_phone"
-                    android:hint="@string/hint_phone">
+                    android:hint="@string/hint_phone"
+                    app:startIconDrawable="@drawable/ic_phone">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etTelemovel"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="phone"
+                        android:maxLength="9"
                         android:maxLines="1" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -192,32 +219,39 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    app:startIconDrawable="@drawable/ic_home"
-                    android:hint="@string/hint_address">
+                    android:hint="@string/hint_address"
+                    app:startIconDrawable="@drawable/ic_home">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etMorada"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPostalAddress"
-                        android:maxLines="2" />
+                        android:maxLines="2"
+                        android:maxLength="120" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Campo: Código Postal -->
+                <!--
+                  Campo: Código Postal
+                  - Formato esperado: NNNN-NNN (ex.: 1000-001).
+                  - maxLength=8 e, no Fragment, um TextWatcher insere automaticamente o hífen.
+                -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilCodPostal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    app:startIconDrawable="@drawable/ic_local_post_office"
-                    android:hint="@string/hint_postal_code">
+                    android:hint="@string/hint_postal_code"
+                    app:startIconDrawable="@drawable/ic_local_post_office">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etCodPostal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="text"
-                        android:maxLines="1" />
+                        android:maxLength="8"
+                        android:maxLines="1"
+                        tools:text="1234-567" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Campo: País -->
@@ -226,14 +260,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    app:startIconDrawable="@drawable/ic_public"
-                    android:hint="@string/hint_country">
+                    android:hint="@string/hint_country"
+                    app:startIconDrawable="@drawable/ic_public">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etPais"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="text"
+                        android:maxLength="60"
                         android:maxLines="1" />
                 </com.google.android.material.textfield.TextInputLayout>
 

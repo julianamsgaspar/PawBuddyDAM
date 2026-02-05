@@ -6,6 +6,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -102,6 +103,9 @@ class MainActivity : AppCompatActivity() {
      * 6) Refresh inicial da UI.
      */
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Garante que o sistema reserva espaço para status bar (evita toolbar colada ao topo).
+        WindowCompat.setDecorFitsSystemWindows(window, true)
+
         super.onCreate(savedInstanceState)
 
         // Inicializa binding e aplica layout à Activity.
