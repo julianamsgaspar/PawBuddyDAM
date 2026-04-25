@@ -49,3 +49,19 @@ A comunicação entre a aplicação móvel e o backend é feita através de requ
 
 - Juliana Mariana de Sousa Gaspar
 - Inês Sapina Maciel
+
+## ScreenShots 
+
+<img width="387" height="866" alt="image" src="https://github.com/user-attachments/assets/37a7c363-b2a1-47cb-96a0-c5afd620ecd6" />
+
+<img width="307" height="692" alt="image" src="https://github.com/user-attachments/assets/5134d4e5-7fe6-403a-a4c9-867fae0ec13e" />
+
+<img width="386" height="861" alt="image" src="https://github.com/user-attachments/assets/9c00b4da-a8f6-4f0c-b5bd-257030b24a6a" />
+
+<img width="387" height="863" alt="image" src="https://github.com/user-attachments/assets/9da476ec-bb95-4c63-b281-2968ad1ebac1" />
+
+<img width="388" height="868" alt="image" src="https://github.com/user-attachments/assets/7727030d-5ed2-478d-b196-75adc499b1f6" />
+
+<img width="384" height="861" alt="image" src="https://github.com/user-attachments/assets/699c9c14-6d6f-4dbc-a6f2-8c778827eb7f" />
+
+<img width="388" height="865" alt="image" src="https://github.com/user-attachments/assets/3911ee90-d42a-49e2-998c-c071053b3d30" />
